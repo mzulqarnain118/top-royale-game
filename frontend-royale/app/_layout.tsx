@@ -1,0 +1,60 @@
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
+import { router, Slot, Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect, useState } from 'react';
+import 'react-native-reanimated';
+import { useColorScheme } from '@/hooks/useColorScheme';
+import { loadToken } from '@/services/store';
+
+SplashScreen.preventAutoHideAsync();
+
+type RouteOptionType = {
+  headerShown?: boolean, statusBarStyle?: "auto" | "light" | "dark" | "inverted"
+}
+
+export default function RootLayout() {
+  const routeOptions: RouteOptionType = { headerShown: false, statusBarStyle: 'dark' };
+  const colorScheme = useColorScheme();
+  const [loaded] = useFonts({
+    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    'LusitanaRegular': require('../assets/fonts/Lusitana-Regular.ttf'),
+    'LusitanaBold': require('../assets/fonts/Lusitana-Bold.ttf'),
+    'AdleryProBlockletter': require('../assets/fonts/adlery-pro.blockletter.ttf'),
+    // 'AdleryProBlockletter': require('../assets/fonts/adlery-pro/Adlery-Pro-Blockletter-trial.ttf'),
+    // 'AdleryProRegular': require('../assets/fonts/adlery-pro/Adlery-Pro-trial.ttf'),
+    // 'AdleryProSwash': require('../assets/fonts/adlery-pro/Adlery-Swash-trial.ttf'),
+    // 'MyriadProBold': require('../assets/fonts/MYRIADPRO-BOLD.OTF'),
+    // 'MyriadProLight': require('../assets/fonts/myriad-pro/MyriadPro-Light.otf'),
+    // 'MyriadProRegular': require('../assets/fonts/myriad-pro/MYRIADPRO-REGULAR.OTF'),
+    // 'MyriadProSemibold': require('../assets/fonts/myriad-pro/MYRIADPRO-SEMIBOLD.OTF'),
+  });
+
+  useEffect(() => {
+    if (loaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded]);
+
+  if (!loaded) {
+    return null;
+  }
+
+  return (
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <Stack>
+        <Stack.Screen name="index" options={routeOptions} />
+        <Stack.Screen name="home/index" options={routeOptions} />
+        <Stack.Screen name="home/battle-royale" options={routeOptions} />
+        <Stack.Screen name="home/deathmatch" options={routeOptions} />
+        <Stack.Screen name="home/loadout" options={routeOptions} />
+        <Stack.Screen name="home/stats" options={routeOptions} />
+        <Stack.Screen name="home/after-action-report" options={routeOptions} />
+        <Stack.Screen name="login/index" options={routeOptions} />
+        <Stack.Screen name="signup/index" options={routeOptions} />
+        <Stack.Screen name="signupform/index" options={routeOptions} />
+        <Stack.Screen name="+not-found" options={routeOptions} />
+      </Stack>
+    </ThemeProvider>
+  );
+}

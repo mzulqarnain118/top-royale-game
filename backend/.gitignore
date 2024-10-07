@@ -1,0 +1,38 @@
+
+
+# PHP
+# Composer dependencies
+/vendor/
+
+# Laravel specific
+/public/storage
+/storage/*.key
+/.env
+Homestead.yaml
+Homestead.json
+/public/hot
+/public/build
+/storage/logs/*.log
+/vendor/*
+/node_modules
+
+# PHPUnit
+/phpunit.xml
+/phpunit.xml.dist
+
+# IDE and editor files
+/.idea/
+/.vscode/
+/*.sublime-workspace
+/.project
+/.settings/
+/*.iml
+*.swp
+*.swo
+*.swn
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
