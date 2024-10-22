@@ -1,139 +1,200 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, TextInput, ScrollView, Animated, Alert, ActivityIndicator } from 'react-native';
-import { Link, router } from 'expo-router';
-import { LinearGradient } from 'expo-linear-gradient';
-import { authScreensSubmitBtns, container, contentContainerStyle, errorMessage, gameTitle, inputField } from '@/utils/commonStyles';
-import { backgroundGradient } from '@/utils/commonColors';
-import CustomText from './CustomText';
-import DefaultButton from './DefaultButton';
-import { signup } from '@/services/api';
-import { loadToken } from '@/services/store';
+import React, { useEffect, useState } from 'react'
+import {
+  View,
+  TextInput,
+  ScrollView,
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from 'react-native'
+import { Link, router } from 'expo-router'
+import { LinearGradient } from 'expo-linear-gradient'
+import { Picker } from '@react-native-picker/picker'
+import { errorMessage, gameTitle } from '@/utils/commonStyles'
+import { backgroundGradient } from '@/utils/commonColors'
+import CustomText from './CustomText'
+import DefaultButton from './DefaultButton'
+import { signup } from '@/services/api'
+import { storeToken } from '@/services/asyncStoreage'
+import { ApiCall } from '@/services/axiosApiInstance'
+import ExceptionHandler from '@/services/ExceptionHandler'
+import Toast from './Toast'
+import { s, scale } from 'react-native-size-matters'
+import useUserStore from '@/store/user'
+import useGlobalStore from '@/store/useGlobalStore'
 
 const SignUp = () => {
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [errors, setErrors] = useState<{ username?: string; email?: string; password?: string }>({});
-    const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
+  const [username, setUsername] = useState('')
+  const [countries, setCountries] = useState([])
+  const [selectedCountryId, setSelectedCountryId] = useState(0)
+  const [errors, setErrors] = useState<{
+    username?: string
+    country?: string
+  }>({})
 
-    useEffect(() => {
-        const fetchToken = async () => {
-            const token = await loadToken();
-            if (token) {
-                router.navigate("/home");
-            }
-        };
-        fetchToken();
-    }, []);
+  const setToken = useGlobalStore.getState().setToken
+  const setUser = useGlobalStore.getState().setUser
 
-    const validateEmail = (email: string) => {
-        // Basic email validation regex
-        const re = /\S+@\S+\.\S+/;
-        return re.test(String(email).toLowerCase());
-    };
+  const fetchCountries = async () => {
+    const response = await ApiCall('/api/countries', 'GET')
+    setCountries(response.data)
+  }
 
-    const handleValidation = () => {
-        let valid = true;
-        let tempErrors: { email?: string; password?: string; username?: string } = {};
+  useEffect(() => {
+    fetchCountries()
+  }, [])
 
-        if (!username) {
-            tempErrors.username = 'Username is required';
-            valid = false;
-        } else if (username.length > 20) {
-            tempErrors.username = 'Username must be less then 20 characters';
-            valid = false;
+  const handleValidation = () => {
+    let valid = true
+    let tempErrors: { country?: string; username?: string } = {}
+
+    if (!username) {
+      tempErrors.username = 'Username is required'
+      valid = false
+    } else if (username.length < 6) {
+      tempErrors.username = 'Username must be at least 6 characters'
+      valid = false
+    } else if (username.length > 20) {
+      tempErrors.username = 'Username must be less then 20 characters'
+      valid = false
+    }
+
+    if (selectedCountryId === 0) {
+      tempErrors.country = 'Country is required'
+      valid = false
+    }
+
+    setErrors(tempErrors)
+    return valid
+  }
+
+  const handleSignUp = async () => {
+    setIsLoading(true)
+    try {
+      if (handleValidation()) {
+        const response = await signup(username, selectedCountryId)
+        if (response.status === 200 && response.data.data.token) {
+          Toast('success', 'Signup successful!')
+          setToken(response.data.data.token)
+          setUser(response.data.data.user)
+          router.replace('/home')
         }
+      }
+    } catch (error: any) {
+      ExceptionHandler(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
-        if (!email) {
-            tempErrors.email = 'Email is required';
-            valid = false;
-        } else if (!validateEmail(email)) {
-            tempErrors.email = 'Please enter a valid email address';
-            valid = false;
-        }
+  return (
+    <LinearGradient
+      colors={backgroundGradient}
+      style={[styles.container, { alignItems: 'stretch' }]}
+    >
+      <ScrollView contentContainerStyle={styles.contentContainerStyle}>
+        <View>
+          <CustomText style={[gameTitle, { fontSize: scale(44) }]}>
+            Create Username
+          </CustomText>
+          <TextInput
+            style={styles.inputField}
+            placeholder='Username'
+            value={username}
+            onChangeText={setUsername}
+          />
+          {errors.username && (
+            <CustomText style={errorMessage}>{errors.username}</CustomText>
+          )}
+        </View>
+        <View>
+          <CustomText style={[gameTitle, { fontSize: scale(44) }]}>
+            Choose Country
+          </CustomText>
+          <View style={styles.inputField}>
+            <Picker
+              selectedValue={selectedCountryId}
+              onValueChange={(itemValue) => {
+                setSelectedCountryId(itemValue)
+              }}
+            >
+              <Picker.Item
+                label='Select a country...'
+                value={null}
+                style={{
+                  fontSize: 20,
+                }}
+              />
+              {countries.map((country: any) => (
+                <Picker.Item
+                  key={country.id}
+                  label={country.name}
+                  value={country.id}
+                  style={{ fontSize: 20 }}
+                />
+              ))}
+            </Picker>
+          </View>
+          {errors.country && (
+            <CustomText style={errorMessage}>{errors.country}</CustomText>
+          )}
+        </View>
 
-        if (!password) {
-            tempErrors.password = 'Password is required';
-            valid = false;
-        } else if (password.length < 6) {
-            tempErrors.password = 'Password must be at least 6 characters long';
-            valid = false;
-        }
-
-        setErrors(tempErrors);
-        return valid;
-    };
-
-    const handleSignUp = async () => {
-        setIsLoading(true);
-        try {
-            if (handleValidation()) {
-                await signup(username, email, password);
-                Alert.alert('Success', 'Signup successful! Please check your email to verify your account.');
-                router.navigate("/login");
-                setIsLoading(false);
-            }
-        } catch (error: any) {
-            setIsLoading(false);
-            Alert.alert('Error', error?.response?.data?.error || 'Invalid credentials');
-        }
-    };
-
-    const opacity = useRef(new Animated.Value(0)).current;
-
-    useEffect(() => {
-        Animated.timing(opacity, {
-            toValue: 1,
-            duration: 300,
-            useNativeDriver: true,
-        }).start();
-    }, []);
-
-    return (
-        <LinearGradient colors={backgroundGradient} style={{ ...container, alignItems: 'stretch' }}>
-            <ScrollView contentContainerStyle={contentContainerStyle}>
-                <CustomText style={gameTitle}>Tap Royale</CustomText>
-                <CustomText style={{ color: 'white', fontSize: 24 }}>Sign Up</CustomText>
-                <View>
-                    <TextInput
-                        style={inputField}
-                        placeholder="Username"
-                        value={username}
-                        onChangeText={setUsername}
-                    />
-                    {errors.username && <CustomText style={errorMessage}>{errors.username}</CustomText>}
-                </View>
-                <View>
-                    <TextInput
-                        style={inputField}
-                        placeholder="Email"
-                        value={email}
-                        onChangeText={setEmail}
-                    />
-                    {errors.email && <CustomText style={errorMessage}>{errors.email}</CustomText>}
-                </View>
-                <View>
-                    <TextInput
-                        style={inputField}
-                        placeholder="Password"
-                        secureTextEntry
-                        value={password}
-                        onChangeText={setPassword}
-                    />
-                    {errors.password && <CustomText style={errorMessage}>{errors.password}</CustomText>}
-                </View>
-                <View style={authScreensSubmitBtns}>
-                    {isLoading ? (
-                        <ActivityIndicator size="small" color="#fff" />
-                    ) : (
-                        <DefaultButton name="Sign Up" onPress={handleSignUp} />
-                    )}
-                    <CustomText style={{ color: 'white' }}>Continue as <Link href="/home" style={{ color: 'orange' }}>Guest</Link></CustomText>
-                </View>
-                <CustomText style={{ color: 'white' }}>Already have an account? <Link href="/login" style={{ color: 'orange' }}>Log In</Link></CustomText>
-            </ScrollView>
-        </LinearGradient>
-    );
+        <View style={styles.submitBtn}>
+          {isLoading ? (
+            <ActivityIndicator size='large' color='#FFFFFF' />
+          ) : (
+            <DefaultButton name='Get Started' onPress={handleSignUp} />
+          )}
+        </View>
+        {/* <CustomText style={{ color: 'white', fontSize: s(16) }}>
+          Already have an account?{'  '}
+          <Link href='/login' style={{ color: 'orange', fontSize: s(16) }}>
+            Login
+          </Link>
+        </CustomText> */}
+        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+          <Text style={{ color: 'white', fontSize: s(16) }}>
+            Already have an account{' '}
+          </Text>
+          <TouchableOpacity onPress={() => router.replace('/login')}>
+            <Text style={{ color: 'orange', fontSize: s(16) }}>Login</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </LinearGradient>
+  )
 }
 
-export default SignUp;
+export default SignUp
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingLeft: '10%',
+    paddingRight: '10%',
+  },
+  contentContainerStyle: {
+    justifyContent: 'center',
+    flex: 1,
+    gap: scale(28),
+  },
+  inputField: {
+    height: 64,
+    borderColor: 'black',
+    borderWidth: 2,
+    paddingHorizontal: 25,
+    borderRadius: 10,
+    color: 'black',
+    fontSize: 20,
+    textAlign: 'left',
+    backgroundColor: 'white',
+  },
+  submitBtn: {
+    marginTop: 28,
+    display: 'flex',
+    width: '100%',
+  },
+})

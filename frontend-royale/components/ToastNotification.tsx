@@ -13,25 +13,28 @@ const ToastNotification: React.FC<ToastNotificationType> = ({ message, duration 
     const opacity = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
+        let timeoutId: ReturnType<typeof setTimeout>
         if (message) {
-            setVisible(true);
-            Animated.timing(opacity, {
-                toValue: 1,
-                duration: 300,
-                useNativeDriver: true,
-            }).start();
+          setVisible(true)
+          Animated.timing(opacity, {
+            toValue: 1,
+            duration: 300,
+            useNativeDriver: true,
+          }).start()
 
-            setTimeout(() => {
-                Animated.timing(opacity, {
-                    toValue: 0,
-                    duration: 300,
-                    useNativeDriver: true,
-                }).start(() => {
-                    router.navigate("/home/stats");
-                    setVisible(false);
-                });
-            }, duration || 3000); // Default duration is 3 seconds
+          timeoutId = setTimeout(() => {
+            Animated.timing(opacity, {
+              toValue: 0,
+              duration: 300,
+              useNativeDriver: true,
+            }).start(() => {
+              router.navigate('/home/stats')
+              setVisible(false)
+            })
+          }, duration || 3000) // Default duration is 3 seconds
         }
+
+        return () => clearTimeout(timeoutId)
     }, [message]);
 
     if (!visible) {

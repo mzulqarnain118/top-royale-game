@@ -1,42 +1,47 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { moderateScale, verticalScale, scale } from 'react-native-size-matters';
-import CustomText from "./CustomText";
-import { Image as ExpoImage } from "expo-image";
-import { labelTab, tabCount } from "@/utils/commonStyles";
+import PointsBox from '@/components/PointsBox'
 
 type AttributeButtonType = {
-    name?: string;
-    value?: string | number
+  name?: string
+  value?: string | number
+  textProps?: any
 }
 
-const AttributeButton: React.FC<AttributeButtonType> = ({ name, value }) => {
-    return (
-        <TouchableOpacity>
-            <View style={styles.topWrapper}>
-                <CustomText style={[labelTab, { top: -35 }]}>{name}</CustomText>
-                <View>
-                    <ExpoImage
-                        source={require('../assets/images/theme/points-box.svg')}
-                        style={{
-                            width: moderateScale(100),
-                            height: moderateScale(31),
-                        }}
-                        contentFit="cover"
-                    />
-                    <Text style={tabCount}>{value}</Text>
-                </View>
-            </View>
-        </TouchableOpacity>
-    )
+const AttributeButton: React.FC<AttributeButtonType> = ({
+  name,
+  value,
+  textProps,
+}) => {
+  return (
+    <TouchableOpacity style={styles.btnContainer}>
+      <Text
+        style={[
+          styles.labelTab,
+          { left: name === 'K' ? 8 : name === 'A' ? 4 : name === 'D' ? 4 : 0 },
+        ]}
+      >
+        {name}
+      </Text>
+      <View>
+        <PointsBox value={value} />
+      </View>
+    </TouchableOpacity>
+  )
 }
 
 const styles = StyleSheet.create({
-    themeBtn: {
-        borderRadius: moderateScale(20)
-    },
-    topWrapper: {
-        position: 'relative',
-    }
-});
+  btnContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  labelTab: {
+    color: '#FFFFFF',
+    fontSize: 44,
+    fontFamily: 'AdleryProBlockletter',
+    lineHeight: 30,
+    zIndex: 1,
+  },
+})
 
-export default AttributeButton;
+export default AttributeButton
