@@ -28,7 +28,7 @@ const ToastNotification: React.FC<ToastNotificationType> = ({ message, duration 
               duration: 300,
               useNativeDriver: true,
             }).start(() => {
-              router.navigate('/home/stats')
+              router.replace('/home/stats')
               setVisible(false)
             })
           }, duration || 3000) // Default duration is 3 seconds

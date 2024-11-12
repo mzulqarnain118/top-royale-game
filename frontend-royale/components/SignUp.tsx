@@ -53,6 +53,9 @@ const SignUp = () => {
     if (!username) {
       tempErrors.username = 'Username is required'
       valid = false
+    } else if (/^\d/.test(username)) {
+      tempErrors.username = 'Username cannot start with a number'
+      valid = false
     } else if (username.length < 6) {
       tempErrors.username = 'Username must be at least 6 characters'
       valid = false

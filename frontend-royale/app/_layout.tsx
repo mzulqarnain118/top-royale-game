@@ -61,7 +61,7 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <StatusBar backgroundColor='#001F18' barStyle='light-content' />
+      <StatusBar backgroundColor='#0C646D' barStyle='light-content' />
       <Slot />
       <Toast />
     </ThemeProvider>

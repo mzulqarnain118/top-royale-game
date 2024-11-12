@@ -1,30 +1,16 @@
-import { StyleSheet, View, TouchableOpacity, Alert, Text, ScrollView } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import Header from '@/components/Header';
-import { lobbyBoxes, LobbyBoxType } from '@/constants/LobbyBoxes';
-import { useEffect, useState } from 'react';
-import { container, gameTitle, themeButtonText } from '@/utils/commonStyles';
-import {
-  backgroundGradient,
-  bgGradientForPlayerBox,
-  buttonGradient,
-} from '@/utils/commonColors'
-import {
-  moderateScale,
-  ms,
-  s,
-  scale,
-  verticalScale,
-} from 'react-native-size-matters'
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient'
+import Header from '@/components/Header'
+import { lobbyBoxes, LobbyBoxType } from '@/constants/LobbyBoxes'
+import { useState } from 'react'
+import { gameTitle } from '@/utils/commonStyles'
+import { backgroundGradient, buttonGradient } from '@/utils/commonColors'
+import { ms, s } from 'react-native-size-matters'
 import CustomText from '@/components/CustomText'
-import DefaultButton from '@/components/DefaultButton'
 import { Image as ExpoImage } from 'expo-image'
-import ThemeButton from '@/components/ThemeButton'
-import { Link, router } from 'expo-router'
-import { ApiCall } from '@/services/axiosApiInstance'
-import axios from 'axios'
-import { loadToken } from '@/services/asyncStoreage'
+import { router } from 'expo-router'
 import useGlobalStore from '@/store/useGlobalStore'
+import BackgroundSvg from '@/components/BackgroundSvg'
 
 // import { Dimensions } from 'react-native'
 
@@ -70,6 +56,8 @@ export default function HomeScreen() {
 
   return (
     <LinearGradient colors={backgroundGradient} style={styles.container}>
+      {/* <BackgroundSvg>
+    <View style={styles.container}> */}
       <Header kills={user.total_kills} money={user.total_extracted_money} />
       <CustomText style={gameTitle}>TAP ROYALE</CustomText>
       <View style={styles.boxesContainer}>
@@ -103,7 +91,7 @@ export default function HomeScreen() {
           <TouchableOpacity
             style={styles.bottomButton}
             onPress={() => {
-              router.navigate('/home/waiting-room')
+              router.navigate('/home/waiting-room-battle-royale')
             }}
           >
             <Text style={styles.bottomButtonText}>Battle Royale</Text>
@@ -118,7 +106,7 @@ export default function HomeScreen() {
           <TouchableOpacity
             style={styles.bottomButton}
             onPress={() => {
-              router.navigate('/home/deathmatch')
+              router.navigate('/home/waiting-room-deathmatch')
             }}
           >
             <Text style={styles.bottomButtonText}>Deathmatch</Text>
@@ -140,6 +128,8 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </LinearGradient>
       </View>
+      {/* </BackgroundSvg> */}
+      {/* </View> */}
     </LinearGradient>
   )
 }

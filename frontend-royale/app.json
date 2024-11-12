@@ -6,34 +6,16 @@
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
     "scheme": "tap",
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android"],
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "androidStatusBar": {
-      "backgroundColor": "#ffffff",
-      "barStyle": "dark-content",
-      "translucent": false
-    },
-    "iosStatusBar": {
-      "style": "light"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "packagerOpts": {
-      "assetExts": [
-        "ttf",
-        "otf",
-        "png",
-        "jpg"
-      ]
+      "assetExts": ["ttf", "otf", "png", "jpg"]
     },
     "ios": {
       "bundleIdentifier": "com.royale.tap",
@@ -51,15 +33,13 @@
       "output": "static",
       "favicon": "./assets/images/logo.png"
     },
-    "plugins": [
-      "expo-router"
-    ],
+    "plugins": ["expo-router"],
     "experiments": {
       "typedRoutes": true
     },
     "extra": {
       "eas": {
-        "projectId": "39dcd9b5-840f-4757-bde1-05ac009e814e"
+        "projectId": "1df914e9-8a7e-4810-8f0c-3a7ce18de5e4"
       }
     }
   }

@@ -6,7 +6,12 @@ import CustomText from './CustomText'
 import { themeButtonText } from '@/utils/commonStyles'
 import { Link } from 'expo-router'
 
-const ThemeButton: React.FC<any> = ({ href, children, ...props }) => {
+const ThemeButton: React.FC<any> = ({
+  href,
+  children,
+  hasBackground,
+  ...props
+}) => {
   return (
     <>
       {href ? (
@@ -27,7 +32,11 @@ const ThemeButton: React.FC<any> = ({ href, children, ...props }) => {
       ) : (
         <TouchableOpacity style={styles.actionButtonView} {...props}>
           <Image
-            source={require('../assets/images/theme/btn-background.svg')}
+            source={
+              !hasBackground
+                ? require('../assets/images/theme/btn-background.svg')
+                : require('../assets/images/theme/btn-background-transparent.svg')
+            }
             style={styles.image}
             contentFit='cover'
           />
@@ -57,7 +66,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
-    borderRadius: 10, // Optional: Rounded corners for the image
+    // borderRadius: 10, // Optional: Rounded corners for the image
   },
   overlay: {
     position: 'absolute',

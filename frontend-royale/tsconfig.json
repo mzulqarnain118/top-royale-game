@@ -11,8 +11,8 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
+    "store/useGlobalStore.ts",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts",
-    "store/useGlobalStore.ts"
+    "expo-env.d.ts"
   ]
 }

@@ -100,7 +100,7 @@ export const loadoutButton: any = {
   width: verticalScale(120),
   maxHeight: verticalScale(50),
   borderWidth: 1,
-  borderRadius: moderateScale(20),
+  borderRadius: moderateScale(14),
   borderColor: 'white',
   overflow: 'hidden',
 }

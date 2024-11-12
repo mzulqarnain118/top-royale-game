@@ -1,12 +1,12 @@
-export const backgroundGradient = ['#001F18', 'rgba(0, 0, 0, 0.4)', '#001F18']
+// export const backgroundGradient = ['#1DC1DF', 'rgba(0.8, 0, 0, 0.4)', '#1DC1DF']
 
-// export const backgroundGradient = [
-//   '#001F18',
-//   '#19AFC8',
-//   '#19AFC8',
-//   '#19AFC8',
-//   '#001F18',
-// ]
+export const backgroundGradient = [
+  '#001F18',
+  '#19AFC8',
+  '#19AFC8',
+  '#19AFC8',
+  '#001F18',
+]
 
 export const bgGradientForPlayerBox = [
   '#002BB0',

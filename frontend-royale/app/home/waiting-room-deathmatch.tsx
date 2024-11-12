@@ -1,4 +1,10 @@
-import { StyleSheet, View, Text, ActivityIndicator } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  ActivityIndicator,
+  BackHandler,
+} from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import Header from '@/components/Header'
 import {
@@ -27,26 +33,25 @@ import { SERVER_URL } from '@/services/api'
 import { router } from 'expo-router'
 import useGlobalStore from '@/store/useGlobalStore'
 import useSocketStore from '@/store/useSocketStore'
+import useGameStore from '@/store/useGameStore'
+import handleExitGame from '@/services/handleExitGame'
 
-type Player = {
-  id: string
-  gameId: string
-  health: number
-}
+// type Player = {
+//   id: string
+//   gameId: string
+//   health: number
+// }
 
 export default function BattleRoyaleScreen() {
-  const [gameId, setGameId] = useState<string | null>(null)
-  const [players, setPlayers] = useState<Player[]>([])
-  const [gameData, setGameData] = useState<any>(null)
-  const [gameReady, setGameReady] = useState<boolean>(false)
+  const [gameInitialData, setGameInitialData] = useState<any>(null)
 
   const user = useGlobalStore((state) => state.user)
 
   const { socket, connectSocket, disconnectSocket } = useSocketStore(
     (state) => state,
   )
-  const socketState = useSocketStore()
-  console.log('socketState: ', socket)
+
+  const { setPlayerData, setGameData, setLoadoutData } = useGameStore()
 
   const loadoutIcons = [
     {
@@ -89,56 +94,73 @@ export default function BattleRoyaleScreen() {
       return
     }
 
-    connectSocket(SERVER_URL)
+    // subscribe to backHandler event
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () =>
+      handleExitGame(disconnectSocket),
+    )
 
-    if (!socket) {
-      console.log('Socket not found')
-      return
+    const socket = connectSocket(SERVER_URL)
+
+    if (socket) {
+      if (!socket) {
+        console.log('Socket not found')
+        return
+      }
+      socket.emit('joinDM', { userId: user.id })
+
+      socket.on('gameJoined', (gameJoinData: any) => {
+        console.log('gameJoined: ', gameJoinData)
+        setGameInitialData(gameJoinData)
+        console.log('gameJoinData.playerStats: ', gameJoinData.playerStats)
+        setPlayerData(gameJoinData.playerStats)
+        setLoadoutData(gameJoinData.loadouts)
+      })
+
+      // socket.on('playerJoined', (newPlayer: any) => {
+      //   console.log('New player joined:', newPlayer)
+      //   setPlayers((prevPlayers) => [...prevPlayers, newPlayer])
+      // })
+
+      socket.on('gameStarted', (gameStartData: any) => {
+        console.log('gameStarted: ', gameStartData)
+        setGameData(gameStartData)
+        router.replace('/home/deathmatch')
+      })
+
+      socket.on('error', (error: string) => {
+        console.error('Error joiningg game:', error)
+      })
     }
-
-    socket.emit('joinGame', { userId: user.id })
-
-    socket.on('gameJoined', (gameJoinData) => {
-      console.log('Joined game with ID:', gameJoinData.loadouts[0].price)
-      setGameId(gameJoinData.gameId)
-      setGameData(gameJoinData)
-    })
-
-    socket.on('playerJoined', (newPlayer) => {
-      console.log('New player joined:', newPlayer)
-      setPlayers((prevPlayers) => [...prevPlayers, newPlayer])
-    })
-
-    socket.on('error', (error: string) => {
-      console.error('Error joining game:', error)
-    })
-
-    socket.on('gameStarted', (data) => {
-      console.log('Game  is ready to start!', data)
-      setGameReady(true)
-      // router.replace('/home/battle-royale')
-    })
 
     return () => {
       console.log('I am waiting room and I am unmounting')
-      // TODO: disconnectSocket() will be called when back button is pressed
+      socket?.off('gameJoined')
+      socket?.off('gameStarted')
+      socket?.off('error')
+      // unsubscribe from backHandler event
+      backHandler.remove()
     }
   }, [])
 
   return (
     <LinearGradient colors={backgroundGradient} style={styles.container}>
-      <Header kills={0} assists={0} deaths={0} money={0} health={100} />
-      {!gameReady && (
-        <View>
-          <ActivityIndicator color='white' size='large' />
-          <Text style={styles.loadingText}>
-            Waiting for other players to join the game ...
-          </Text>
-        </View>
-      )}
+      <Header
+        kills={0}
+        assists={0}
+        deaths={0}
+        money={0}
+        health={100}
+        rank={1}
+      />
+      <View>
+        <ActivityIndicator color='white' size='large' />
+        <Text style={styles.loadingText}>
+          Waiting for other players to join the game ...
+        </Text>
+      </View>
       <View style={styles.loadoutButtonGroup}>
-        {gameData &&
-          gameData.loadouts.map((item: any, index: number) => (
+        {gameInitialData &&
+          gameInitialData.loadouts.map((item: any, index: number) => (
             <ThemeButton style={loadoutButton} key={index}>
               <View style={loadoutIconBox}>
                 <CustomText style={loadoutIcon}>

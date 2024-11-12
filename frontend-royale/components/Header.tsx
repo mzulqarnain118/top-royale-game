@@ -25,6 +25,7 @@ type HeaderType = {
   kills?: number
   assists?: number
   deaths?: number
+  rank?: number
   money?: number
   health?: number
   showToast?: (message: string) => void
@@ -34,6 +35,7 @@ export default function Header({
   kills,
   assists,
   deaths,
+  rank,
   money,
   health,
   showToast,
@@ -41,7 +43,7 @@ export default function Header({
   const { name: routeName } = useRoute()
   const isDeathMatch = routeName === 'home/deathmatch'
   const isIndex = routeName === 'home/index' // sould be is home
-  const [timeLeft, setTimeLeft] = useState(5 * 60)
+  const [timeLeft, setTimeLeft] = useState(300)
 
   useEffect(() => {
     if (isDeathMatch) {
@@ -54,9 +56,11 @@ export default function Header({
         setTimeLeft((prevTime) => prevTime - 1)
       }, 1000)
 
-      return () => clearInterval(intervalId)
+      return () => {
+        clearInterval(intervalId)
+      }
     }
-  }, [timeLeft])
+  }, [])
 
   const formatTime = (timeInSeconds: number) => {
     const minutes = Math.floor(timeInSeconds / 60)
@@ -81,7 +85,7 @@ export default function Header({
       {!isIndex && (
         <View style={{ alignItems: 'center' }}>
           <CustomText style={styles.rankBoxTitle}>Rank</CustomText>
-          <Text style={styles.rankBoxNumber}>25</Text>
+          <Text style={styles.rankBoxNumber}>{rank}</Text>
           {isDeathMatch && (
             <Text style={styles.timeLeft}>{formatTime(timeLeft)}</Text>
           )}
@@ -112,7 +116,7 @@ export default function Header({
 
 const styles = StyleSheet.create({
   topHeaderButtons: {
-    marginTop: verticalScale(16),
+    marginTop: verticalScale(24),
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
