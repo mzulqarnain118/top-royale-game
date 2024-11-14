@@ -12,7 +12,7 @@ const useSocketStore = create<SocketState>((set) => ({
   connectSocket: (url: string) => {
     const socket = io(url)
     set({ socket })
-    console.log('socket connected')
+    // console.log('socket connected')
     if (socket) {
       return socket
     } else {
@@ -23,7 +23,7 @@ const useSocketStore = create<SocketState>((set) => ({
     set((state) => {
       state.socket?.removeAllListeners()
       state.socket?.disconnect()
-      console.log('socket disconnected')
+      // console.log('socket disconnected')
       return { socket: null }
     })
   },

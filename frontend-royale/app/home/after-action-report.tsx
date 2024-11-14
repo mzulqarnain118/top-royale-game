@@ -1,7 +1,8 @@
-import CustomText from "@/components/CustomText";
-import DefaultButton from "@/components/DefaultButton";
-import ThemeButton from "@/components/ThemeButton";
-import { afterActionReports } from "@/constants/AfterActionReports";
+import BackgroundSvg from '@/components/BackgroundSvg'
+import CustomText from '@/components/CustomText'
+import DefaultButton from '@/components/DefaultButton'
+import ThemeButton from '@/components/ThemeButton'
+import { afterActionReports } from '@/constants/AfterActionReports'
 import useGameStore from '@/store/useGameStore'
 import { backgroundGradient } from '@/utils/commonColors'
 import { container } from '@/utils/commonStyles'
@@ -31,63 +32,65 @@ export default function AfterActionReportScreen() {
   )
 
   return (
-    <LinearGradient
-      colors={backgroundGradient}
-      style={{ ...container, paddingTop: vs(40) }}
-    >
-      <CustomText style={styles.title}>After Action Report</CustomText>
-      <ScrollView horizontal>
-        <View style={styles.headerRow}>
-          {/* <CustomText
+    <BackgroundSvg>
+      <View style={{ ...container, paddingTop: vs(40) }}>
+        <CustomText style={styles.title}>After Action Report</CustomText>
+        <ScrollView horizontal>
+          <View style={styles.headerRow}>
+            {/* <CustomText
             style={[styles.headerCell, styles.firstCell]}
             weight='Bold'
           >
             ID
           </CustomText> */}
-          <CustomText style={[styles.headerCell, styles.nameCell]}></CustomText>
-          <CustomText style={[styles.headerCell]} weight='Bold'>
-            Kills
-          </CustomText>
-          <CustomText style={[styles.headerCell]} weight='Bold'>
-            Assists
-          </CustomText>
-          <CustomText style={[styles.headerCell]} weight='Bold'>
-            Deaths
-          </CustomText>
-          <CustomText style={[styles.headerCell]} weight='Bold'>
-            Money
-          </CustomText>
-        </View>
-      </ScrollView>
-      <ScrollView horizontal>
-        <ScrollView style={styles.scrollView}>
-          <View>
-            {sortedStatsArray.map((player: any, index: number) => {
-              const playerId = player[0]
-              const playerStats = player[1] || {}
+            <CustomText
+              style={[styles.headerCell, styles.nameCell]}
+            ></CustomText>
+            <CustomText style={[styles.headerCell]} weight='Bold'>
+              Kills
+            </CustomText>
+            <CustomText style={[styles.headerCell]} weight='Bold'>
+              Assists
+            </CustomText>
+            <CustomText style={[styles.headerCell]} weight='Bold'>
+              Deaths
+            </CustomText>
+            <CustomText style={[styles.headerCell]} weight='Bold'>
+              Money
+            </CustomText>
+          </View>
+        </ScrollView>
+        <ScrollView horizontal>
+          <ScrollView style={styles.scrollView}>
+            <View>
+              {sortedStatsArray.map((player: any, index: number) => {
+                const playerId = player[0]
+                const playerStats = player[1] || {}
 
-              return (
-                <View style={styles.tableRow} key={index}>
-                  <Text style={[styles.tableCell, styles.firstCell]}>
-                    {index + 1}
-                  </Text>
-                  <Text style={[styles.tableCell, styles.nameCell]}>
-                    {`Player ${playerId}`}
-                  </Text>
-                  <Text style={styles.tableCell}>{playerStats.kills || 0}</Text>
-                  <Text style={styles.tableCell}>
-                    {playerStats.assists || 0}
-                  </Text>
-                  <Text style={styles.tableCell}>
-                    {playerStats.death != null ? playerStats.death : '1'}
-                  </Text>
-                  <Text style={styles.tableCell}>
-                    ${playerStats.damage_dealt || 0}
-                  </Text>
-                </View>
-              )
-            })}
-            {/* {gameData.game.players.map((player: any, index: number) => {
+                return (
+                  <View style={styles.tableRow} key={index}>
+                    <Text style={[styles.tableCell, styles.firstCell]}>
+                      {index + 1}
+                    </Text>
+                    <Text style={[styles.tableCell, styles.nameCell]}>
+                      {`Player ${playerId}`}
+                    </Text>
+                    <Text style={styles.tableCell}>
+                      {playerStats.kills || 0}
+                    </Text>
+                    <Text style={styles.tableCell}>
+                      {playerStats.assists || 0}
+                    </Text>
+                    <Text style={styles.tableCell}>
+                      {playerStats.death != null ? playerStats.death : '1'}
+                    </Text>
+                    <Text style={styles.tableCell}>
+                      ${playerStats.damage_dealt || 0}
+                    </Text>
+                  </View>
+                )
+              })}
+              {/* {gameData.game.players.map((player: any, index: number) => {
               const playerStats = stats[player.id] || {}
               return (
                 <View style={styles.tableRow} key={index}>
@@ -110,7 +113,7 @@ export default function AfterActionReportScreen() {
                 </View>
               )
             })} */}
-            {/* {afterActionReports.map((item, index) => (
+              {/* {afterActionReports.map((item, index) => (
               <View style={styles.tableRow} key={index}>
                 <Text style={[styles.tableCell, styles.firstCell]}>
                   {index + 1}
@@ -124,14 +127,15 @@ export default function AfterActionReportScreen() {
                 <Text style={styles.tableCell}>{item.money}</Text>
               </View>
             ))} */}
-          </View>
+            </View>
+          </ScrollView>
         </ScrollView>
-      </ScrollView>
-      <View style={styles.bottomButtons}>
-        <ThemeButton href='/home/stats'>Personal Stats</ThemeButton>
-        <ThemeButton href='/home'>Main Menu</ThemeButton>
+        <View style={styles.bottomButtons}>
+          <ThemeButton href='/home/stats'>Personal Stats</ThemeButton>
+          <ThemeButton href='/home'>Main Menu</ThemeButton>
+        </View>
       </View>
-    </LinearGradient>
+    </BackgroundSvg>
   )
 }
 

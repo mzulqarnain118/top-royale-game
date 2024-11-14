@@ -55,13 +55,14 @@ const ThemeButton: React.FC<any> = ({
 
 const styles = StyleSheet.create({
   actionButtonView: {
-    borderRadius: moderateScale(10), // Scaled border radius
+    borderRadius: 20, // Scaled border radius
     borderWidth: 2,
     borderColor: 'white',
+    overflow: 'hidden',
     width: scale(170),
     flex: 1,
-    minHeight: verticalScale(50),
-    maxHeight: verticalScale(50),
+    // minHeight: verticalScale(50),
+    maxHeight: 60,
   },
   image: {
     width: '100%',

@@ -1,7 +1,8 @@
-import CustomText from "@/components/CustomText";
-import DefaultButton from "@/components/DefaultButton";
-import ThemeButton from "@/components/ThemeButton";
-import { reportsData } from "@/constants/ReportsData";
+import BackgroundSvg from '@/components/BackgroundSvg'
+import CustomText from '@/components/CustomText'
+import DefaultButton from '@/components/DefaultButton'
+import ThemeButton from '@/components/ThemeButton'
+import { reportsData } from '@/constants/ReportsData'
 import useGameStore from '@/store/useGameStore'
 import useGlobalStore from '@/store/useGlobalStore'
 import { backgroundGradient } from '@/utils/commonColors'
@@ -17,63 +18,64 @@ export default function StatsScreen() {
   const user = useGlobalStore((state) => state.user)
 
   return (
-    <LinearGradient
-      colors={backgroundGradient}
-      style={{ ...container, paddingTop: vs(40) }}
-    >
-      <View style={styles.statsContainer}>
-        <View style={styles.statItem}>
-          <Text style={styles.statTitle}>Rank</Text>
-          <Text style={styles.statValue}>
-            {gameData.game.stats[user.id].rank}
-          </Text>
+    <BackgroundSvg>
+      <View style={{ ...container, paddingTop: vs(40) }}>
+        <View style={styles.statsContainer}>
+          <View style={styles.statItem}>
+            <Text style={styles.statTitle}>Rank</Text>
+            <Text style={styles.statValue}>
+              {gameData.game.stats[user.id].rank}
+            </Text>
+          </View>
+          <View style={styles.statItem}>
+            <Text style={styles.statTitle}>XP</Text>
+            <Text style={styles.statValue}>691</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Text style={[styles.statTitle, { fontSize: scale(16) }]}>
+              XP to next rank
+            </Text>
+            <Text style={styles.statValue}>809</Text>
+          </View>
         </View>
-        <View style={styles.statItem}>
-          <Text style={styles.statTitle}>XP</Text>
-          <Text style={styles.statValue}>691</Text>
-        </View>
-        <View style={styles.statItem}>
-          <Text style={[styles.statTitle, { fontSize: scale(16) }]}>
-            XP to next rank
-          </Text>
-          <Text style={styles.statValue}>809</Text>
+        <ScrollView
+          style={styles.scrollViewOuter}
+          contentContainerStyle={styles.scrollViewInner}
+        >
+          <StatItem
+            label='Kills'
+            value={`${gameData.game.stats[user.id].kills}`}
+          />
+          <StatItem
+            label='Assists'
+            value={`${gameData.game.stats[user.id].assists}`}
+          />
+          <StatItem
+            label='Deaths'
+            value={`${gameData.game.stats[user.id].death}`}
+          />
+          <StatItem
+            label='Money Earned'
+            value={`$${gameData.game.stats[user.id].damage_dealt}`}
+          />
+          <StatItem label='Money Spent' value={`$${500}`} />
+          <StatItem
+            label='Damage Done'
+            value={`${gameData.game.stats[user.id].damage_dealt}`}
+          />
+          <StatItem label='Damage Taken' value={`${210}`} />
+          <StatItem label='' value='' />
+          <StatItem label='Shield Used' value={`${6}`} />
+          <StatItem label='Super Attack Used' value={`${5}`} />
+        </ScrollView>
+        <View style={styles.bottomButtons}>
+          <ThemeButton href='/home/after-action-report'>
+            Field Stats
+          </ThemeButton>
+          <ThemeButton href='/home'>Main Menu</ThemeButton>
         </View>
       </View>
-      <ScrollView
-        style={styles.scrollViewOuter}
-        contentContainerStyle={styles.scrollViewInner}
-      >
-        <StatItem
-          label='Kills'
-          value={`${gameData.game.stats[user.id].kills}`}
-        />
-        <StatItem
-          label='Assists'
-          value={`${gameData.game.stats[user.id].assists}`}
-        />
-        <StatItem
-          label='Deaths'
-          value={`${gameData.game.stats[user.id].death}`}
-        />
-        <StatItem
-          label='Money Earned'
-          value={`$${gameData.game.stats[user.id].damage_dealt}`}
-        />
-        <StatItem label='Money Spent' value={`$${500}`} />
-        <StatItem
-          label='Damage Done'
-          value={`${gameData.game.stats[user.id].damage_dealt}`}
-        />
-        <StatItem label='Damage Taken' value={`${210}`} />
-        <StatItem label='' value='' />
-        <StatItem label='Shield Used' value={`${6}`} />
-        <StatItem label='Super Attack Used' value={`${5}`} />
-      </ScrollView>
-      <View style={styles.bottomButtons}>
-        <ThemeButton href='/home/after-action-report'>Field Stats</ThemeButton>
-        <ThemeButton href='/home'>Main Menu</ThemeButton>
-      </View>
-    </LinearGradient>
+    </BackgroundSvg>
   )
 }
 

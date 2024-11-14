@@ -8,21 +8,18 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native'
-import { Link, router } from 'expo-router'
-import { LinearGradient } from 'expo-linear-gradient'
+import { router } from 'expo-router'
 import { Picker } from '@react-native-picker/picker'
 import { errorMessage, gameTitle } from '@/utils/commonStyles'
-import { backgroundGradient } from '@/utils/commonColors'
 import CustomText from './CustomText'
 import DefaultButton from './DefaultButton'
 import { signup } from '@/services/api'
-import { storeToken } from '@/services/asyncStoreage'
 import { ApiCall } from '@/services/axiosApiInstance'
 import ExceptionHandler from '@/services/ExceptionHandler'
 import Toast from './Toast'
 import { s, scale } from 'react-native-size-matters'
-import useUserStore from '@/store/user'
 import useGlobalStore from '@/store/useGlobalStore'
+import BackgroundSvg from './BackgroundSvg'
 
 const SignUp = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -93,81 +90,74 @@ const SignUp = () => {
   }
 
   return (
-    <LinearGradient
-      colors={backgroundGradient}
-      style={[styles.container, { alignItems: 'stretch' }]}
-    >
-      <ScrollView contentContainerStyle={styles.contentContainerStyle}>
-        <View>
-          <CustomText style={[gameTitle, { fontSize: scale(44) }]}>
-            Create Username
-          </CustomText>
-          <TextInput
-            style={styles.inputField}
-            placeholder='Username'
-            value={username}
-            onChangeText={setUsername}
-          />
-          {errors.username && (
-            <CustomText style={errorMessage}>{errors.username}</CustomText>
-          )}
-        </View>
-        <View>
-          <CustomText style={[gameTitle, { fontSize: scale(44) }]}>
-            Choose Country
-          </CustomText>
-          <View style={styles.inputField}>
-            <Picker
-              selectedValue={selectedCountryId}
-              onValueChange={(itemValue) => {
-                setSelectedCountryId(itemValue)
-              }}
-            >
-              <Picker.Item
-                label='Select a country...'
-                value={null}
-                style={{
-                  fontSize: 20,
-                }}
-              />
-              {countries.map((country: any) => (
-                <Picker.Item
-                  key={country.id}
-                  label={country.name}
-                  value={country.id}
-                  style={{ fontSize: 20 }}
-                />
-              ))}
-            </Picker>
+    <BackgroundSvg>
+      <View style={[styles.container, { alignItems: 'stretch' }]}>
+        <ScrollView contentContainerStyle={styles.contentContainerStyle}>
+          <View>
+            <CustomText style={[gameTitle, { fontSize: scale(44) }]}>
+              Create Username
+            </CustomText>
+            <TextInput
+              style={styles.inputField}
+              placeholder='Username'
+              value={username}
+              onChangeText={setUsername}
+            />
+            {errors.username && (
+              <CustomText style={errorMessage}>{errors.username}</CustomText>
+            )}
           </View>
-          {errors.country && (
-            <CustomText style={errorMessage}>{errors.country}</CustomText>
-          )}
-        </View>
+          <View>
+            <CustomText style={[gameTitle, { fontSize: scale(44) }]}>
+              Choose Country
+            </CustomText>
+            <View style={styles.inputField}>
+              <Picker
+                selectedValue={selectedCountryId}
+                onValueChange={(itemValue) => {
+                  setSelectedCountryId(itemValue)
+                }}
+              >
+                <Picker.Item
+                  label='Select a country...'
+                  value={null}
+                  style={{
+                    fontSize: 20,
+                  }}
+                />
+                {countries.map((country: any) => (
+                  <Picker.Item
+                    key={country.id}
+                    label={country.name}
+                    value={country.id}
+                    style={{ fontSize: 20 }}
+                  />
+                ))}
+              </Picker>
+            </View>
+            {errors.country && (
+              <CustomText style={errorMessage}>{errors.country}</CustomText>
+            )}
+          </View>
 
-        <View style={styles.submitBtn}>
-          {isLoading ? (
-            <ActivityIndicator size='large' color='#FFFFFF' />
-          ) : (
-            <DefaultButton name='Get Started' onPress={handleSignUp} />
-          )}
-        </View>
-        {/* <CustomText style={{ color: 'white', fontSize: s(16) }}>
-          Already have an account?{'  '}
-          <Link href='/login' style={{ color: 'orange', fontSize: s(16) }}>
-            Login
-          </Link>
-        </CustomText> */}
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-          <Text style={{ color: 'white', fontSize: s(16) }}>
-            Already have an account{' '}
-          </Text>
-          <TouchableOpacity onPress={() => router.replace('/login')}>
-            <Text style={{ color: 'orange', fontSize: s(16) }}>Login</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </LinearGradient>
+          <View style={styles.submitBtn}>
+            {isLoading ? (
+              <ActivityIndicator size='large' color='#FFFFFF' />
+            ) : (
+              <DefaultButton name='Get Started' onPress={handleSignUp} />
+            )}
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <Text style={{ color: 'white', fontSize: s(16) }}>
+              Already have an account{' '}
+            </Text>
+            <TouchableOpacity onPress={() => router.replace('/login')}>
+              <Text style={{ color: 'orange', fontSize: s(16) }}>Login</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
+    </BackgroundSvg>
   )
 }
 

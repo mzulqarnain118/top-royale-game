@@ -37,6 +37,7 @@ import useSocketStore from '@/store/useSocketStore'
 import handleExitGame from '@/services/handleExitGame'
 import useGlobalStore from '@/store/useGlobalStore'
 import { router } from 'expo-router'
+import BackgroundSvg from '@/components/BackgroundSvg'
 
 export default function BattleRoyaleScreen() {
   const [activeSpark, setActiveSpark] = useState<any>(null)
@@ -204,89 +205,89 @@ export default function BattleRoyaleScreen() {
   }
 
   return (
-    <LinearGradient
-      colors={backgroundGradient}
-      style={{ ...container, paddingBottom: ms(8) }}
-    >
-      <Header
-        kills={gameDataState.game.stats[user.id].kills}
-        assists={gameDataState.game.stats[user.id].assists}
-        deaths={gameDataState.game.stats[user.id].death}
-        rank={gameDataState.game.stats[user.id].rank}
-        money={gameDataState.game.stats[user.id].damage_dealt}
-        health={gameDataState.game.health[user.id]}
-      />
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
-      >
-        <View style={styles.centerBoxes}>
-          {gameDataState &&
-            gameDataState.game.players.map((item: any, index: any) => {
-              const isAlive = gameDataState.game.health[user.id] !== 0
-              const isSelf = item.id === user.id
-              // console.log('user.id: ', user.id)
-              // console.log('item.id: ', item.id)
-              return (
-                <View style={styles.playerBox} key={index}>
-                  <TouchableOpacity
-                    style={styles.playerButton}
-                    // key={index}
-                    onPress={() => {
-                      setActiveSpark(() => item.id)
-                      emitAttackEvent(item)
-                      setTimeout(() => setActiveSpark(null), 1000)
-                    }}
-                    disabled={isSelf || !isAlive}
-                  >
-                    <ExpoImage
-                      source={playerBoxSvgs(
-                        gameDataState.game.health[item.id],
-                        isSelf,
-                      )}
-                      style={{
-                        width: '100%',
-                        height: '100%',
+    <BackgroundSvg>
+      <View style={{ ...container, paddingBottom: ms(8) }}>
+        <Header
+          kills={gameDataState.game.stats[user.id].kills}
+          assists={gameDataState.game.stats[user.id].assists}
+          deaths={gameDataState.game.stats[user.id].death}
+          rank={gameDataState.game.stats[user.id].rank}
+          money={gameDataState.game.stats[user.id].damage_dealt}
+          health={gameDataState.game.health[user.id]}
+        />
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+        >
+          <View style={styles.centerBoxes}>
+            {gameDataState &&
+              gameDataState.game.players.map((item: any, index: any) => {
+                const selfIsAlive = gameDataState?.game?.health[user?.id] !== 0
+                const playerIsAlive =
+                  gameDataState?.game?.health[item?.id] !== 0
+                const isSelf = item.id === user.id
+                // console.log('user.id: ', user.id)
+                return (
+                  <View style={styles.playerBox} key={index}>
+                    <TouchableOpacity
+                      style={styles.playerButton}
+                      // key={index}
+                      onPress={() => {
+                        setActiveSpark(() => item.id)
+                        emitAttackEvent(item)
+                        setTimeout(() => setActiveSpark(null), 1000)
                       }}
-                      contentFit='contain' // Adjust image fit within the view
-                    />
-                  </TouchableOpacity>
-                  <Animated.View
-                    style={[
-                      styles.spark,
-                      {
-                        opacity: activeSpark === item.id ? sparkOpacity : 0,
-                        transform:
-                          activeSpark === item.id
-                            ? [{ scale: sparkScale }]
-                            : [{ scale: 0 }],
-                      },
-                    ]}
-                  >
-                    <ExpoImage
-                      source={require('@/assets/images/theme/spark.webp')}
-                      style={styles.sparkImage}
-                    />
-                  </Animated.View>
-                </View>
-              )
-            })}
+                      disabled={isSelf || !selfIsAlive || !playerIsAlive}
+                    >
+                      <ExpoImage
+                        source={playerBoxSvgs(
+                          gameDataState.game.health[item.id],
+                          isSelf,
+                        )}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                        }}
+                        contentFit='contain' // Adjust image fit within the view
+                      />
+                    </TouchableOpacity>
+                    <Animated.View
+                      style={[
+                        styles.spark,
+                        {
+                          opacity: activeSpark === item.id ? sparkOpacity : 0,
+                          transform:
+                            activeSpark === item.id
+                              ? [{ scale: sparkScale }]
+                              : [{ scale: 0 }],
+                        },
+                      ]}
+                    >
+                      <ExpoImage
+                        source={require('@/assets/images/theme/spark.webp')}
+                        style={styles.sparkImage}
+                      />
+                    </Animated.View>
+                  </View>
+                )
+              })}
+          </View>
+        </ScrollView>
+        <View style={styles.loadoutButtonGroup}>
+          {loadoutData.map((item: any, index: number) => (
+            <ThemeButton style={loadoutButton} key={index}>
+              <View style={loadoutIconBox}>
+                <CustomText style={loadoutIcon}>
+                  {loadoutIcons[index].icon}
+                </CustomText>
+                <Text style={{ fontSize: scale(26), color: 'white' }}>
+                  ${item.price}
+                </Text>
+              </View>
+            </ThemeButton>
+          ))}
         </View>
-      </ScrollView>
-      <View style={styles.loadoutButtonGroup}>
-        {loadoutData.map((item: any, index: number) => (
-          <ThemeButton style={loadoutButton} key={index}>
-            <View style={loadoutIconBox}>
-              <CustomText style={loadoutIcon}>
-                {loadoutIcons[index].icon}
-              </CustomText>
-              <Text style={{ fontSize: scale(26), color: 'white' }}>
-                ${item.price}
-              </Text>
-            </View>
-          </ThemeButton>
-        ))}
       </View>
-    </LinearGradient>
+    </BackgroundSvg>
   )
 }
 

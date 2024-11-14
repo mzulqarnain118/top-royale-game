@@ -4,7 +4,7 @@ import Header from '@/components/Header'
 import { lobbyBoxes, LobbyBoxType } from '@/constants/LobbyBoxes'
 import { useState } from 'react'
 import { gameTitle } from '@/utils/commonStyles'
-import { backgroundGradient, buttonGradient } from '@/utils/commonColors'
+import { buttonGradient } from '@/utils/commonColors'
 import { ms, s } from 'react-native-size-matters'
 import CustomText from '@/components/CustomText'
 import { Image as ExpoImage } from 'expo-image'
@@ -12,17 +12,8 @@ import { router } from 'expo-router'
 import useGlobalStore from '@/store/useGlobalStore'
 import BackgroundSvg from '@/components/BackgroundSvg'
 
-// import { Dimensions } from 'react-native'
-
-// const { width, height } = Dimensions.get('window')
-
-// console.log('width: ', width, 'height: ', height)
-
 export default function HomeScreen() {
   const [lobbyPlayers, setLobbyPlayers] = useState<any[]>(lobbyBoxes)
-  const [selectedLobbyPlayer, setSelectedLobbyPlayer] = useState(
-    lobbyPlayers[0],
-  )
 
   const user = useGlobalStore((state) => state.user)
 
@@ -31,7 +22,6 @@ export default function HomeScreen() {
       ...box,
       clickedCount: (box.clickedCount ?? 0) < 4 ? box.clickedCount + 1 : 0,
     }
-    setSelectedLobbyPlayer(updatedLobbyPlayer)
     setLobbyPlayers((prevPlayers) =>
       prevPlayers.map((player) =>
         player.id === box.id ? updatedLobbyPlayer : player,
@@ -55,82 +45,80 @@ export default function HomeScreen() {
   }
 
   return (
-    <LinearGradient colors={backgroundGradient} style={styles.container}>
-      {/* <BackgroundSvg>
-    <View style={styles.container}> */}
-      <Header kills={user.total_kills} money={user.total_extracted_money} />
-      <CustomText style={gameTitle}>TAP ROYALE</CustomText>
-      <View style={styles.boxesContainer}>
-        <View style={styles.centerBoxes}>
-          {lobbyPlayers.length > 0 &&
-            lobbyPlayers.map((box: any, index: number) => (
-              <TouchableOpacity
-                style={styles.playerBox}
-                key={index}
-                onPress={() => handleLobbyPress(box)}
-              >
-                <ExpoImage
-                  source={renderLobbyImages(box.clickedCount)}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                  }}
-                  contentFit='contain'
-                />
-              </TouchableOpacity>
-            ))}
+    <BackgroundSvg>
+      <View style={styles.container}>
+        <Header kills={user.total_kills} money={user.total_extracted_money} />
+        <CustomText style={gameTitle}>TAP ROYALE</CustomText>
+        <View style={styles.boxesContainer}>
+          <View style={styles.centerBoxes}>
+            {lobbyPlayers.length > 0 &&
+              lobbyPlayers.map((box: any, index: number) => (
+                <TouchableOpacity
+                  style={styles.playerBox}
+                  key={index}
+                  onPress={() => handleLobbyPress(box)}
+                >
+                  <ExpoImage
+                    source={renderLobbyImages(box.clickedCount)}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                    }}
+                    contentFit='contain'
+                  />
+                </TouchableOpacity>
+              ))}
+          </View>
+        </View>
+        <View style={styles.bottomButtons}>
+          <LinearGradient
+            colors={buttonGradient}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.bottomButtonContainer}
+          >
+            <TouchableOpacity
+              style={styles.bottomButton}
+              onPress={() => {
+                router.navigate('/home/waiting-room-battle-royale')
+              }}
+            >
+              <Text style={styles.bottomButtonText}>Battle Royale</Text>
+            </TouchableOpacity>
+          </LinearGradient>
+          <LinearGradient
+            colors={buttonGradient}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.bottomButtonContainer}
+          >
+            <TouchableOpacity
+              style={styles.bottomButton}
+              onPress={() => {
+                router.navigate('/home/waiting-room-deathmatch')
+              }}
+            >
+              <Text style={styles.bottomButtonText}>Deathmatch</Text>
+            </TouchableOpacity>
+          </LinearGradient>
+          <LinearGradient
+            colors={buttonGradient}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.bottomButtonContainer}
+          >
+            <TouchableOpacity
+              style={styles.bottomButton}
+              onPress={() => {
+                router.navigate('/home/loadout')
+              }}
+            >
+              <Text style={styles.bottomButtonText}>Loadout</Text>
+            </TouchableOpacity>
+          </LinearGradient>
         </View>
       </View>
-      <View style={styles.bottomButtons}>
-        <LinearGradient
-          colors={buttonGradient}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          style={styles.bottomButtonContainer}
-        >
-          <TouchableOpacity
-            style={styles.bottomButton}
-            onPress={() => {
-              router.navigate('/home/waiting-room-battle-royale')
-            }}
-          >
-            <Text style={styles.bottomButtonText}>Battle Royale</Text>
-          </TouchableOpacity>
-        </LinearGradient>
-        <LinearGradient
-          colors={buttonGradient}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          style={styles.bottomButtonContainer}
-        >
-          <TouchableOpacity
-            style={styles.bottomButton}
-            onPress={() => {
-              router.navigate('/home/waiting-room-deathmatch')
-            }}
-          >
-            <Text style={styles.bottomButtonText}>Deathmatch</Text>
-          </TouchableOpacity>
-        </LinearGradient>
-        <LinearGradient
-          colors={buttonGradient}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          style={styles.bottomButtonContainer}
-        >
-          <TouchableOpacity
-            style={styles.bottomButton}
-            onPress={() => {
-              router.navigate('/home/loadout')
-            }}
-          >
-            <Text style={styles.bottomButtonText}>Loadout</Text>
-          </TouchableOpacity>
-        </LinearGradient>
-      </View>
-      {/* </BackgroundSvg> */}
-      {/* </View> */}
-    </LinearGradient>
+    </BackgroundSvg>
   )
 }
 
@@ -140,7 +128,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingTop: ms(20),
-    // backgroundColor: 'aqua',
   },
   boxesContainer: {
     width: '60%',

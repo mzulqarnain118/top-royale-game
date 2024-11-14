@@ -99,8 +99,8 @@ export const loadoutButtonText: any = {
 export const loadoutButton: any = {
   width: verticalScale(120),
   maxHeight: verticalScale(50),
-  borderWidth: 1,
-  borderRadius: moderateScale(14),
+  borderWidth: 2,
+  borderRadius: verticalScale(18),
   borderColor: 'white',
   overflow: 'hidden',
 }

@@ -1,14 +1,17 @@
-import CustomText from "@/components/CustomText";
-import DefaultButton from "@/components/DefaultButton";
-import LoadoutButton from "@/components/LoadoutButton";
-import ThemeButton from "@/components/ThemeButton";
-import { chooseYourLoadout } from "@/constants/LoadoutsData";
-import { backgroundGradient } from "@/utils/commonColors";
-import { container, loadoutButton, loadoutButtonText, loadoutIcon, loadoutIconBox, themeButtonText } from "@/utils/commonStyles";
-import { Entypo, Feather, FontAwesome6, Foundation, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
-import { Link, router } from "expo-router";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import CustomText from '@/components/CustomText'
+import ThemeButton from '@/components/ThemeButton'
+import { chooseYourLoadout } from '@/constants/LoadoutsData'
+import { loadoutIcon, loadoutIconBox } from '@/utils/commonStyles'
+import {
+  Entypo,
+  Feather,
+  FontAwesome6,
+  Foundation,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from '@expo/vector-icons'
+import { router } from 'expo-router'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import {
   moderateScale,
   ms,
@@ -81,92 +84,88 @@ export default function LoadoutScreen() {
   ]
 
   const handleBackToHome = () => {
-    console.log(`I am back to home`)
     router.back()
   }
 
   return (
-    <LinearGradient colors={backgroundGradient} style={styles.container}>
-      {/* <BackgroundSvg>
-      <View style={styles.container}> */}
-      <Text
-        style={{ height: scale(20), marginRight: 'auto' }}
-        onPress={handleBackToHome}
-      >
-        <ExpoImage
-          source={require('../../assets/images/theme/Back.svg')}
-          style={{
-            width: scale(45),
-            height: scale(45),
-          }}
-          contentFit='contain'
-        />
-      </Text>
-      <ScrollView
-        contentContainerStyle={{
-          flex: 1,
-          height: '100%',
-          display: 'flex',
-          justifyContent: 'flex-start',
-          // backgroundColor: 'red',
-        }}
-      >
-        <View style={styles.headerContainer}>
-          <CustomText style={styles.headerText}>Choose your loadout</CustomText>
-        </View>
-        <View style={styles.loadoutButtonGroup1}>
-          {chooseYourLoadout.map((item: any, index) => (
-            <ThemeButton
-              style={[
-                styles.loadoutButton,
-                item.empty && { borderColor: 'black' },
-              ]}
-              key={index}
-              hasBackground={item.empty}
-            >
-              <CustomText style={styles.loadoutButtonText}>
-                {item.name}
-              </CustomText>
-            </ThemeButton>
-          ))}
-        </View>
-        {/* <ThemeButton href='/home/stats'>Stats</ThemeButton> */}
-        <View
-          style={[
-            styles.headerContainer,
-            {
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-            },
-          ]}
+    <BackgroundSvg>
+      <View style={styles.container}>
+        <Text
+          style={{ height: scale(20), marginRight: 'auto' }}
+          onPress={handleBackToHome}
         >
-          <CustomText style={styles.headerText}>Attack</CustomText>
-          <CustomText style={styles.headerText}>Defense</CustomText>
-        </View>
-        <View style={styles.loadoutButtonGroup2}>
-          {loadoutAttackDefense.map((item: any, index) => (
-            <ThemeButton style={styles.loadoutButton} key={index}>
-              <View style={loadoutIconBox}>
-                <CustomText style={loadoutIcon}>{item.icon}</CustomText>
-                <Text style={{ fontSize: scale(26), color: 'white' }}>
-                  ${item.value}
-                </Text>
-              </View>
-            </ThemeButton>
-          ))}
-        </View>
-      </ScrollView>
-      {/* </View>
-    </BackgroundSvg> */}
-    </LinearGradient>
+          <ExpoImage
+            source={require('../../assets/images/theme/Back.svg')}
+            style={{
+              width: scale(45),
+              height: scale(45),
+            }}
+            contentFit='contain'
+          />
+        </Text>
+        <ScrollView
+          contentContainerStyle={{
+            flex: 1,
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'flex-start',
+          }}
+        >
+          <View style={styles.headerContainer}>
+            <CustomText style={styles.headerText}>
+              Choose your loadout
+            </CustomText>
+          </View>
+          <View style={styles.loadoutButtonGroup1}>
+            {chooseYourLoadout.map((item: any, index) => (
+              <ThemeButton
+                style={[
+                  styles.loadoutButton,
+                  item.empty && { borderColor: 'black' },
+                ]}
+                key={index}
+                hasBackground={item.empty}
+              >
+                <CustomText style={styles.loadoutButtonText}>
+                  {item.name}
+                </CustomText>
+              </ThemeButton>
+            ))}
+          </View>
+          <View
+            style={[
+              styles.headerContainer,
+              {
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+              },
+            ]}
+          >
+            <CustomText style={styles.headerText}>Attack</CustomText>
+            <CustomText style={styles.headerText}>Defense</CustomText>
+          </View>
+          <View style={styles.loadoutButtonGroup2}>
+            {loadoutAttackDefense.map((item: any, index) => (
+              <ThemeButton style={styles.loadoutButton} key={index}>
+                <View style={loadoutIconBox}>
+                  <CustomText style={loadoutIcon}>{item.icon}</CustomText>
+                  <Text style={{ fontSize: scale(26), color: 'white' }}>
+                    ${item.value}
+                  </Text>
+                </View>
+              </ThemeButton>
+            ))}
+          </View>
+        </ScrollView>
+      </View>
+    </BackgroundSvg>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: 'flex-start',
     alignItems: 'center',
     gap: 20,
     paddingTop: verticalScale(40),
@@ -191,7 +190,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   loadoutButtonText: {
-    fontSize: moderateScale(16, 3), // Scaled font size
+    fontSize: moderateScale(16, 3),
     lineHeight: scale(24),
     color: 'white',
     textAlign: 'center',
@@ -202,7 +201,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
-    // alignItems: 'center',
     gap: moderateScale(10),
     padding: moderateScale(10),
     borderRadius: moderateScale(20),
@@ -213,7 +211,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
-    // alignItems: 'center',
     gap: moderateScale(10),
     padding: moderateScale(10),
   },

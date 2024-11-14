@@ -1,6 +1,5 @@
 import { errorMessage, gameTitle } from '@/utils/commonStyles'
-import { LinearGradient } from 'expo-linear-gradient'
-import { Link, router } from 'expo-router'
+import { router } from 'expo-router'
 import React, { useState } from 'react'
 import {
   View,
@@ -12,14 +11,13 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import DefaultButton from './DefaultButton'
-import { backgroundGradient } from '@/utils/commonColors'
 import CustomText from './CustomText'
 import { login } from '@/services/api'
-import { storeToken } from '@/services/asyncStoreage'
 import { ms, s, scale } from 'react-native-size-matters'
 import Toast from './Toast'
 import ExceptionHandler from '@/services/ExceptionHandler'
 import useGlobalStore from '@/store/useGlobalStore'
+import BackgroundSvg from './BackgroundSvg'
 
 const Login = () => {
   const [username, setUsername] = useState('')
@@ -65,48 +63,41 @@ const Login = () => {
   }
 
   return (
-    <LinearGradient
-      colors={backgroundGradient}
-      style={[styles.container, { alignItems: 'stretch' }]}
-    >
-      <ScrollView contentContainerStyle={styles.contentContainerStyle}>
-        <View>
-          <CustomText style={[gameTitle, { fontSize: scale(44) }]}>
-            Enter Username
-          </CustomText>
-          <TextInput
-            style={styles.inputField}
-            placeholder='Username'
-            value={username}
-            onChangeText={setUsername}
-          />
-          {errors.username && (
-            <CustomText style={errorMessage}>{errors.username}</CustomText>
-          )}
-        </View>
-        <View style={styles.submitBtn}>
-          {isLoading ? (
-            <ActivityIndicator size='large' color='#FFFFFF' />
-          ) : (
-            <DefaultButton name='Login' onPress={handleLogin} />
-          )}
-        </View>
-        {/* <CustomText style={{ color: 'white', fontSize: s(16) }}>
-          Create an account?{'  '}
-          <Link href='/signup' style={{ color: 'orange', fontSize: s(16) }}>
-            Sign Up
-          </Link>
-        </CustomText> */}
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-          <Text style={{ color: 'white', fontSize: s(16) }}>
-            Create an account{' '}
-          </Text>
-          <TouchableOpacity onPress={() => router.replace('/signup')}>
-            <Text style={{ color: 'orange', fontSize: s(16) }}>Sign Up</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </LinearGradient>
+    <BackgroundSvg>
+      <View style={[styles.container, { alignItems: 'stretch' }]}>
+        <ScrollView contentContainerStyle={styles.contentContainerStyle}>
+          <View>
+            <CustomText style={[gameTitle, { fontSize: scale(44) }]}>
+              Enter Username
+            </CustomText>
+            <TextInput
+              style={styles.inputField}
+              placeholder='Username'
+              value={username}
+              onChangeText={setUsername}
+            />
+            {errors.username && (
+              <CustomText style={errorMessage}>{errors.username}</CustomText>
+            )}
+          </View>
+          <View style={styles.submitBtn}>
+            {isLoading ? (
+              <ActivityIndicator size='large' color='#FFFFFF' />
+            ) : (
+              <DefaultButton name='Login' onPress={handleLogin} />
+            )}
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <Text style={{ color: 'white', fontSize: s(16) }}>
+              Create an account{' '}
+            </Text>
+            <TouchableOpacity onPress={() => router.replace('/signup')}>
+              <Text style={{ color: 'orange', fontSize: s(16) }}>Sign Up</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
+    </BackgroundSvg>
   )
 }
 
@@ -122,12 +113,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     gap: scale(28),
-  },
-  gameTitle: {
-    fontSize: scale(60),
-    lineHeight: scale(60),
-    color: 'white',
-    textAlign: 'center',
   },
   inputField: {
     height: ms(64),

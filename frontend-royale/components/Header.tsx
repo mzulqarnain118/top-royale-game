@@ -1,9 +1,16 @@
 import { useRoute } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import Foundation from '@expo/vector-icons/Foundation';
-import { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  Alert,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
+import FontAwesome from '@expo/vector-icons/FontAwesome'
+import Foundation from '@expo/vector-icons/Foundation'
+import { useEffect, useState } from 'react'
 import {
   moderateScale,
   verticalScale,
@@ -86,9 +93,12 @@ export default function Header({
         <View style={{ alignItems: 'center' }}>
           <CustomText style={styles.rankBoxTitle}>Rank</CustomText>
           <Text style={styles.rankBoxNumber}>{rank}</Text>
-          {isDeathMatch && (
-            <Text style={styles.timeLeft}>{formatTime(timeLeft)}</Text>
-          )}
+          {isDeathMatch &&
+            (timeLeft <= 0 ? (
+              <ActivityIndicator color='white' size='large' />
+            ) : (
+              <Text style={styles.timeLeft}>{formatTime(timeLeft)}</Text>
+            ))}
         </View>
       )}
       {isIndex && (
