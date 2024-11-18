@@ -20,7 +20,7 @@ import useGlobalStore from '@/store/useGlobalStore'
 import BackgroundSvg from './BackgroundSvg'
 
 const Login = () => {
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [errors, setErrors] = useState<{ username?: string }>({})
   const [isLoading, setIsLoading] = useState(false)
 
@@ -72,7 +72,7 @@ const Login = () => {
             </CustomText>
             <TextInput
               style={styles.inputField}
-              placeholder='Username'
+              // placeholder='Username'
               value={username}
               onChangeText={setUsername}
             />

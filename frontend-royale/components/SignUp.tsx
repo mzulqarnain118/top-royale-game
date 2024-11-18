@@ -99,7 +99,7 @@ const SignUp = () => {
             </CustomText>
             <TextInput
               style={styles.inputField}
-              placeholder='Username'
+              // placeholder='Username'
               value={username}
               onChangeText={setUsername}
             />
