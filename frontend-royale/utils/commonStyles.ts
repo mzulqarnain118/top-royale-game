@@ -1,3 +1,4 @@
+import { Platform } from 'react-native'
 import {
   moderateScale,
   moderateVerticalScale,
@@ -120,13 +121,14 @@ export const loadoutIconBox: any = {
 }
 
 export const loadoutIcon: any = {
-  borderRadius: verticalScale(50),
+  borderRadius: Platform.OS === 'ios' ? 15 : verticalScale(50),
   backgroundColor: '#1cc433',
+  borderColor: 'white',
   borderWidth: 1,
   padding: 0,
-  height: verticalScale(30),
-  width: verticalScale(30),
-  borderColor: 'white',
+  height: Platform.OS === 'ios' ? 30 : verticalScale(30),
+  width: Platform.OS === 'ios' ? 30 : verticalScale(30),
+  overflow: 'hidden',
   textAlign: 'center',
-  textAlignVertical: 'center',
+ textAlignVertical: 'center',
 }
