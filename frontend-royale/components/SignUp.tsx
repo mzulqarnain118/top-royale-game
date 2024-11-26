@@ -13,13 +13,14 @@ import { Picker } from '@react-native-picker/picker'
 import { errorMessage, gameTitle } from '@/utils/commonStyles'
 import CustomText from './CustomText'
 import DefaultButton from './DefaultButton'
-import { signup } from '@/services/api'
+import { SERVER_URL, signup } from '@/services/api'
 import { ApiCall } from '@/services/axiosApiInstance'
 import ExceptionHandler from '@/services/ExceptionHandler'
 import Toast from './Toast'
 import { s, scale } from 'react-native-size-matters'
 import useGlobalStore from '@/store/useGlobalStore'
 import BackgroundSvg from './BackgroundSvg'
+import axios from 'axios'
 
 const SignUp = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -35,8 +36,8 @@ const SignUp = () => {
   const setUser = useGlobalStore.getState().setUser
 
   const fetchCountries = async () => {
-    const response = await ApiCall('/api/countries', 'GET')
-    setCountries(response.data)
+    const response = await axios.get(`${SERVER_URL}/api/countries`)
+    setCountries(response.data.data)
   }
 
   useEffect(() => {
