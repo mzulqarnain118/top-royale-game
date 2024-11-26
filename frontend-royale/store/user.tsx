@@ -13,13 +13,12 @@ const useUserStore = create<UserState>()(
     (set, get) => ({
       user: null,
       storeUser: (user: any) => {
-        console.log('im gonna storeUser: ', user)
+        // console.log('im gonna storeUser: ', user)
         set({ user })
       },
       loadUser: async () => {
         const user = await loadUser()
         set({ user })
-        console.log('user: ', user) // TODO: remove log
       },
     }),
     {

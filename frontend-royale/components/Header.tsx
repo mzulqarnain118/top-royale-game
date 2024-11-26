@@ -1,30 +1,16 @@
-import { useRoute } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
+import { useRoute } from '@react-navigation/native'
 import {
   ActivityIndicator,
-  Alert,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native'
-import FontAwesome from '@expo/vector-icons/FontAwesome'
-import Foundation from '@expo/vector-icons/Foundation'
 import { useEffect, useState } from 'react'
-import {
-  moderateScale,
-  verticalScale,
-  scale,
-  ms,
-  s,
-} from 'react-native-size-matters'
+import { verticalScale } from 'react-native-size-matters'
 import CustomText from './CustomText'
 import AttributeButton from './AttributeButton'
-import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons'
-import { clearToken, loadUser } from '@/services/asyncStoreage'
 import { Image as ExpoImage } from 'expo-image'
-import { labelTab, tabCount } from '@/utils/commonStyles'
-import { router } from 'expo-router'
 import MoneyBox from '@/components/MoneyBox'
 import HealthBox from './HealthBox'
 

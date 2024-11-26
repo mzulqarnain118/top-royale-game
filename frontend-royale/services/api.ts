@@ -1,8 +1,10 @@
 // api.js
 import axios from 'axios';
 
-export const SERVER_URL = 'http://192.168.1.116:5000'
+export const SERVER_URL = 'http://192.168.1.119:5000'
 // export const SERVER_URL = 'http://192.168.1.111:5000'
+// export const SERVER_URL = 'http://192.168.100.30:5000'
+
 export const API_URL = `${SERVER_URL}/api` // Replace with your backend URL
 export const API_AUTH_URL = `${API_URL}/auth`
 

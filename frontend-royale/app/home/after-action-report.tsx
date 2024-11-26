@@ -1,12 +1,8 @@
 import BackgroundSvg from '@/components/BackgroundSvg'
 import CustomText from '@/components/CustomText'
-import DefaultButton from '@/components/DefaultButton'
 import ThemeButton from '@/components/ThemeButton'
-import { afterActionReports } from '@/constants/AfterActionReports'
 import useGameStore from '@/store/useGameStore'
-import { backgroundGradient } from '@/utils/commonColors'
 import { container } from '@/utils/commonStyles'
-import { LinearGradient } from 'expo-linear-gradient'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import {
   scale,
@@ -17,12 +13,7 @@ import {
 
 export default function AfterActionReportScreen() {
   const gameData = useGameStore((state) => state.gameData)
-  console.log('gameDataInAAR: ', gameData)
-
-  // TODO: Delete below code
-  // const {
-  //   game: { players, stats },
-  // } = gameData
+  // console.log('gameDataInAAR: ', gameData)
 
   // convert stats object to array
   const statsArray = Object.entries(gameData.game.stats)
@@ -90,43 +81,6 @@ export default function AfterActionReportScreen() {
                   </View>
                 )
               })}
-              {/* {gameData.game.players.map((player: any, index: number) => {
-              const playerStats = stats[player.id] || {}
-              return (
-                <View style={styles.tableRow} key={index}>
-                  <Text style={[styles.tableCell, styles.firstCell]}>
-                    {index + 1}
-                  </Text>
-                  <Text style={[styles.tableCell, styles.nameCell]}>
-                    {player.isBot ? `Bot ${player.id}` : `Player ${player.id}`}
-                  </Text>
-                  <Text style={styles.tableCell}>{playerStats.kills || 0}</Text>
-                  <Text style={styles.tableCell}>
-                    {playerStats.assists || 0}
-                  </Text>
-                  <Text style={styles.tableCell}>
-                    {playerStats.death != null ? playerStats.death : '1'}
-                  </Text>
-                  <Text style={styles.tableCell}>
-                    ${playerStats.damage_dealt || 0}
-                  </Text>
-                </View>
-              )
-            })} */}
-              {/* {afterActionReports.map((item, index) => (
-              <View style={styles.tableRow} key={index}>
-                <Text style={[styles.tableCell, styles.firstCell]}>
-                  {index + 1}
-                </Text>
-                <CustomText style={[styles.tableCell, styles.nameCell]}>
-                  {item.name}
-                </CustomText>
-                <Text style={styles.tableCell}>{item.kills}</Text>
-                <Text style={styles.tableCell}>{item.assists}</Text>
-                <Text style={styles.tableCell}>{item.deaths}</Text>
-                <Text style={styles.tableCell}>{item.money}</Text>
-              </View>
-            ))} */}
             </View>
           </ScrollView>
         </ScrollView>

@@ -13,7 +13,7 @@ import { moderateScale, scale, vs } from 'react-native-size-matters'
 
 export default function StatsScreen() {
   const gameData = useGameStore((state) => state.gameData)
-  console.log('gameDataInStats: ', gameData)
+  // console.log('gameDataInStats: ', gameData)
 
   const user = useGlobalStore((state) => state.user)
 
