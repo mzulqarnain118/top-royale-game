@@ -10,10 +10,12 @@ interface SocketState {
 const useSocketStore = create<SocketState>((set) => ({
   socket: null,
   connectSocket: (url: string) => {
-    const socket = io(url)
+    const socket = io(url, {
+      transports: ['websocket'], // Force WebSocket transport (don't use long-polling)
+    })
     set({ socket })
-    // console.log('socket connected')
     if (socket) {
+      // console.log(socket)
       return socket
     } else {
       return false

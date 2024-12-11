@@ -84,7 +84,7 @@ export default function BattleRoyaleScreen() {
       handleExitGame(disconnectSocket),
     )
 
-    const socket = connectSocket(SERVER_URL)
+    const socket = connectSocket('https://dev.trywebdesign.com')
 
     if (socket) {
       if (!socket) {
@@ -109,6 +109,24 @@ export default function BattleRoyaleScreen() {
       socket.on('error', (error: string) => {
         // console.error('Error joining game:', error)
       })
+
+      // debuggins code
+
+      // socket.on('connect_error', (error: any) => {
+      //   console.log('Connection failed:', error.message, error) // Logs the error reason
+      // })
+
+      // socket.on('connect_failed', () => {
+      //   console.log('Connection could not be established.')
+      // })
+
+      // socket.on('reconnect_attempt', () => {
+      //   console.log('Attempting to reconnect...')
+      // })
+
+      // socket.on('reconnect', () => {
+      //   console.log('Reconnected successfully!')
+      // })
     }
 
     return () => {
@@ -163,7 +181,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     gap: 20,
-    padding: ms(20),
+    // padding: ms(20),
+    paddingTop: ms(20),
+    paddingBottom: ms(8),
   },
   loadingText: {
     color: '#FFFFFF',

@@ -65,22 +65,22 @@ export default function LoadoutScreen() {
       icon: <Entypo name='heart' size={scale(20)} color='white' />,
       value: 50,
     },
-    {
-      id: 7,
-      icon: (
-        <FontAwesome6
-          name='grip-lines-vertical'
-          size={scale(20)}
-          color='white'
-        />
-      ),
-      value: 50,
-    },
-    {
-      id: 8,
-      icon: <Feather name='wifi' size={scale(20)} color='white' />,
-      value: 50,
-    },
+    // {
+    //   id: 7,
+    //   icon: (
+    //     <FontAwesome6
+    //       name='grip-lines-vertical'
+    //       size={scale(20)}
+    //       color='white'
+    //     />
+    //   ),
+    //   value: 50,
+    // },
+    // {
+    //   id: 8,
+    //   icon: <Feather name='wifi' size={scale(20)} color='white' />,
+    //   value: 50,
+    // },
   ]
 
   const handleBackToHome = () => {

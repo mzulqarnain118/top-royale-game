@@ -89,7 +89,7 @@ export default function BattleRoyaleScreen() {
       handleExitGame(disconnectSocket),
     )
 
-    const socket = connectSocket(SERVER_URL)
+    const socket = connectSocket('https://dev.trywebdesign.com')
 
     if (socket) {
       if (!socket) {
@@ -168,13 +168,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     gap: 20,
-    padding: ms(20),
+    // padding: ms(20),
+    paddingTop: ms(20),
+    paddingBottom: ms(8),
   },
   loadingText: {
     color: '#FFFFFF',
     fontSize: 28,
   },
   loadoutButtonGroup: {
+    width: '91%',
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',

@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'blue',
   },
   loadoutButtonGroup: {
-    width: '80%',
+    width: '88%',
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
