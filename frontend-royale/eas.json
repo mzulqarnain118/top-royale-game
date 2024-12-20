@@ -31,9 +31,6 @@
       "autoIncrement": true,
       "android": {
         "buildType": "apk"
-      },
-      "ios": {
-        "distribution": "internal"
       }
     }
   },
