@@ -121,24 +121,24 @@ export default function BattleRoyaleScreen() {
 
   const playerBoxSvgs = (health: number, isSelf?: boolean) => {
     if (isSelf) {
-      if (health === 100) {
+      if (health > 40) {
         return require('../../assets/images/theme/player-box-blue-disabled.svg')
-      } else if (health >= 61 && health < 100) {
+      } else if (health >= 31) {
         return require('../../assets/images/theme/player-box-green-disabled.svg')
-      } else if (health >= 21 && health < 61) {
+      } else if (health >= 21) {
         return require('../../assets/images/theme/player-box-yellow-disabled.svg')
-      } else if (health >= 1 && health < 21) {
+      } else if (health >= 1) {
         return require('../../assets/images/theme/player-box-red-disabled.svg')
       } else {
         return require('../../assets/images/theme/player-box-black-disabled.svg')
       }
-    } else if (health === 100) {
+    } else if (health > 40) {
       return require('../../assets/images/theme/player-box.svg')
-    } else if (health >= 61 && health < 100) {
+    } else if (health >= 31) {
       return require('../../assets/images/theme/player-box-green.svg')
-    } else if (health >= 21 && health < 61) {
+    } else if (health >= 21) {
       return require('../../assets/images/theme/player-box-yellow.svg')
-    } else if (health >= 1 && health < 21) {
+    } else if (health >= 1) {
       return require('../../assets/images/theme/player-box-red.svg')
     } else {
       return require('../../assets/images/theme/player-box-black.svg')
