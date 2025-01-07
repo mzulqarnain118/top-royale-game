@@ -2,7 +2,7 @@ import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import Header from '@/components/Header'
 import { lobbyBoxes, LobbyBoxType } from '@/constants/LobbyBoxes'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { gameTitle } from '@/utils/commonStyles'
 import { buttonGradient } from '@/utils/commonColors'
 import { ms, s } from 'react-native-size-matters'
@@ -11,11 +11,27 @@ import { Image as ExpoImage } from 'expo-image'
 import { router } from 'expo-router'
 import useGlobalStore from '@/store/useGlobalStore'
 import BackgroundSvg from '@/components/BackgroundSvg'
+import axios from 'axios'
+import { API_AUTH_URL } from '@/services/api'
 
 export default function HomeScreen() {
   const [lobbyPlayers, setLobbyPlayers] = useState<any[]>(lobbyBoxes)
 
   const user = useGlobalStore((state) => state.user)
+  const setUser = useGlobalStore.getState().setUser
+
+  const fetchUserProfile = async (userId: any) => {
+    try {
+      const response = await axios.post(`${API_AUTH_URL}/profile`, { userId })
+      setUser(response.data.data)
+    } catch (error) {
+      console.error('Error fetching user:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchUserProfile(user.id)
+  }, [])
 
   const handleLobbyPress = (box: LobbyBoxType) => {
     let updatedLobbyPlayer = {
@@ -47,7 +63,10 @@ export default function HomeScreen() {
   return (
     <BackgroundSvg>
       <View style={styles.container}>
-        <Header kills={user.total_kills} money={user.total_extracted_money} />
+        <Header
+          kills={user?.total_kills ?? 0}
+          money={user?.total_extracted_money ?? 0}
+        />
         <CustomText style={gameTitle}>TAP ROYALE</CustomText>
         <View style={styles.boxesContainer}>
           <View style={styles.centerBoxes}>
