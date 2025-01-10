@@ -14,6 +14,7 @@ import {
   MaterialIcons,
   Foundation,
   Feather,
+  FontAwesome6,
 } from '@expo/vector-icons'
 import {
   container,
@@ -48,6 +49,10 @@ export default function BattleRoyaleScreen() {
 
   const { playerData, gameData, loadoutData, setGameData } = useGameStore()
 
+  // if (loadoutData) {
+  //   console.log('loadoutData: ', loadoutData)
+  // }
+
   const user = useGlobalStore((state) => state.user)
 
   const [gameDataState, setGameDataState] = useState<any>(gameData)
@@ -58,22 +63,18 @@ export default function BattleRoyaleScreen() {
     {
       id: 1,
       icon: (
-        <MaterialCommunityIcons
-          name='shield-sword'
-          size={scale(20)}
-          color='white'
-        />
+        <MaterialCommunityIcons name='sword' size={scale(20)} color='white' />
       ),
-      value: 50,
-    },
-    {
-      id: 2,
-      icon: <Feather name='dollar-sign' size={scale(20)} color='white' />,
       value: 50,
     },
     {
       id: 3,
       icon: <Foundation name='shield' size={scale(20)} color='white' />,
+      value: 50,
+    },
+    {
+      id: 2,
+      icon: <FontAwesome6 name='dollar' size={scale(20)} color='white' />,
       value: 50,
     },
     {

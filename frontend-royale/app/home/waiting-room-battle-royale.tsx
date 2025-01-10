@@ -11,6 +11,7 @@ import {
   MaterialIcons,
   Foundation,
   Feather,
+  FontAwesome6,
 } from '@expo/vector-icons'
 import {
   loadoutButton,
@@ -40,24 +41,20 @@ export default function BattleRoyaleScreen() {
 
   const loadoutIcons = [
     {
+      id: 1,
+      icon: (
+        <MaterialCommunityIcons name='sword' size={scale(20)} color='white' />
+      ),
+      value: 50,
+    },
+    {
       id: 3,
       icon: <Foundation name='shield' size={scale(20)} color='white' />,
       value: 50,
     },
     {
-      id: 1,
-      icon: (
-        <MaterialCommunityIcons
-          name='shield-sword'
-          size={scale(20)}
-          color='white'
-        />
-      ),
-      value: 50,
-    },
-    {
       id: 2,
-      icon: <Feather name='dollar-sign' size={scale(20)} color='white' />,
+      icon: <FontAwesome6 name='dollar' size={scale(20)} color='white' />,
       value: 50,
     },
     {
@@ -84,7 +81,8 @@ export default function BattleRoyaleScreen() {
       handleExitGame(disconnectSocket),
     )
 
-    const socket = connectSocket('https://dev.trywebdesign.com')
+    // const socket = connectSocket('https://dev.trywebdesign.com')
+    const socket = connectSocket(`${SERVER_URL}`)
 
     if (socket) {
       if (!socket) {
@@ -94,7 +92,7 @@ export default function BattleRoyaleScreen() {
       socket.emit('joinBR', { userId: user.id })
 
       socket.on('gameJoined', (gameJoinData: any) => {
-        // console.log('gameJoined: ', gameJoinData)
+        console.log('gameJoined: ', gameJoinData)
         setGameInitialData(gameJoinData)
         setPlayerData(gameJoinData.playerStats)
         setLoadoutData(gameJoinData.loadouts)

@@ -6,6 +6,7 @@ import {
   Text,
   BackHandler,
   Animated,
+  Easing,
 } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import Header from '@/components/Header'
@@ -14,6 +15,7 @@ import {
   MaterialIcons,
   Foundation,
   Feather,
+  FontAwesome6,
 } from '@expo/vector-icons'
 import {
   container,
@@ -38,9 +40,13 @@ import handleExitGame from '@/services/handleExitGame'
 import useGlobalStore from '@/store/useGlobalStore'
 import { router } from 'expo-router'
 import BackgroundSvg from '@/components/BackgroundSvg'
+import axios from 'axios'
+import { SERVER_URL } from '@/services/api'
 
 export default function BattleRoyaleScreen() {
   const [activeSpark, setActiveSpark] = useState<any>(null)
+  const [isDisabled, setIsDisabled] = useState<any>(false)
+  const [activeLoadoutId, setActiveLoadoutId] = useState<any>(0)
 
   const sparkOpacity = useRef(new Animated.Value(0)).current
   const sparkScale = useRef(new Animated.Value(1)).current
@@ -58,22 +64,18 @@ export default function BattleRoyaleScreen() {
     {
       id: 1,
       icon: (
-        <MaterialCommunityIcons
-          name='shield-sword'
-          size={scale(20)}
-          color='white'
-        />
+        <MaterialCommunityIcons name='sword' size={scale(20)} color='white' />
       ),
-      value: 50,
-    },
-    {
-      id: 2,
-      icon: <Feather name='dollar-sign' size={scale(20)} color='white' />,
       value: 50,
     },
     {
       id: 3,
       icon: <Foundation name='shield' size={scale(20)} color='white' />,
+      value: 50,
+    },
+    {
+      id: 2,
+      icon: <FontAwesome6 name='dollar' size={scale(20)} color='white' />,
       value: 50,
     },
     {
@@ -90,6 +92,10 @@ export default function BattleRoyaleScreen() {
   ]
 
   useEffect(() => {
+    if (loadoutData) {
+      console.log('loadoutDatas: ', loadoutData)
+    }
+
     // subscribe to backHandler event
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () =>
       handleExitGame(disconnectSocket),
@@ -104,6 +110,10 @@ export default function BattleRoyaleScreen() {
     socket.on('playerAttacked', (data: any) => {
       // console.log('playerAttacked: ', data)
       setGameDataState(data)
+    })
+
+    socket.on('useAirStrikeLoadout', (data: any) => {
+      setActiveLoadoutId(0)
     })
 
     console.log('subscribing to endGame event')
@@ -228,6 +238,35 @@ export default function BattleRoyaleScreen() {
                       }}
                       disabled={isSelf || !selfIsAlive || !playerIsAlive}
                     >
+                      {activeLoadoutId === 1 ? (
+                        <MaterialCommunityIcons
+                          name='sword'
+                          size={scale(40)}
+                          color='white'
+                          style={styles.activeLoadoutIcon1}
+                        />
+                      ) : activeLoadoutId === 2 ? (
+                        <Foundation
+                          name='shield'
+                          size={scale(40)}
+                          color='white'
+                          style={styles.activeLoadoutIcon2}
+                        />
+                      ) : activeLoadoutId === 3 ? (
+                        <FontAwesome6
+                          name='dollar'
+                          size={scale(40)}
+                          color='white'
+                          style={styles.activeLoadoutIcon2}
+                        />
+                      ) : activeLoadoutId === 4 ? (
+                        <MaterialIcons
+                          name='airplanemode-active'
+                          size={scale(40)}
+                          color='white'
+                          style={styles.activeLoadoutIcon1}
+                        />
+                      ) : null}
                       <ExpoImage
                         source={playerBoxSvgs(
                           gameDataState.game.health[item.id],
@@ -264,7 +303,37 @@ export default function BattleRoyaleScreen() {
         </ScrollView>
         <View style={styles.loadoutButtonGroup}>
           {loadoutData.map((item: any, index: number) => (
-            <ThemeButton style={loadoutButton} key={index}>
+            <ThemeButton
+              style={loadoutButton}
+              key={index}
+              disabled={isDisabled}
+              onPress={async () => {
+                // console.log('item: ', playerData.game_id)
+                try {
+                  const response = await axios.post(
+                    `${SERVER_URL}/api/games/${playerData.game_id}/loadout`,
+                    {
+                      playerId: user.id,
+                      loadoutId: item.id,
+                      duration: item.duration,
+                    },
+                  )
+                  console.log('loadout is activeated', response.data)
+                  setIsDisabled(true)
+                  setTimeout(() => {
+                    setIsDisabled(false)
+                    console.log('isDisabled', isDisabled)
+                    if (item.id != 4) {
+                      setActiveLoadoutId(0)
+                    }
+                  }, item.duration * 1000)
+                  setActiveLoadoutId(item.id)
+                  // console.log(activeLoadoutId)
+                } catch (error) {
+                  console.error('Error assigning loadout:', error)
+                }
+              }}
+            >
               <View style={loadoutIconBox}>
                 <CustomText style={loadoutIcon}>
                   {loadoutIcons[index].icon}
@@ -293,6 +362,16 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     // backgroundColor: 'red',
+  },
+  activeLoadoutIcon1: {
+    position: 'absolute',
+    top: scale(10),
+    left: scale(10),
+  },
+  activeLoadoutIcon2: {
+    position: 'absolute',
+    top: scale(8),
+    left: scale(16),
   },
   gradient: {
     flex: 1,
