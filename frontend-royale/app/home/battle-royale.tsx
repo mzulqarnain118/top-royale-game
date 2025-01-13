@@ -8,12 +8,12 @@ import {
   Animated,
   Dimensions,
 } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient'
 import Header from '@/components/Header'
 import {
   MaterialCommunityIcons,
   MaterialIcons,
   Foundation,
-  Feather,
   FontAwesome6,
 } from '@expo/vector-icons'
 import {
@@ -22,6 +22,7 @@ import {
   loadoutIcon,
   loadoutIconBox,
 } from '@/utils/commonStyles'
+import { backgroundGradient } from '@/utils/commonColors'
 import {
   moderateScale,
   ms,
@@ -31,67 +32,70 @@ import {
 import CustomText from '@/components/CustomText'
 import { Image as ExpoImage } from 'expo-image'
 import ThemeButton from '@/components/ThemeButton'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useMemo, useCallback } from 'react'
 import useGameStore from '@/store/useGameStore'
 import useSocketStore from '@/store/useSocketStore'
 import handleExitGame from '@/services/handleExitGame'
 import useGlobalStore from '@/store/useGlobalStore'
 import { router } from 'expo-router'
 import BackgroundSvg from '@/components/BackgroundSvg'
+import axios from 'axios'
+import { SERVER_URL } from '@/services/api'
 
 const { width, height } = Dimensions.get('window')
 
 export default function BattleRoyaleScreen() {
-  const [activeSpark, setActiveSpark] = useState<any>(null)
+  const [activeSpark, setActiveSpark] = useState(null)
+  const [isDisabled, setIsDisabled] = useState(false)
+  const [activeLoadoutId, setActiveLoadoutId] = useState(0)
+  const [isSocketConnected, setIsSocketConnected] = useState(false)
 
   const sparkOpacity = useRef(new Animated.Value(0)).current
   const sparkScale = useRef(new Animated.Value(1)).current
 
   const { playerData, gameData, loadoutData, setGameData } = useGameStore()
-
-  // if (loadoutData) {
-  //   console.log('loadoutData: ', loadoutData)
-  // }
-
   const user = useGlobalStore((state) => state.user)
+  const [gameDataState, setGameDataState] = useState(gameData)
 
-  const [gameDataState, setGameDataState] = useState<any>(gameData)
+  const { socket, connectSocket, disconnectSocket } = useSocketStore(
+    (state) => state,
+  )
 
-  const { socket, disconnectSocket } = useSocketStore((state) => state)
-
-  const loadoutIcons = [
-    {
-      id: 1,
-      icon: (
-        <MaterialCommunityIcons name='sword' size={scale(20)} color='white' />
-      ),
-      value: 50,
-    },
-    {
-      id: 3,
-      icon: <Foundation name='shield' size={scale(20)} color='white' />,
-      value: 50,
-    },
-    {
-      id: 2,
-      icon: <FontAwesome6 name='dollar' size={scale(20)} color='white' />,
-      value: 50,
-    },
-    {
-      id: 4,
-      icon: (
-        <MaterialIcons
-          name='airplanemode-active'
-          size={scale(20)}
-          color='white'
-        />
-      ),
-      value: 50,
-    },
-  ]
+  const loadoutIcons = useMemo(
+    () => [
+      {
+        id: 1,
+        icon: (
+          <MaterialCommunityIcons name='sword' size={scale(20)} color='white' />
+        ),
+        value: 50,
+      },
+      {
+        id: 3,
+        icon: <Foundation name='shield' size={scale(20)} color='white' />,
+        value: 50,
+      },
+      {
+        id: 2,
+        icon: <FontAwesome6 name='dollar' size={scale(20)} color='white' />,
+        value: 50,
+      },
+      {
+        id: 4,
+        icon: (
+          <MaterialIcons
+            name='airplanemode-active'
+            size={scale(20)}
+            color='white'
+          />
+        ),
+        value: 50,
+      },
+    ],
+    [],
+  )
 
   useEffect(() => {
-    // subscribe to backHandler event
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () =>
       handleExitGame(disconnectSocket),
     )
@@ -101,26 +105,48 @@ export default function BattleRoyaleScreen() {
       return
     }
 
-    socket.on('playerAttacked', (data: any) => {
-      // console.log('playerAttacked: ', data)
+    const handlePlayerAttacked = (data: any) => {
       setGameDataState(data)
-    })
+    }
 
-    socket.on('endGame', (data: any) => {
-      // console.log('endGame: ', data)
+    const handleUseAirStrikeLoadout = () => {
+      setActiveLoadoutId(0)
+    }
+
+    const handlePlayerDisconnected = () => {
+      console.log('playerDisconnected, connecting againnnnnnnnn ')
+      setIsSocketConnected((prev) => !prev)
+    }
+
+    const handleDisconnect = () => {
+      console.log('disconnect, trying to connect again ')
+      connectSocket(`${SERVER_URL}`, { playerId: user.id })
+      setIsSocketConnected((prev) => !prev)
+    }
+
+    const handleEndGame = (data: any) => {
+      console.log('endGame: ', data)
       setGameData(data)
       router.replace('/home/stats')
-    })
+    }
+
+    socket.on('playerAttacked', handlePlayerAttacked)
+    socket.on('useAirStrikeLoadout', handleUseAirStrikeLoadout)
+    socket.on('playerDisconnected', handlePlayerDisconnected)
+    socket.on('disconnect', handleDisconnect)
+    socket.on('endGame', handleEndGame)
 
     return () => {
-      // unsubscribe from backHandler event
       backHandler.remove()
-
-      socket.off('playerAttacked')
+      socket.off('playerAttacked', handlePlayerAttacked)
+      socket.off('useAirStrikeLoadout', handleUseAirStrikeLoadout)
+      socket.off('playerDisconnected', handlePlayerDisconnected)
+      socket.off('disconnect', handleDisconnect)
+      socket.off('endGame', handleEndGame)
     }
-  }, [])
+  }, [socket, disconnectSocket, connectSocket, setGameData, router, user.id])
 
-  const playerBoxSvgs = (health: number, isSelf?: boolean) => {
+  const playerBoxSvgs = useCallback((health: any, isSelf: any) => {
     if (isSelf) {
       if (health > 40) {
         return require('../../assets/images/theme/player-box-blue-disabled.svg')
@@ -144,10 +170,9 @@ export default function BattleRoyaleScreen() {
     } else {
       return require('../../assets/images/theme/player-box-black.svg')
     }
-  }
+  }, [])
 
-  const emitAttackEvent = (attackedPlayer: any) => {
-    // Spark animation
+  const sparkAnimation = useCallback(() => {
     Animated.sequence([
       Animated.parallel([
         Animated.timing(sparkOpacity, {
@@ -174,21 +199,77 @@ export default function BattleRoyaleScreen() {
         }),
       ]),
     ]).start()
+  }, [sparkOpacity, sparkScale])
 
-    if (!socket) {
-      console.log('socket not connected')
-      return
-    }
-    try {
-      socket.emit('attackBR', {
-        gameId: playerData.game_id,
-        playerId: user.id,
-        targetId: attackedPlayer.id,
-      })
-    } catch (error) {
-      // console.log('Attack error: ', error)
-    }
-  }
+  const emitAttackEvent = useCallback(
+    async (attackedPlayer: any) => {
+      if (!socket) {
+        console.log('socket not connected')
+        return
+      }
+      try {
+        await new Promise((resolve, reject) => {
+          socket.emit(
+            'attackBR',
+            {
+              gameId: playerData.game_id,
+              playerId: user.id,
+              targetId: attackedPlayer.id,
+            },
+            (response: any) => {
+              if (response.error) {
+                reject(response.error)
+              } else {
+                resolve(response)
+                console.log('attack event emitted')
+              }
+            },
+          )
+        })
+      } catch (error) {
+        console.log('Attack error: ', error)
+      }
+    },
+    [socket, playerData.game_id, user.id],
+  )
+
+  const handlePlayerPress = useCallback(
+    async (item: any) => {
+      setActiveSpark(() => item.id)
+      sparkAnimation()
+      setTimeout(() => setActiveSpark(null), 1000)
+      await emitAttackEvent(item)
+    },
+    [emitAttackEvent, sparkAnimation],
+  )
+
+  const handleLoadoutPress = useCallback(
+    async (item: any) => {
+      try {
+        const response = await axios.post(
+          `${SERVER_URL}/api/games/${playerData.game_id}/loadout`,
+          {
+            playerId: user.id,
+            loadoutId: item.id,
+            duration: item.duration,
+          },
+        )
+        console.log('loadout is activated', response.data)
+        setIsDisabled(true)
+        setTimeout(() => {
+          setIsDisabled(false)
+          console.log('isDisabled', isDisabled)
+          if (item.id !== 4) {
+            setActiveLoadoutId(0)
+          }
+        }, item.duration * 1000)
+        setActiveLoadoutId(item.id)
+      } catch (error) {
+        console.error('Error assigning loadout:', error)
+      }
+    },
+    [playerData.game_id, user.id, isDisabled],
+  )
 
   return (
     <BackgroundSvg>
@@ -206,7 +287,7 @@ export default function BattleRoyaleScreen() {
         >
           <View style={styles.centerBoxes}>
             {gameDataState &&
-              gameDataState?.game?.players.map((item: any, index: any) => {
+              gameDataState.game.players.map((item: any, index: any) => {
                 const selfIsAlive = gameDataState?.game?.health[user?.id] !== 0
                 const playerIsAlive =
                   gameDataState?.game?.health[item?.id] !== 0
@@ -214,13 +295,39 @@ export default function BattleRoyaleScreen() {
                 return (
                   <View style={styles.playerBox} key={index}>
                     <TouchableOpacity
-                      onPress={() => {
-                        setActiveSpark(() => item.id)
-                        emitAttackEvent(item)
-                        setTimeout(() => setActiveSpark(null), 1000)
-                      }}
+                      style={styles.playerButton}
+                      onPress={() => handlePlayerPress(item)}
                       disabled={isSelf || !selfIsAlive || !playerIsAlive}
                     >
+                      {activeLoadoutId === 1 ? (
+                        <MaterialCommunityIcons
+                          name='sword'
+                          size={scale(40)}
+                          color='white'
+                          style={styles.activeLoadoutIcon1}
+                        />
+                      ) : activeLoadoutId === 2 ? (
+                        <Foundation
+                          name='shield'
+                          size={scale(40)}
+                          color='white'
+                          style={styles.activeLoadoutIcon2}
+                        />
+                      ) : activeLoadoutId === 3 ? (
+                        <FontAwesome6
+                          name='dollar'
+                          size={scale(40)}
+                          color='white'
+                          style={styles.activeLoadoutIcon2}
+                        />
+                      ) : activeLoadoutId === 4 ? (
+                        <MaterialIcons
+                          name='airplanemode-active'
+                          size={scale(40)}
+                          color='white'
+                          style={styles.activeLoadoutIcon1}
+                        />
+                      ) : null}
                       <ExpoImage
                         source={playerBoxSvgs(
                           gameDataState.game.health[item.id],
@@ -230,7 +337,7 @@ export default function BattleRoyaleScreen() {
                           width: '100%',
                           height: '100%',
                         }}
-                        contentFit='contain' // Adjust image fit within the view
+                        contentFit='contain'
                       />
                     </TouchableOpacity>
                     <Animated.View
@@ -256,8 +363,13 @@ export default function BattleRoyaleScreen() {
           </View>
         </ScrollView>
         <View style={styles.loadoutButtonGroup}>
-          {loadoutData.map((item: any, index: number) => (
-            <ThemeButton style={loadoutButton} key={index}>
+          {loadoutData.map((item: any, index: any) => (
+            <ThemeButton
+              style={loadoutButton}
+              key={index}
+              disabled={isDisabled}
+              onPress={() => handleLoadoutPress(item)}
+            >
               <View style={loadoutIconBox}>
                 <CustomText style={loadoutIcon}>
                   {loadoutIcons[index].icon}
@@ -286,16 +398,27 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  activeLoadoutIcon1: {
+    position: 'absolute',
+    top: scale(10),
+    left: scale(10),
+  },
+  activeLoadoutIcon2: {
+    position: 'absolute',
+    top: scale(8),
+    left: scale(16),
+  },
   playerBox: {
     width: '17%',
     height: verticalScale(50),
     justifyContent: 'center',
   },
+  playerButton: {},
   spark: {
     position: 'absolute',
     zIndex: -1000,
-    width: width * 0.15,
-    height: height * 0.1,
+    width: moderateScale(60),
+    height: verticalScale(60),
   },
   sparkImage: {
     width: '100%',
@@ -311,3 +434,4 @@ const styles = StyleSheet.create({
     gap: moderateScale(10),
   },
 })
+

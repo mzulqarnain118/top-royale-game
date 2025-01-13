@@ -108,10 +108,12 @@ export default function LoadoutScreen() {
             flex: 1,
             height: '100%',
             display: 'flex',
-            justifyContent: 'flex-start',
+            // justifyContent: 'flex-start',
+            justifyContent: 'center',
           }}
         >
-          <View style={styles.headerContainer}>
+          <Text style={styles.title}>Coming Soon</Text>
+          {/* <View style={styles.headerContainer}>
             <CustomText style={styles.headerText}>
               Choose your loadout
             </CustomText>
@@ -156,7 +158,7 @@ export default function LoadoutScreen() {
                 </View>
               </ThemeButton>
             ))}
-          </View>
+          </View> */}
         </ScrollView>
       </View>
     </BackgroundSvg>
@@ -170,6 +172,12 @@ const styles = StyleSheet.create({
     gap: 20,
     paddingTop: verticalScale(40),
     paddingHorizontal: ms(12),
+  },
+  title: {
+    color: 'white',
+    fontSize: scale(50),
+    lineHeight: scale(60),
+    textAlign: 'center',
   },
   headerContainer: {
     justifyContent: 'center',

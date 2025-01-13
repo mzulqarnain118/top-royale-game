@@ -30,7 +30,7 @@ import useGameStore from '@/store/useGameStore'
 import handleExitGame from '@/services/handleExitGame'
 import BackgroundSvg from '@/components/BackgroundSvg'
 
-export default function BattleRoyaleScreen() {
+export default function BattleRoyaleRoom() {
   const [gameInitialData, setGameInitialData] = useState<any>(null)
 
   const user = useGlobalStore((state) => state.user)
@@ -81,8 +81,8 @@ export default function BattleRoyaleScreen() {
       handleExitGame(disconnectSocket),
     )
 
-    // const socket = connectSocket('https://dev.trywebdesign.com')
-    const socket = connectSocket(`${SERVER_URL}`)
+    const socket = connectSocket('https://dev.trywebdesign.com')
+    // const socket = connectSocket(`${SERVER_URL}`)
 
     if (socket) {
       if (!socket) {
