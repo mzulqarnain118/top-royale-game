@@ -120,7 +120,7 @@ export default function BattleRoyaleScreen() {
 
     const handleDisconnect = () => {
       console.log('disconnect, trying to connect again ')
-      connectSocket(`${SERVER_URL}`, { playerId: user.id })
+      connectSocket(`${SERVER_URL}`)
       setIsSocketConnected((prev) => !prev)
     }
 
