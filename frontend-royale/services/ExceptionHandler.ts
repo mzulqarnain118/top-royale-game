@@ -11,6 +11,12 @@ export default function ExceptionHandler(error: any) {
 
   const handleStatusCodeError = (status: any, msg: any) => {
     switch (status) {
+      case 402:
+        Toast(
+          msg ?? 'error',
+          "You don't have enough money to buy this loadout.",
+        )
+        break
       case 403:
         Toast(
           msg ?? 'error',
@@ -39,7 +45,7 @@ export default function ExceptionHandler(error: any) {
         Toast(msg ?? 'error', 'Invalid Data')
         break
       case 400:
-        Toast('error', `Bad Request:  ${msg}`)
+        Toast('error', `Bad Request:  ${error.response.data}`)
         break
       case 430:
         Toast(msg ?? 'error', error.response.data)

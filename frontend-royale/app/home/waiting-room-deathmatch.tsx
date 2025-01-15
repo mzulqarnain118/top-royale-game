@@ -11,6 +11,7 @@ import {
   MaterialIcons,
   Foundation,
   Feather,
+  FontAwesome6,
 } from '@expo/vector-icons'
 import {
   loadoutButton,
@@ -34,7 +35,7 @@ import useGameStore from '@/store/useGameStore'
 import handleExitGame from '@/services/handleExitGame'
 import BackgroundSvg from '@/components/BackgroundSvg'
 
-export default function BattleRoyaleScreen() {
+export default function DeathMatchRoom() {
   const [gameInitialData, setGameInitialData] = useState<any>(null)
 
   const user = useGlobalStore((state) => state.user)
@@ -45,24 +46,20 @@ export default function BattleRoyaleScreen() {
 
   const loadoutIcons = [
     {
+      id: 1,
+      icon: (
+        <MaterialCommunityIcons name='sword' size={scale(20)} color='white' />
+      ),
+      value: 50,
+    },
+    {
       id: 3,
       icon: <Foundation name='shield' size={scale(20)} color='white' />,
       value: 50,
     },
     {
-      id: 1,
-      icon: (
-        <MaterialCommunityIcons
-          name='shield-sword'
-          size={scale(20)}
-          color='white'
-        />
-      ),
-      value: 50,
-    },
-    {
       id: 2,
-      icon: <Feather name='dollar-sign' size={scale(20)} color='white' />,
+      icon: <FontAwesome6 name='dollar' size={scale(20)} color='white' />,
       value: 50,
     },
     {
@@ -90,12 +87,13 @@ export default function BattleRoyaleScreen() {
     )
 
     const socket = connectSocket('https://dev.trywebdesign.com')
+    // const socket = connectSocket(`${SERVER_URL}`, { playerId: user.id })
 
+    if (!socket) {
+      // console.log('Socket not found')
+      return
+    }
     if (socket) {
-      if (!socket) {
-        // console.log('Socket not found')
-        return
-      }
       socket.emit('joinDM', { userId: user.id })
 
       socket.on('gameJoined', (gameJoinData: any) => {
@@ -133,7 +131,7 @@ export default function BattleRoyaleScreen() {
           assists={0}
           deaths={0}
           money={0}
-          health={100}
+          health={50}
           rank={1}
         />
         <View>
