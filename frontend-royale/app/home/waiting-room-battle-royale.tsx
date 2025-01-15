@@ -144,7 +144,7 @@ export default function BattleRoyaleRoom() {
           assists={0}
           deaths={0}
           money={0}
-          health={100}
+          health={50}
           rank={1}
         />
         <View>

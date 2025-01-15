@@ -41,6 +41,7 @@ import { router } from 'expo-router'
 import BackgroundSvg from '@/components/BackgroundSvg'
 import axios from 'axios'
 import { SERVER_URL } from '@/services/api'
+import debounce, { throttle } from '@/services/debounce'
 
 const { width, height } = Dimensions.get('window')
 
@@ -95,6 +96,38 @@ export default function BattleRoyaleScreen() {
     [],
   )
 
+  const handlePlayerAttacked = (data: any) => {
+    setGameDataState(data)
+  }
+
+  const handleUseAirStrikeLoadout = () => {
+    setActiveLoadoutId(0)
+  }
+
+  const handlePlayerDisconnected = () => {
+    console.log('playerDisconnected, connecting againnnnnnnnn ')
+    setIsSocketConnected((prev) => !prev)
+  }
+
+  const handleDisconnect = () => {
+    console.log('disconnect, trying to connect again ')
+    connectSocket(`${SERVER_URL}`)
+    setIsSocketConnected((prev) => !prev)
+  }
+
+  const handleEndGame = (data: any) => {
+    console.log('endGame: ', data)
+    setGameData(data)
+    router.replace('/home/stats')
+  }
+
+  const throttledHandlePlayerAttacked = useCallback(
+    throttle((data: any) => {
+      setGameDataState(data)
+    }, 500), // 500ms throttle
+    [],
+  )
+
   useEffect(() => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () =>
       handleExitGame(disconnectSocket),
@@ -105,36 +138,29 @@ export default function BattleRoyaleScreen() {
       return
     }
 
-    const handlePlayerAttacked = (data: any) => {
-      setGameDataState(data)
-    }
-
-    const handleUseAirStrikeLoadout = () => {
-      setActiveLoadoutId(0)
-    }
-
-    const handlePlayerDisconnected = () => {
-      console.log('playerDisconnected, connecting againnnnnnnnn ')
-      setIsSocketConnected((prev) => !prev)
-    }
-
-    const handleDisconnect = () => {
-      console.log('disconnect, trying to connect again ')
-      connectSocket(`${SERVER_URL}`)
-      setIsSocketConnected((prev) => !prev)
-    }
-
-    const handleEndGame = (data: any) => {
-      console.log('endGame: ', data)
-      setGameData(data)
-      router.replace('/home/stats')
-    }
-
-    socket.on('playerAttacked', handlePlayerAttacked)
+    socket.on('playerAttacked', throttledHandlePlayerAttacked)
     socket.on('useAirStrikeLoadout', handleUseAirStrikeLoadout)
     socket.on('playerDisconnected', handlePlayerDisconnected)
     socket.on('disconnect', handleDisconnect)
     socket.on('endGame', handleEndGame)
+
+    // debuggins code
+
+    socket.on('connect_error', (error: any) => {
+      console.log('Connection failed:', error.message, JSON.stringify(error)) // Logs the error reason
+    })
+
+    socket.on('connect_failed', () => {
+      console.log('Connection could not be established.')
+    })
+
+    socket.on('reconnect_attempt', () => {
+      console.log('Attempting to reconnect...')
+    })
+
+    socket.on('reconnect', () => {
+      console.log('Reconnected successfully!')
+    })
 
     return () => {
       backHandler.remove()
@@ -235,13 +261,17 @@ export default function BattleRoyaleScreen() {
 
   const handlePlayerPress = useCallback(
     async (item: any) => {
-      setActiveSpark(() => item.id)
+      setActiveSpark(item.id)
       sparkAnimation()
-      setTimeout(() => setActiveSpark(null), 1000)
+      // setTimeout(() => setActiveSpark(null), 1000) // no need for this timeout
       await emitAttackEvent(item)
     },
     [emitAttackEvent, sparkAnimation],
   )
+
+  const debouncedPlayerPress = useCallback(debounce(handlePlayerPress, 500), [
+    handlePlayerPress,
+  ])
 
   const handleLoadoutPress = useCallback(
     async (item: any) => {
@@ -296,7 +326,7 @@ export default function BattleRoyaleScreen() {
                   <View style={styles.playerBox} key={index}>
                     <TouchableOpacity
                       style={styles.playerButton}
-                      onPress={() => handlePlayerPress(item)}
+                      onPress={() => debouncedPlayerPress(item)}
                       disabled={isSelf || !selfIsAlive || !playerIsAlive}
                     >
                       {activeLoadoutId === 1 ? (

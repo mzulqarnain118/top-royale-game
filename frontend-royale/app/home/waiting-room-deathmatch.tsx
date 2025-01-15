@@ -89,11 +89,11 @@ export default function DeathMatchRoom() {
     const socket = connectSocket('https://dev.trywebdesign.com')
     // const socket = connectSocket(`${SERVER_URL}`, { playerId: user.id })
 
+    if (!socket) {
+      // console.log('Socket not found')
+      return
+    }
     if (socket) {
-      if (!socket) {
-        // console.log('Socket not found')
-        return
-      }
       socket.emit('joinDM', { userId: user.id })
 
       socket.on('gameJoined', (gameJoinData: any) => {
@@ -131,7 +131,7 @@ export default function DeathMatchRoom() {
           assists={0}
           deaths={0}
           money={0}
-          health={100}
+          health={50}
           rank={1}
         />
         <View>

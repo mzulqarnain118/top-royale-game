@@ -12,6 +12,7 @@ const useSocketStore = create<SocketState>((set) => ({
   connectSocket: (url: string) => {
     const socket = io(url, {
       transports: ['websocket'], // Force WebSocket transport (don't use long-polling)
+      reconnectionAttempts: Infinity, // infinity
     })
     set({ socket })
     if (socket) {
