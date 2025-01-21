@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 108 108">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#radial-gradient);
+        stroke: #000;
+        stroke-miterlimit: 10;
+        stroke-width: 6px;
+      }
+    </style>
+    <radialGradient id="radial-gradient" cx="54" cy="54" fx="54" fy="54" r="51" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#11ba29"/>
+      <stop offset=".5" stop-color="#09a216"/>
+      <stop offset="1" stop-color="#080"/>
+    </radialGradient>
+  </defs>
+  <g id="Graphic_Elements">
+    <g id="Search_Icons">
+      <polygon class="cls-1" points="105 40.4 67.6 40.4 67.6 3 40.4 3 40.4 40.4 3 40.4 3 67.6 40.4 67.6 40.4 105 67.6 105 67.6 67.6 105 67.6 105 40.4"/>
+    </g>
+  </g>
+</svg>

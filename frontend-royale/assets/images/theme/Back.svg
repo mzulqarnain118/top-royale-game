@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 142 142">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        stroke: #000;
+      }
+
+      .cls-1, .cls-2 {
+        stroke-miterlimit: 10;
+        stroke-width: 3px;
+      }
+
+      .cls-2 {
+        fill: url(#radial-gradient);
+        stroke: #000036;
+      }
+    </style>
+    <radialGradient id="radial-gradient" cx="71" cy="71" fx="71" fy="71" r="69.5" gradientUnits="userSpaceOnUse">
+      <stop offset=".45" stop-color="#a7a9aa"/>
+      <stop offset=".53" stop-color="#969b9c"/>
+      <stop offset=".68" stop-color="#6c777a"/>
+      <stop offset=".89" stop-color="#273e43"/>
+      <stop offset="1" stop-color="#001d24"/>
+    </radialGradient>
+  </defs>
+  <g id="Text">
+    <g>
+      <circle class="cls-2" cx="71" cy="71" r="69.5"/>
+      <g>
+        <path class="cls-1" d="M55.29,91.57c-1.66-1.66-4.15-3.87-4.7-4.29-4.7-4.29-19.49-10.23-19.35-14.93.14-4.56,15.07-15.9,19.35-20.32,1.11-1.11,3.18-2.9,3.87-4.15.97-1.38,1.38-3.59,2.35-3.73,1.8-1.11,3.59-2.35,5.94-2.35s2.63,1.38,2.63,2.9c-.28,6.91-8.43,14.38-9.12,15.07-5.11,4.7-13.55,11.06-14.24,12.58,1.11.83,2.35,1.24,3.46,1.66,5.81,2.63,17.97,11.61,17.69,17.83,0,1.66-.97,2.35-1.52,2.63-2.63-.28-3.46.14-6.36-2.9Z"/>
+        <path class="cls-1" d="M58.67,70.58c0-4.29,15.37-3.87,20.29-3.87,6.5,0,13.99.69,21.08,1.8,1.18.69,4.14,1.8,4.14,3.04,0,.28-.2.69-.39,1.11-7.09,1.94-24.03,1.52-31.13,1.52-3.35,0-13.99,0-13.99-3.59Z"/>
+      </g>
+    </g>
+  </g>
+</svg>
