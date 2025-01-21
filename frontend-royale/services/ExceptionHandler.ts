@@ -45,7 +45,7 @@ export default function ExceptionHandler(error: any) {
         Toast(msg ?? 'error', 'Invalid Data')
         break
       case 400:
-        Toast('error', `Bad Request:  ${error.response.data}`)
+        Toast('error', `Bad Request:  ${msg}`)
         break
       case 430:
         Toast(msg ?? 'error', error.response.data)

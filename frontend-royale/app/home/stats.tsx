@@ -58,12 +58,22 @@ export default function StatsScreen() {
             label='Money Earned'
             value={`$${gameData.game.stats[user.id].damage_dealt}`}
           />
-          <StatItem label='Money Spent' value={`$${500}`} />
           <StatItem
+            label='Money Spent'
+            value={`$${gameData.game.stats[user.id].money_spent}`}
+          />
+          <StatItem
+            label='Net Profit'
+            value={`${
+              gameData.game.stats[user.id].damage_dealt -
+              gameData.game.stats[user.id].money_spent
+            }`}
+          />
+          {/* <StatItem
             label='Damage Done'
             value={`${gameData.game.stats[user.id].damage_dealt}`}
-          />
-          <StatItem label='Damage Taken' value={`${210}`} />
+          /> */}
+          {/* <StatItem label='Damage Taken' value={`${210}`} /> */}
           <StatItem label='' value='' />
           <StatItem label='Shield Used' value={`${6}`} />
           <StatItem label='Super Attack Used' value={`${5}`} />

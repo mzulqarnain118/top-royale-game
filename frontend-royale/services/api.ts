@@ -5,7 +5,8 @@ export const SERVER_URL = 'https://dev.trywebdesign.com/tap_royal'
 // export const SERVER_URL = 'https://arriving-unified-eel.ngrok-free.app'
 // export const SERVER_URL = 'http://52.36.54.229:5000'
 // export const SERVER_URL = 'http://192.168.137.242:5000'
-// export const SERVER_URL = 'http://192.168.1.150:5000'
+// export const SERVER_URL = 'http://192.168.1.111:5000'
+
 
 
 
