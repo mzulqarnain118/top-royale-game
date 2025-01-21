@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1061.46 2303.76">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#radial-gradient);
+      }
+    </style>
+    <radialGradient id="radial-gradient" cx="543.23" cy="1147.57" fx="543.23" fy="1147.57" r="895.92" gradientTransform="translate(0 -384.94) scale(1 1.34)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1cc2e0"/>
+      <stop offset=".1" stop-color="#1abbd8"/>
+      <stop offset=".26" stop-color="#17a9c2"/>
+      <stop offset=".45" stop-color="#128c9e"/>
+      <stop offset=".68" stop-color="#0b646d"/>
+      <stop offset=".92" stop-color="#03312e"/>
+      <stop offset="1" stop-color="#001f18"/>
+    </radialGradient>
+  </defs>
+  <g id="Phone">
+    <path class="cls-1" d="M839.56,0h221.9v2303.76H0V0h221.9"/>
+  </g>
+</svg>
