@@ -24,13 +24,21 @@ const HealthBox: React.FC<HealthBoxProps> = ({ value }) => {
             gradientUnits='userSpaceOnUse'
             gradientTransform='translate(213.02 71.6105) scale(119.961 117.794)'
           >
+<<<<<<< HEAD
             {value >= 61 && value < 100
+=======
+            {value >= 31 && value <= 40
+>>>>>>> origin/develop
               ? [
                   <Stop key='green-0' offset='0' stopColor='#11BA29' />,
                   <Stop key='green-1' offset='0.50' stopColor='#09A316' />,
                   <Stop key='green-2' offset='1' stopColor='#008800' />,
                 ]
+<<<<<<< HEAD
               : value >= 21 && value < 61
+=======
+              : value >= 21 && value <= 30
+>>>>>>> origin/develop
               ? [
                   <Stop key='yellow-0' offset='0' stopColor='#FFC921' />,
                   <Stop key='yellow-1' offset='0.24' stopColor='#D4AB2B' />,
@@ -38,7 +46,11 @@ const HealthBox: React.FC<HealthBoxProps> = ({ value }) => {
                   <Stop key='yellow-3' offset='0.92' stopColor='#FFCB27' />,
                   <Stop key='yellow-4' offset='0.98' stopColor='#FFC921' />,
                 ]
+<<<<<<< HEAD
               : value >= 1 && value < 21
+=======
+              : value >= 1 && value <= 20
+>>>>>>> origin/develop
               ? [
                   <Stop key='red-0' offset='0' stopColor='#F10000' />,
                   <Stop key='red-1' offset='0.17' stopColor='#E40800' />,
@@ -65,13 +77,21 @@ const HealthBox: React.FC<HealthBoxProps> = ({ value }) => {
             gradientUnits='userSpaceOnUse'
             gradientTransform='translate(69.0418 71.6107) scale(65.4184 67.7069)'
           >
+<<<<<<< HEAD
             {value >= 61 && value < 100
+=======
+            {value >= 31 && value <= 40
+>>>>>>> origin/develop
               ? [
                   <Stop key='green-0' offset='0' stopColor='#11BA29' />,
                   <Stop key='green-1' offset='0.50' stopColor='#09A316' />,
                   <Stop key='green-2' offset='1' stopColor='#008800' />,
                 ]
+<<<<<<< HEAD
               : value >= 21 && value < 61
+=======
+              : value >= 21 && value <= 30
+>>>>>>> origin/develop
               ? [
                   <Stop key='yellow-0' offset='0' stopColor='#FFC921' />,
                   <Stop key='yellow-1' offset='0.24' stopColor='#D4AB2B' />,
@@ -79,7 +99,11 @@ const HealthBox: React.FC<HealthBoxProps> = ({ value }) => {
                   <Stop key='yellow-3' offset='0.92' stopColor='#FFCB27' />,
                   <Stop key='yellow-4' offset='0.98' stopColor='#FFC921' />,
                 ]
+<<<<<<< HEAD
               : value >= 1 && value < 21
+=======
+              : value >= 1 && value <= 20
+>>>>>>> origin/develop
               ? [
                   <Stop key='red-0' offset='0' stopColor='#F10000' />,
                   <Stop key='red-1' offset='0.17' stopColor='#E40800' />,

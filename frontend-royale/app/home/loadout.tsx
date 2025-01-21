@@ -65,6 +65,7 @@ export default function LoadoutScreen() {
       icon: <Entypo name='heart' size={scale(20)} color='white' />,
       value: 50,
     },
+<<<<<<< HEAD
     {
       id: 7,
       icon: (
@@ -81,6 +82,24 @@ export default function LoadoutScreen() {
       icon: <Feather name='wifi' size={scale(20)} color='white' />,
       value: 50,
     },
+=======
+    // {
+    //   id: 7,
+    //   icon: (
+    //     <FontAwesome6
+    //       name='grip-lines-vertical'
+    //       size={scale(20)}
+    //       color='white'
+    //     />
+    //   ),
+    //   value: 50,
+    // },
+    // {
+    //   id: 8,
+    //   icon: <Feather name='wifi' size={scale(20)} color='white' />,
+    //   value: 50,
+    // },
+>>>>>>> origin/develop
   ]
 
   const handleBackToHome = () => {
@@ -108,10 +127,19 @@ export default function LoadoutScreen() {
             flex: 1,
             height: '100%',
             display: 'flex',
+<<<<<<< HEAD
             justifyContent: 'flex-start',
           }}
         >
           <View style={styles.headerContainer}>
+=======
+            // justifyContent: 'flex-start',
+            justifyContent: 'center',
+          }}
+        >
+          <Text style={styles.title}>Coming Soon</Text>
+          {/* <View style={styles.headerContainer}>
+>>>>>>> origin/develop
             <CustomText style={styles.headerText}>
               Choose your loadout
             </CustomText>
@@ -156,7 +184,11 @@ export default function LoadoutScreen() {
                 </View>
               </ThemeButton>
             ))}
+<<<<<<< HEAD
           </View>
+=======
+          </View> */}
+>>>>>>> origin/develop
         </ScrollView>
       </View>
     </BackgroundSvg>
@@ -171,6 +203,15 @@ const styles = StyleSheet.create({
     paddingTop: verticalScale(40),
     paddingHorizontal: ms(12),
   },
+<<<<<<< HEAD
+=======
+  title: {
+    color: 'white',
+    fontSize: scale(50),
+    lineHeight: scale(60),
+    textAlign: 'center',
+  },
+>>>>>>> origin/develop
   headerContainer: {
     justifyContent: 'center',
     alignItems: 'center',

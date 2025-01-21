@@ -11,6 +11,10 @@ import {
   MaterialIcons,
   Foundation,
   Feather,
+<<<<<<< HEAD
+=======
+  FontAwesome6,
+>>>>>>> origin/develop
 } from '@expo/vector-icons'
 import {
   loadoutButton,
@@ -34,7 +38,11 @@ import useGameStore from '@/store/useGameStore'
 import handleExitGame from '@/services/handleExitGame'
 import BackgroundSvg from '@/components/BackgroundSvg'
 
+<<<<<<< HEAD
 export default function BattleRoyaleScreen() {
+=======
+export default function DeathMatchRoom() {
+>>>>>>> origin/develop
   const [gameInitialData, setGameInitialData] = useState<any>(null)
 
   const user = useGlobalStore((state) => state.user)
@@ -45,11 +53,22 @@ export default function BattleRoyaleScreen() {
 
   const loadoutIcons = [
     {
+<<<<<<< HEAD
+=======
+      id: 1,
+      icon: (
+        <MaterialCommunityIcons name='sword' size={scale(20)} color='white' />
+      ),
+      value: 50,
+    },
+    {
+>>>>>>> origin/develop
       id: 3,
       icon: <Foundation name='shield' size={scale(20)} color='white' />,
       value: 50,
     },
     {
+<<<<<<< HEAD
       id: 1,
       icon: (
         <MaterialCommunityIcons
@@ -63,6 +82,10 @@ export default function BattleRoyaleScreen() {
     {
       id: 2,
       icon: <Feather name='dollar-sign' size={scale(20)} color='white' />,
+=======
+      id: 2,
+      icon: <FontAwesome6 name='dollar' size={scale(20)} color='white' />,
+>>>>>>> origin/develop
       value: 50,
     },
     {
@@ -89,6 +112,7 @@ export default function BattleRoyaleScreen() {
       handleExitGame(disconnectSocket),
     )
 
+<<<<<<< HEAD
     const socket = connectSocket(SERVER_URL)
 
     if (socket) {
@@ -96,6 +120,16 @@ export default function BattleRoyaleScreen() {
         // console.log('Socket not found')
         return
       }
+=======
+    const socket = connectSocket('https://dev.trywebdesign.com')
+    // const socket = connectSocket(`${SERVER_URL}`)
+
+    if (!socket) {
+      // console.log('Socket not found')
+      return
+    }
+    if (socket) {
+>>>>>>> origin/develop
       socket.emit('joinDM', { userId: user.id })
 
       socket.on('gameJoined', (gameJoinData: any) => {
@@ -133,7 +167,11 @@ export default function BattleRoyaleScreen() {
           assists={0}
           deaths={0}
           money={0}
+<<<<<<< HEAD
           health={100}
+=======
+          health={50}
+>>>>>>> origin/develop
           rank={1}
         />
         <View>
@@ -150,7 +188,11 @@ export default function BattleRoyaleScreen() {
                   <CustomText style={loadoutIcon}>
                     {loadoutIcons[index].icon}
                   </CustomText>
+<<<<<<< HEAD
                   <Text style={{ fontSize: scale(26), color: 'white' }}>
+=======
+                  <Text style={{ fontSize: scale(24), color: 'white' }}>
+>>>>>>> origin/develop
                     ${item.price}
                   </Text>
                 </View>
@@ -168,13 +210,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     gap: 20,
+<<<<<<< HEAD
     padding: ms(20),
+=======
+    // padding: ms(20),
+    paddingTop: ms(20),
+    paddingBottom: ms(8),
+>>>>>>> origin/develop
   },
   loadingText: {
     color: '#FFFFFF',
     fontSize: 28,
   },
   loadoutButtonGroup: {
+<<<<<<< HEAD
+=======
+    width: '91%',
+>>>>>>> origin/develop
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',

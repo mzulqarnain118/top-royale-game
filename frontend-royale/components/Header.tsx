@@ -1,13 +1,20 @@
+<<<<<<< HEAD
 import { useRoute } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import {
   ActivityIndicator,
   Alert,
+=======
+import { useRoute } from '@react-navigation/native'
+import {
+  ActivityIndicator,
+>>>>>>> origin/develop
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native'
+<<<<<<< HEAD
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import Foundation from '@expo/vector-icons/Foundation'
 import { useEffect, useState } from 'react'
@@ -25,6 +32,13 @@ import { clearToken, loadUser } from '@/services/asyncStoreage'
 import { Image as ExpoImage } from 'expo-image'
 import { labelTab, tabCount } from '@/utils/commonStyles'
 import { router } from 'expo-router'
+=======
+import { useEffect, useState } from 'react'
+import { verticalScale } from 'react-native-size-matters'
+import CustomText from './CustomText'
+import AttributeButton from './AttributeButton'
+import { Image as ExpoImage } from 'expo-image'
+>>>>>>> origin/develop
 import MoneyBox from '@/components/MoneyBox'
 import HealthBox from './HealthBox'
 
@@ -50,7 +64,11 @@ export default function Header({
   const { name: routeName } = useRoute()
   const isDeathMatch = routeName === 'home/deathmatch'
   const isIndex = routeName === 'home/index' // sould be is home
+<<<<<<< HEAD
   const [timeLeft, setTimeLeft] = useState(300)
+=======
+  const [timeLeft, setTimeLeft] = useState(120)
+>>>>>>> origin/develop
 
   useEffect(() => {
     if (isDeathMatch) {
@@ -69,6 +87,10 @@ export default function Header({
     }
   }, [])
 
+<<<<<<< HEAD
+=======
+  // Function to format time in minutes and seconds
+>>>>>>> origin/develop
   const formatTime = (timeInSeconds: number) => {
     const minutes = Math.floor(timeInSeconds / 60)
     const seconds = timeInSeconds % 60

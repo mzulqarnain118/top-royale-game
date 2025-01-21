@@ -1,5 +1,6 @@
 import BackgroundSvg from '@/components/BackgroundSvg'
 import CustomText from '@/components/CustomText'
+<<<<<<< HEAD
 import DefaultButton from '@/components/DefaultButton'
 import ThemeButton from '@/components/ThemeButton'
 import { afterActionReports } from '@/constants/AfterActionReports'
@@ -7,6 +8,11 @@ import useGameStore from '@/store/useGameStore'
 import { backgroundGradient } from '@/utils/commonColors'
 import { container } from '@/utils/commonStyles'
 import { LinearGradient } from 'expo-linear-gradient'
+=======
+import ThemeButton from '@/components/ThemeButton'
+import useGameStore from '@/store/useGameStore'
+import { container } from '@/utils/commonStyles'
+>>>>>>> origin/develop
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import {
   scale,
@@ -17,12 +23,16 @@ import {
 
 export default function AfterActionReportScreen() {
   const gameData = useGameStore((state) => state.gameData)
+<<<<<<< HEAD
   console.log('gameDataInAAR: ', gameData)
 
   // TODO: Delete below code
   // const {
   //   game: { players, stats },
   // } = gameData
+=======
+  // console.log('gameDataInAAR: ', gameData)
+>>>>>>> origin/develop
 
   // convert stats object to array
   const statsArray = Object.entries(gameData.game.stats)
@@ -90,6 +100,7 @@ export default function AfterActionReportScreen() {
                   </View>
                 )
               })}
+<<<<<<< HEAD
               {/* {gameData.game.players.map((player: any, index: number) => {
               const playerStats = stats[player.id] || {}
               return (
@@ -127,6 +138,8 @@ export default function AfterActionReportScreen() {
                 <Text style={styles.tableCell}>{item.money}</Text>
               </View>
             ))} */}
+=======
+>>>>>>> origin/develop
             </View>
           </ScrollView>
         </ScrollView>

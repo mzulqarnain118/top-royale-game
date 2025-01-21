@@ -10,10 +10,20 @@ interface SocketState {
 const useSocketStore = create<SocketState>((set) => ({
   socket: null,
   connectSocket: (url: string) => {
+<<<<<<< HEAD
     const socket = io(url)
     set({ socket })
     // console.log('socket connected')
     if (socket) {
+=======
+    const socket = io(url, {
+      transports: ['websocket'], // Force WebSocket transport (don't use long-polling)
+      reconnectionAttempts: Infinity, // infinity
+    })
+    set({ socket })
+    if (socket) {
+      // console.log(socket)
+>>>>>>> origin/develop
       return socket
     } else {
       return false

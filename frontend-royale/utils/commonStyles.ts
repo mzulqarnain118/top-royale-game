@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+import { Platform } from 'react-native'
+>>>>>>> origin/develop
 import {
   moderateScale,
   moderateVerticalScale,
@@ -120,6 +124,7 @@ export const loadoutIconBox: any = {
 }
 
 export const loadoutIcon: any = {
+<<<<<<< HEAD
   borderRadius: verticalScale(50),
   backgroundColor: '#1cc433',
   borderWidth: 1,
@@ -129,4 +134,16 @@ export const loadoutIcon: any = {
   borderColor: 'white',
   textAlign: 'center',
   textAlignVertical: 'center',
+=======
+  borderRadius: Platform.OS === 'ios' ? 15 : verticalScale(50),
+  backgroundColor: '#1cc433',
+  borderColor: 'white',
+  borderWidth: 1,
+  padding: 0,
+  height: Platform.OS === 'ios' ? 30 : verticalScale(30),
+  width: Platform.OS === 'ios' ? 30 : verticalScale(30),
+  overflow: 'hidden',
+  textAlign: 'center',
+ textAlignVertical: 'center',
+>>>>>>> origin/develop
 }

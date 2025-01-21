@@ -13,7 +13,11 @@ import { moderateScale, scale, vs } from 'react-native-size-matters'
 
 export default function StatsScreen() {
   const gameData = useGameStore((state) => state.gameData)
+<<<<<<< HEAD
   console.log('gameDataInStats: ', gameData)
+=======
+  // console.log('gameDataInStats: ', gameData)
+>>>>>>> origin/develop
 
   const user = useGlobalStore((state) => state.user)
 
@@ -58,12 +62,31 @@ export default function StatsScreen() {
             label='Money Earned'
             value={`$${gameData.game.stats[user.id].damage_dealt}`}
           />
+<<<<<<< HEAD
           <StatItem label='Money Spent' value={`$${500}`} />
           <StatItem
             label='Damage Done'
             value={`${gameData.game.stats[user.id].damage_dealt}`}
           />
           <StatItem label='Damage Taken' value={`${210}`} />
+=======
+          <StatItem
+            label='Money Spent'
+            value={`$${gameData.game.stats[user.id].money_spent}`}
+          />
+          <StatItem
+            label='Net Profit'
+            value={`${
+              gameData.game.stats[user.id].damage_dealt -
+              gameData.game.stats[user.id].money_spent
+            }`}
+          />
+          {/* <StatItem
+            label='Damage Done'
+            value={`${gameData.game.stats[user.id].damage_dealt}`}
+          /> */}
+          {/* <StatItem label='Damage Taken' value={`${210}`} /> */}
+>>>>>>> origin/develop
           <StatItem label='' value='' />
           <StatItem label='Shield Used' value={`${6}`} />
           <StatItem label='Super Attack Used' value={`${5}`} />

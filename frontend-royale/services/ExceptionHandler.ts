@@ -11,6 +11,15 @@ export default function ExceptionHandler(error: any) {
 
   const handleStatusCodeError = (status: any, msg: any) => {
     switch (status) {
+<<<<<<< HEAD
+=======
+      case 402:
+        Toast(
+          msg ?? 'error',
+          "You don't have enough money to buy this loadout.",
+        )
+        break
+>>>>>>> origin/develop
       case 403:
         Toast(
           msg ?? 'error',

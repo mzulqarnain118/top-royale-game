@@ -13,13 +13,20 @@ const useUserStore = create<UserState>()(
     (set, get) => ({
       user: null,
       storeUser: (user: any) => {
+<<<<<<< HEAD
         console.log('im gonna storeUser: ', user)
+=======
+        // console.log('im gonna storeUser: ', user)
+>>>>>>> origin/develop
         set({ user })
       },
       loadUser: async () => {
         const user = await loadUser()
         set({ user })
+<<<<<<< HEAD
         console.log('user: ', user) // TODO: remove log
+=======
+>>>>>>> origin/develop
       },
     }),
     {

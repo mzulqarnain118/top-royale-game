@@ -1,6 +1,9 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios'
 // import { getLocal } from './index'
+<<<<<<< HEAD
 import { loadToken } from '@/services/asyncStoreage'
+=======
+>>>>>>> origin/develop
 // import ExceptionHandler from './ExceptionHandler'
 export const SERVER_URL = 'http://192.168.1.116:5000'
 // import { backEndCodeURLLocation } from '../config'
@@ -14,7 +17,11 @@ const apiInstance: AxiosInstance = axios.create({
 // // Interceptor for request
 apiInstance.interceptors.request.use((config: any) => {
   //   const token = getLocal('token')
+<<<<<<< HEAD
   const token = loadToken()
+=======
+  const token = ''
+>>>>>>> origin/develop
 
   if (token) {
     config.headers['Authorization'] = `Token ${token}`
