@@ -11,7 +11,7 @@ const CustomText: React.FC<any> = ({ style, weight = 'Regular', ...props }) => {
       fontFamily = 'AdleryProBlockletter';
   }
 
-  return <Text {...props} style={[style, { fontFamily }]} />;
+  return <Text {...props} style={[style, { fontFamily,paddingTop:3 }]} />;
 };
 
 export default CustomText;

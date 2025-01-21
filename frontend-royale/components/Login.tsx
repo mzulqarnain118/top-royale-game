@@ -1,126 +1,133 @@
-import { authScreensSubmitBtns, container, contentContainerStyle, errorMessage, gameTitle, inputField } from '@/utils/commonStyles';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Link, router } from 'expo-router';
-import React, { useState, useEffect, useRef } from 'react';
-import { Text, Animated, View, TextInput, ScrollView, ActivityIndicator, Alert } from 'react-native';
-import DefaultButton from './DefaultButton';
-import { backgroundGradient } from '@/utils/commonColors';
-import CustomText from './CustomText';
-import { login } from '@/services/api';
-import { loadToken, storeToken, storeUser } from '@/services/store';
+import { errorMessage, gameTitle } from '@/utils/commonStyles'
+import { router } from 'expo-router'
+import React, { useState } from 'react'
+import {
+  View,
+  TextInput,
+  ScrollView,
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from 'react-native'
+import DefaultButton from './DefaultButton'
+import CustomText from './CustomText'
+import { login } from '@/services/api'
+import { ms, s, scale } from 'react-native-size-matters'
+import Toast from './Toast'
+import ExceptionHandler from '@/services/ExceptionHandler'
+import useGlobalStore from '@/store/useGlobalStore'
+import BackgroundSvg from './BackgroundSvg'
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
-    const [isLoading, setIsLoading] = useState(false);
+  const [username, setUsername] = useState('')
+  const [errors, setErrors] = useState<{ username?: string }>({})
+  const [isLoading, setIsLoading] = useState(false)
 
-    useEffect(() => {
-        const fetchToken = async () => {
-            const token = await loadToken();
-            if (token) {
-                router.navigate("/home");
-            }
-        };
-        fetchToken();
-    }, []);
-    
-    const validateEmail = (email: string) => {
-        // Basic email validation regex
-        const re = /\S+@\S+\.\S+/;
-        return re.test(String(email).toLowerCase());
-    };
+  const setToken = useGlobalStore.getState().setToken
+  const setUser = useGlobalStore.getState().setUser
 
-    const handleValidation = () => {
-        let valid = true;
-        let tempErrors: { email?: string; password?: string } = {};
+  const handleValidation = () => {
+    let valid = true
+    let tempErrors: { username?: string } = {}
 
-        if (!email) {
-            tempErrors.email = 'Email is required';
-            valid = false;
-        } else if (!validateEmail(email)) {
-            tempErrors.email = 'Please enter a valid email address';
-            valid = false;
+    if (!username) {
+      tempErrors.username = 'Username is required'
+      valid = false
+    } else if (username.length > 20) {
+      tempErrors.username = 'Username must be less then 20 characters'
+      valid = false
+    }
+
+    setErrors(tempErrors)
+    return valid
+  }
+
+  const handleLogin = async () => {
+    setIsLoading(true)
+    try {
+      if (handleValidation()) {
+        const response = await login(username)
+        if (response.status === 200 && response.data.data.token) {
+          Toast('success', 'Logged in successfully!')
+          setToken(response.data.data.token)
+          setUser(response.data.data.user)
+          router.replace('/home')
         }
+      }
+    } catch (error: any) {
+      ExceptionHandler(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
-        if (!password) {
-            tempErrors.password = 'Password is required';
-            valid = false;
-        } else if (password.length < 6) {
-            tempErrors.password = 'Password must be at least 6 characters long';
-            valid = false;
-        }
+  return (
+    <BackgroundSvg>
+      <View style={[styles.container, { alignItems: 'stretch' }]}>
+        <ScrollView contentContainerStyle={styles.contentContainerStyle}>
+          <View>
+            <CustomText style={[gameTitle, { fontSize: scale(44) }]}>
+              Enter Username
+            </CustomText>
+            <TextInput
+              style={styles.inputField}
+              // placeholder='Username'
+              value={username}
+              onChangeText={setUsername}
+            />
+            {errors.username && (
+              <CustomText style={errorMessage}>{errors.username}</CustomText>
+            )}
+          </View>
+          <View style={styles.submitBtn}>
+            {isLoading ? (
+              <ActivityIndicator size='large' color='#FFFFFF' />
+            ) : (
+              <DefaultButton name='Login' onPress={handleLogin} />
+            )}
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <Text style={{ color: 'white', fontSize: s(16) }}>
+              Create an account{' '}
+            </Text>
+            <TouchableOpacity onPress={() => router.replace('/signup')}>
+              <Text style={{ color: 'orange', fontSize: s(16) }}>Sign Up</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
+    </BackgroundSvg>
+  )
+}
 
-        setErrors(tempErrors);
-        return valid;
-    };
+export default Login
 
-    const handleLogin = async () => {
-        setIsLoading(true);
-        try {
-            if (handleValidation()) {
-                // Proceed with form submission
-                const response: any = await login(email, password);
-                console.log(response.data, "response");
-                if (response.status === 200 && response.data.token) {
-                    await storeToken(response.data.token);
-                    await storeUser(response.data.user);
-                }
-                router.navigate("/home");
-                setIsLoading(false);
-            }
-        } catch (error: any) {
-            setIsLoading(false);
-            Alert.alert('Error', error?.response?.data?.error || 'Invalid credentials');
-        }
-    };
-
-    const opacity = useRef(new Animated.Value(0)).current;
-
-    useEffect(() => {
-        Animated.timing(opacity, {
-            toValue: 1,
-            duration: 300,
-            useNativeDriver: true,
-        }).start();
-    }, []);
-
-    return (
-        <LinearGradient colors={backgroundGradient} style={{ ...container, alignItems: 'stretch' }}>
-            <ScrollView contentContainerStyle={contentContainerStyle}>
-                <CustomText style={gameTitle}>Tap Royale</CustomText>
-                <CustomText style={{ color: 'white', fontSize: 24 }}>Log In</CustomText>
-                <View>
-                    <TextInput
-                        style={inputField}
-                        placeholder="Email"
-                        value={email}
-                        onChangeText={setEmail}
-                    />
-                    {errors.email && <CustomText style={errorMessage}>{errors.email}</CustomText>}
-                </View>
-                <View>
-                    <TextInput
-                        style={inputField}
-                        placeholder="Password"
-                        secureTextEntry
-                        value={password}
-                        onChangeText={setPassword}
-                    />
-                    {errors.password && <CustomText style={errorMessage}>{errors.password}</CustomText>}
-                </View>
-                <View style={authScreensSubmitBtns}>
-                    {isLoading ? (
-                        <ActivityIndicator size="small" color="#fff" />
-                    ) : (
-                        <DefaultButton name="Log In" onPress={handleLogin} />
-                    )}
-                    <CustomText style={{ color: 'white' }}>Continue as <Link href="/home" style={{ color: 'orange' }}>Guest</Link></CustomText>
-                </View>
-                <CustomText style={{ color: 'white' }}>Create an account? <Link href="/" style={{ color: 'orange' }}>Sign Up</Link></CustomText>
-            </ScrollView>
-        </LinearGradient>
-    )
-};
-
-export default Login;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingLeft: '10%',
+    paddingRight: '10%',
+  },
+  contentContainerStyle: {
+    justifyContent: 'center',
+    flex: 1,
+    gap: scale(28),
+  },
+  inputField: {
+    height: ms(64),
+    borderColor: 'black',
+    borderWidth: 2,
+    paddingHorizontal: 25,
+    borderRadius: 10,
+    color: 'black',
+    fontSize: 20,
+    textAlign: 'left',
+    backgroundColor: 'white',
+  },
+  submitBtn: {
+    marginTop: 28,
+    display: 'flex',
+    width: '100%',
+  },
+})
