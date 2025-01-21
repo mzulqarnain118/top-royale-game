@@ -42,6 +42,7 @@ import BackgroundSvg from '@/components/BackgroundSvg'
 import axios from 'axios'
 import { SERVER_URL } from '@/services/api'
 import debounce, { throttle } from '@/services/debounce'
+import ExceptionHandler from '@/services/ExceptionHandler'
 
 const { width, height } = Dimensions.get('window')
 
@@ -116,7 +117,7 @@ export default function BattleRoyaleScreen() {
   }
 
   const handleEndGame = (data: any) => {
-    console.log('endGame: ', data)
+    // console.log('endGame: ', data)
     setGameData(data)
     router.replace('/home/stats')
   }
@@ -284,11 +285,10 @@ export default function BattleRoyaleScreen() {
             duration: item.duration,
           },
         )
-        console.log('loadout is activated', response.data)
+        // console.log('loadout is activated', response.data)
         setIsDisabled(true)
         setTimeout(() => {
           setIsDisabled(false)
-          console.log('isDisabled', isDisabled)
           if (item.id !== 4) {
             setActiveLoadoutId(0)
           }
@@ -296,6 +296,7 @@ export default function BattleRoyaleScreen() {
         setActiveLoadoutId(item.id)
       } catch (error) {
         console.error('Error assigning loadout:', error)
+        ExceptionHandler(error)
       }
     },
     [playerData.game_id, user.id, isDisabled],
@@ -404,7 +405,7 @@ export default function BattleRoyaleScreen() {
                 <CustomText style={loadoutIcon}>
                   {loadoutIcons[index].icon}
                 </CustomText>
-                <Text style={{ fontSize: scale(26), color: 'white' }}>
+                <Text style={{ fontSize: scale(24), color: 'white' }}>
                   ${item.price}
                 </Text>
               </View>

@@ -87,7 +87,7 @@ export default function DeathMatchRoom() {
     )
 
     const socket = connectSocket('https://dev.trywebdesign.com')
-    // const socket = connectSocket(`${SERVER_URL}`, { playerId: user.id })
+    // const socket = connectSocket(`${SERVER_URL}`)
 
     if (!socket) {
       // console.log('Socket not found')
@@ -148,7 +148,7 @@ export default function DeathMatchRoom() {
                   <CustomText style={loadoutIcon}>
                     {loadoutIcons[index].icon}
                   </CustomText>
-                  <Text style={{ fontSize: scale(26), color: 'white' }}>
+                  <Text style={{ fontSize: scale(24), color: 'white' }}>
                     ${item.price}
                   </Text>
                 </View>

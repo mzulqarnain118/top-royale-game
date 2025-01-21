@@ -36,7 +36,7 @@ export default function Header({
   const { name: routeName } = useRoute()
   const isDeathMatch = routeName === 'home/deathmatch'
   const isIndex = routeName === 'home/index' // sould be is home
-  const [timeLeft, setTimeLeft] = useState(300)
+  const [timeLeft, setTimeLeft] = useState(120)
 
   useEffect(() => {
     if (isDeathMatch) {
@@ -55,6 +55,7 @@ export default function Header({
     }
   }, [])
 
+  // Function to format time in minutes and seconds
   const formatTime = (timeInSeconds: number) => {
     const minutes = Math.floor(timeInSeconds / 60)
     const seconds = timeInSeconds % 60

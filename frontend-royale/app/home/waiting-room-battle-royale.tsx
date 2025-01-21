@@ -92,7 +92,7 @@ export default function BattleRoyaleRoom() {
       socket.emit('joinBR', { userId: user.id })
 
       socket.on('gameJoined', (gameJoinData: any) => {
-        console.log('gameJoined: ', gameJoinData)
+        // console.log('gameJoined: ', gameJoinData)
         setGameInitialData(gameJoinData)
         setPlayerData(gameJoinData.playerStats)
         setLoadoutData(gameJoinData.loadouts)
@@ -161,7 +161,7 @@ export default function BattleRoyaleRoom() {
                   <CustomText style={loadoutIcon}>
                     {loadoutIcons[index].icon}
                   </CustomText>
-                  <Text style={{ fontSize: scale(26), color: 'white' }}>
+                  <Text style={{ fontSize: scale(24), color: 'white' }}>
                     ${item.price}
                   </Text>
                 </View>
