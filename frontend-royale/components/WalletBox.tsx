@@ -2,11 +2,11 @@ import React from 'react'
 import { View } from 'react-native'
 import Svg, { Defs, LinearGradient, Stop, Path, Text } from 'react-native-svg'
 
-interface MoneyBoxProps {
+interface WalletBoxProps {
   value: any
 }
 
-const MoneyBox: React.FC<MoneyBoxProps> = ({ value }) => {
+const WalletBox: React.FC<WalletBoxProps> = ({ value }) => {
   return (
     <View
       style={{
@@ -52,7 +52,7 @@ const MoneyBox: React.FC<MoneyBoxProps> = ({ value }) => {
           alignmentBaseline='middle'
           textAnchor='middle'
         >
-          E
+          W
         </Text>
 
         {/* Dynamic Text */}
@@ -72,4 +72,4 @@ const MoneyBox: React.FC<MoneyBoxProps> = ({ value }) => {
   )
 }
 
-export default MoneyBox
+export default WalletBox

@@ -13,12 +13,14 @@ import AttributeButton from './AttributeButton'
 import { Image as ExpoImage } from 'expo-image'
 import MoneyBox from '@/components/MoneyBox'
 import HealthBox from './HealthBox'
+import WalletBox from './WalletBox'
 
 type HeaderType = {
   kills?: number
   assists?: number
   deaths?: number
   rank?: number
+  totalExtractedMoney?: number
   money?: number
   health?: number
   showToast?: (message: string) => void
@@ -29,6 +31,7 @@ export default function Header({
   assists,
   deaths,
   rank,
+  totalExtractedMoney,
   money,
   health,
   showToast,
@@ -99,10 +102,16 @@ export default function Header({
       )}
       <View>
         <TouchableOpacity style={{ width: 92, height: 32.25 }}>
-          <MoneyBox value={money} />
+          <WalletBox value={totalExtractedMoney ?? 0} />
         </TouchableOpacity>
+
         {!isIndex && (
-          <TouchableOpacity style={{ width: 92, height: 32.25, marginTop: 4 }}>
+          <TouchableOpacity style={{ width: 92, height: 32.25 }}>
+            <MoneyBox value={money} />
+          </TouchableOpacity>
+        )}
+        {!isIndex && (
+          <TouchableOpacity style={{ width: 92, height: 32.25 }}>
             <HealthBox value={health} />
           </TouchableOpacity>
         )}

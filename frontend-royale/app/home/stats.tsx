@@ -62,21 +62,21 @@ export default function StatsScreen() {
             label='Money Spent'
             value={`$${gameData.game.stats[user.id].money_spent}`}
           />
-          <StatItem
+          {/* <StatItem
             label='Net Profit'
             value={`${
               gameData.game.stats[user.id].damage_dealt -
               gameData.game.stats[user.id].money_spent
             }`}
-          />
-          {/* <StatItem
-            label='Damage Done'
-            value={`${gameData.game.stats[user.id].damage_dealt}`}
           /> */}
+          <StatItem
+            label='Health Inflicted'
+            value={`${gameData.game.stats[user.id].damage_dealt}`}
+          />
           {/* <StatItem label='Damage Taken' value={`${210}`} /> */}
           <StatItem label='' value='' />
-          <StatItem label='Shield Used' value={`${6}`} />
-          <StatItem label='Super Attack Used' value={`${5}`} />
+          {/* <StatItem label='Shield Used' value={`${6}`} /> */}
+          {/* <StatItem label='Super Attack Used' value={`${5}`} /> */}
         </ScrollView>
         <View style={styles.bottomButtons}>
           <ThemeButton href='/home/after-action-report'>
