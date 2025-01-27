@@ -51,6 +51,7 @@ export default function BattleRoyaleScreen() {
   const [isDisabled, setIsDisabled] = useState(false)
   const [activeLoadoutId, setActiveLoadoutId] = useState(0)
   const [isSocketConnected, setIsSocketConnected] = useState(false)
+  const [totalExtractedMoney, setTotalExtractedMoney] = useState(0)
 
   const sparkOpacity = useRef(new Animated.Value(0)).current
   const sparkScale = useRef(new Animated.Value(1)).current
@@ -130,6 +131,10 @@ export default function BattleRoyaleScreen() {
   )
 
   useEffect(() => {
+    if (user) {
+      setTotalExtractedMoney(user?.total_extracted_money ?? 0)
+    }
+
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () =>
       handleExitGame(disconnectSocket),
     )
@@ -286,6 +291,7 @@ export default function BattleRoyaleScreen() {
           },
         )
         // console.log('loadout is activated', response.data)
+        setTotalExtractedMoney(response.data.player.total_extracted_money)
         setIsDisabled(true)
         setTimeout(() => {
           setIsDisabled(false)
@@ -295,7 +301,7 @@ export default function BattleRoyaleScreen() {
         }, item.duration * 1000)
         setActiveLoadoutId(item.id)
       } catch (error) {
-        console.error('Error assigning loadout:', error)
+        // console.error('Error assigning loadout:', error)
         ExceptionHandler(error)
       }
     },
@@ -310,6 +316,7 @@ export default function BattleRoyaleScreen() {
           assists={gameDataState.game.stats[user.id].assists}
           deaths={gameDataState.game.stats[user.id].death}
           rank={gameDataState.game.stats[user.id].rank}
+          totalExtractedMoney={totalExtractedMoney}
           money={gameDataState.game.stats[user.id].damage_dealt}
           health={gameDataState.game.health[user.id]}
         />

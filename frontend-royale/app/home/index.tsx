@@ -65,7 +65,7 @@ export default function HomeScreen() {
       <View style={styles.container}>
         <Header
           kills={user?.total_kills ?? 0}
-          money={user?.total_extracted_money ?? 0}
+          totalExtractedMoney={user?.total_extracted_money ?? 0}
         />
         <CustomText style={gameTitle}>TAP ROYALE</CustomText>
         <View style={styles.boxesContainer}>

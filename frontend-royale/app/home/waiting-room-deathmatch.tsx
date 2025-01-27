@@ -130,6 +130,7 @@ export default function DeathMatchRoom() {
           kills={0}
           assists={0}
           deaths={0}
+          totalExtractedMoney={user?.total_extracted_money ?? 0}
           money={0}
           health={50}
           rank={1}
