@@ -285,13 +285,18 @@ export default function BattleRoyaleScreen() {
         const response = await axios.post(
           `${SERVER_URL}/api/games/${playerData.game_id}/loadout`,
           {
+            gameMode: 'BR',
             playerId: user.id,
             loadoutId: item.id,
             duration: item.duration,
           },
         )
         // console.log('loadout is activated', response.data)
-        setTotalExtractedMoney(response.data.player.total_extracted_money)
+        if (response.data.usedGameMoney) {
+          setGameDataState(response.data)
+        } else {
+          setTotalExtractedMoney(response.data.remainingMoney)
+        }
         setIsDisabled(true)
         setTimeout(() => {
           setIsDisabled(false)
@@ -301,7 +306,7 @@ export default function BattleRoyaleScreen() {
         }, item.duration * 1000)
         setActiveLoadoutId(item.id)
       } catch (error) {
-        // console.error('Error assigning loadout:', error)
+        // console.error('Error assigning loadout:', JSON.stringify(error))
         ExceptionHandler(error)
       }
     },

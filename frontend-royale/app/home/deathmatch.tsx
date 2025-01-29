@@ -279,23 +279,26 @@ export default function DeathMatchScreen() {
         const response = await axios.post(
           `${SERVER_URL}/api/games/${playerData.game_id}/loadout`,
           {
+            gameMode: 'DM',
             playerId: user.id,
             loadoutId: item.id,
             duration: item.duration,
           },
         )
-        if (response.status >= 200) {
-          // console.log('loadout is activated', response.data)
-          setTotalExtractedMoney(response.data.player.total_extracted_money)
-          setIsDisabled(true)
-          setTimeout(() => {
-            setIsDisabled(false)
-            if (item.id !== 4) {
-              setActiveLoadoutId(0)
-            }
-          }, item.duration * 1000)
-          setActiveLoadoutId(item.id)
+        // console.log('loadout is activated', response.data)
+        if (response.data.usedGameMoney) {
+          setGameDataState(response.data)
+        } else {
+          setTotalExtractedMoney(response.data.remainingMoney)
         }
+        setIsDisabled(true)
+        setTimeout(() => {
+          setIsDisabled(false)
+          if (item.id !== 4) {
+            setActiveLoadoutId(0)
+          }
+        }, item.duration * 1000)
+        setActiveLoadoutId(item.id)
       } catch (error) {
         // console.error('Error assigning loadout:', error)
         ExceptionHandler(error)

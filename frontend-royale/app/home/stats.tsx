@@ -71,10 +71,10 @@ export default function StatsScreen() {
           /> */}
           <StatItem
             label='Health Inflicted'
-            value={`${gameData.game.stats[user.id].damage_dealt}`}
+            value={`${gameData.game.stats[user.id].damage_inflicted}`}
           />
           {/* <StatItem label='Damage Taken' value={`${210}`} /> */}
-          <StatItem label='' value='' />
+          {/* <StatItem label='' value='' /> */}
           {/* <StatItem label='Shield Used' value={`${6}`} /> */}
           {/* <StatItem label='Super Attack Used' value={`${5}`} /> */}
         </ScrollView>
