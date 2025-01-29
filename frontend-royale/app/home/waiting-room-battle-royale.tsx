@@ -81,8 +81,8 @@ export default function BattleRoyaleRoom() {
       handleExitGame(disconnectSocket),
     )
 
-    const socket = connectSocket('https://dev.trywebdesign.com')
-    // const socket = connectSocket(`${SERVER_URL}`)
+    // const socket = connectSocket('https://dev.trywebdesign.com')
+    const socket = connectSocket(`${SERVER_URL}`)
 
     if (socket) {
       if (!socket) {

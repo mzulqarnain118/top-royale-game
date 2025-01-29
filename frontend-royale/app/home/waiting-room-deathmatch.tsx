@@ -86,8 +86,8 @@ export default function DeathMatchRoom() {
       handleExitGame(disconnectSocket),
     )
 
-    const socket = connectSocket('https://dev.trywebdesign.com')
-    // const socket = connectSocket(`${SERVER_URL}`)
+    // const socket = connectSocket('https://dev.trywebdesign.com')
+    const socket = connectSocket(`${SERVER_URL}`)
 
     if (!socket) {
       // console.log('Socket not found')
