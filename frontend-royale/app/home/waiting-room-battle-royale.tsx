@@ -27,7 +27,9 @@ import { router } from 'expo-router'
 import useGlobalStore from '@/store/useGlobalStore'
 import useSocketStore from '@/store/useSocketStore'
 import useGameStore from '@/store/useGameStore'
-import handleExitGame from '@/services/handleExitGame'
+import handleExitGame, {
+  handleSocketDisconnect,
+} from '@/services/handleExitGame'
 import BackgroundSvg from '@/components/BackgroundSvg'
 
 export default function BattleRoyaleRoom() {
@@ -70,6 +72,10 @@ export default function BattleRoyaleRoom() {
     },
   ]
 
+  const handleDisconnect = () => {
+    handleSocketDisconnect(disconnectSocket)
+  }
+
   useEffect(() => {
     if (!user) {
       console.log('User not found')
@@ -81,8 +87,8 @@ export default function BattleRoyaleRoom() {
       handleExitGame(disconnectSocket),
     )
 
-    // const socket = connectSocket('https://dev.trywebdesign.com')
-    const socket = connectSocket(`${SERVER_URL}`)
+    const socket = connectSocket('https://dev.trywebdesign.com')
+    // const socket = connectSocket(`${SERVER_URL}`)
 
     if (socket) {
       if (!socket) {
@@ -103,6 +109,8 @@ export default function BattleRoyaleRoom() {
         setGameData(gameStartData)
         router.replace('/home/battle-royale')
       })
+
+      socket.on('disconnect', handleDisconnect)
 
       socket.on('error', (error: string) => {
         // console.error('Error joining game:', error)
@@ -130,6 +138,7 @@ export default function BattleRoyaleRoom() {
     return () => {
       socket?.off('gameJoined')
       socket?.off('gameStarted')
+      socket?.off('disconnect')
       socket?.off('error')
       // unsubscribe from backHandler event
       backHandler.remove()
