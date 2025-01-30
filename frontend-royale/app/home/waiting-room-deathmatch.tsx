@@ -32,7 +32,9 @@ import { router } from 'expo-router'
 import useGlobalStore from '@/store/useGlobalStore'
 import useSocketStore from '@/store/useSocketStore'
 import useGameStore from '@/store/useGameStore'
-import handleExitGame from '@/services/handleExitGame'
+import handleExitGame, {
+  handleSocketDisconnect,
+} from '@/services/handleExitGame'
 import BackgroundSvg from '@/components/BackgroundSvg'
 
 export default function DeathMatchRoom() {
@@ -75,6 +77,10 @@ export default function DeathMatchRoom() {
     },
   ]
 
+  const handleDisconnect = () => {
+    handleSocketDisconnect(disconnectSocket)
+  }
+
   useEffect(() => {
     if (!user) {
       // console.log('User not found')
@@ -109,6 +115,8 @@ export default function DeathMatchRoom() {
         router.replace('/home/deathmatch')
       })
 
+      socket.on('disconnect', handleDisconnect)
+
       socket.on('error', (error: string) => {
         // console.error('Error joining game:', error)
       })
@@ -117,6 +125,7 @@ export default function DeathMatchRoom() {
     return () => {
       socket?.off('gameJoined')
       socket?.off('gameStarted')
+      socket?.off('disconnect')
       socket?.off('error')
       // unsubscribe from backHandler event
       backHandler.remove()

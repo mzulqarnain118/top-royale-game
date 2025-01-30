@@ -19,3 +19,20 @@ export default function handleExitGame(disconnectSocket: any) {
   ])
   return true
 }
+
+export function handleSocketDisconnect(disconnectSocket: any) {
+  Alert.alert(
+    '',
+    'Oops! You got disconnected from the game server. Please make sure your internet connection is stable and try again.',
+    [
+      {
+        text: 'OK',
+        onPress: () => {
+          disconnectSocket() // Disconnect from socket server
+          router.back() // Navigate back to the previous screen and exit the game
+        },
+      },
+    ],
+  )
+  return true
+}

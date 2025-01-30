@@ -35,7 +35,9 @@ import ThemeButton from '@/components/ThemeButton'
 import { useEffect, useRef, useState, useMemo, useCallback } from 'react'
 import useGameStore from '@/store/useGameStore'
 import useSocketStore from '@/store/useSocketStore'
-import handleExitGame from '@/services/handleExitGame'
+import handleExitGame, {
+  handleSocketDisconnect,
+} from '@/services/handleExitGame'
 import useGlobalStore from '@/store/useGlobalStore'
 import { router } from 'expo-router'
 import BackgroundSvg from '@/components/BackgroundSvg'
@@ -100,15 +102,11 @@ export default function DeathMatchScreen() {
     setActiveLoadoutId(0)
   }
 
-  const handlePlayerDisconnected = () => {
-    console.log('playerDisconnected, connecting againnnnnnnnn ')
-    setIsSocketConnected((prev) => !prev)
-  }
-
   const handleDisconnect = () => {
     console.log('disconnect, trying to connect again ')
-    connectSocket(`${SERVER_URL}`)
-    setIsSocketConnected((prev) => !prev)
+    handleSocketDisconnect(disconnectSocket)
+    // connectSocket(`${SERVER_URL}`)
+    // setIsSocketConnected((prev) => !prev)
   }
 
   const handleEndGame = (data: any) => {
@@ -140,14 +138,13 @@ export default function DeathMatchScreen() {
 
     socket.on('playerAttacked', throttledHandlePlayerAttacked)
     socket.on('useAirStrikeLoadout', handleUseAirStrikeLoadout)
-    socket.on('playerDisconnected', handlePlayerDisconnected)
     socket.on('disconnect', handleDisconnect)
     socket.on('endGame', handleEndGame)
 
     // debuggins code
 
     socket.on('connect_error', (error: any) => {
-      console.log('Connection failed:', error.message, JSON.stringify(error)) // Logs the error reason
+      console.log('Connection failed:', JSON.stringify(error)) // Logs the error reason
     })
 
     socket.on('connect_failed', () => {
@@ -166,7 +163,6 @@ export default function DeathMatchScreen() {
       backHandler.remove()
       socket.off('playerAttacked', throttledHandlePlayerAttacked)
       socket.off('useAirStrikeLoadout', handleUseAirStrikeLoadout)
-      socket.off('playerDisconnected', handlePlayerDisconnected)
       socket.off('disconnect', handleDisconnect)
       socket.off('endGame', handleEndGame)
     }
