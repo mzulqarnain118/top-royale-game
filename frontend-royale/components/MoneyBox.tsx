@@ -52,7 +52,7 @@ const MoneyBox: React.FC<MoneyBoxProps> = ({ value }) => {
           alignmentBaseline='middle'
           textAnchor='middle'
         >
-          E
+          $
         </Text>
 
         {/* Dynamic Text */}
