@@ -265,7 +265,7 @@ export default function DeathMatchScreen() {
     [emitAttackEvent, sparkAnimation],
   )
 
-  const debouncedPlayerPress = useCallback(debounce(handlePlayerPress, 500), [
+  const debouncedPlayerPress = useCallback(debounce(handlePlayerPress, 100), [
     handlePlayerPress,
   ])
 
