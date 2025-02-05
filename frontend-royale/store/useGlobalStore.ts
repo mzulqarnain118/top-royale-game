@@ -1,8 +1,21 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as SecureStore from 'expo-secure-store'
 import { createUserSlice } from '@/store/userSlice'
 import { createAuthSlice } from '@/store/authSlice'
+
+const secureStorage = {
+  getItem: (name: string) => {
+    return SecureStore.getItem(name)
+  },
+  setItem: (name: string, value: string) => {
+    SecureStore.setItem(name, value)
+  },
+  removeItem: async (name: string) => {
+    await SecureStore.deleteItemAsync(name)
+  },
+}
 
 interface GlobalState {
   token: string | null
@@ -19,7 +32,7 @@ const useGlobalStore = create<GlobalState>()(
     }),
     {
       name: 'store',
-      storage: createJSONStorage(() => AsyncStorage),
+      storage: createJSONStorage(() => secureStorage),
     },
   ),
 )
