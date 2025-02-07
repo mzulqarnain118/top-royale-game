@@ -129,10 +129,10 @@ export default function HomeScreen() {
             <TouchableOpacity
               style={styles.bottomButton}
               onPress={() => {
-                router.navigate('/home/loadout')
+                router.navigate('/home/leaderboard')
               }}
             >
-              <Text style={styles.bottomButtonText}>Loadout</Text>
+              <Text style={styles.bottomButtonText}>LeaderBoard</Text>
             </TouchableOpacity>
           </LinearGradient>
         </View>
