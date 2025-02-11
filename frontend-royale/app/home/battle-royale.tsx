@@ -129,13 +129,22 @@ export default function BattleRoyaleScreen() {
   )
 
   useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () =>
+      handleExitGame(
+        disconnectSocket,
+        socket,
+        'battle-royale',
+        playerData.game_id,
+        user?.id,
+      ),
+    )
+    return () => backHandler.remove()
+  }, [])
+
+  useEffect(() => {
     if (user) {
       setTotalExtractedMoney(user?.total_extracted_money ?? 0)
     }
-
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', () =>
-      handleExitGame(disconnectSocket),
-    )
 
     if (!socket) {
       console.log('socket not connected')
@@ -166,7 +175,6 @@ export default function BattleRoyaleScreen() {
     })
 
     return () => {
-      backHandler.remove()
       socket?.off('playerAttacked', handlePlayerAttacked)
       socket?.off('useAirStrikeLoadout', handleUseAirStrikeLoadout)
       socket?.off('disconnect', handleDisconnect)

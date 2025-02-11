@@ -2,7 +2,13 @@ import useSocketStore from '@/store/useSocketStore'
 import { router } from 'expo-router'
 import { Alert } from 'react-native'
 
-export default function handleExitGame(disconnectSocket: any) {
+export default function handleExitGame(
+  disconnectSocket: any,
+  socket?: any,
+  gameType?: any,
+  gameId?: any,
+  userId?: any,
+) {
   Alert.alert('Exit Game', 'Are you sure you want to exit the game?', [
     {
       text: 'Cancel',
@@ -12,6 +18,13 @@ export default function handleExitGame(disconnectSocket: any) {
     {
       text: 'Yes',
       onPress: () => {
+        socket.volatile.emit(
+          gameType === 'battle-royale' ? 'exitGameBR' : 'exitGameDM',
+          {
+            gameId: gameId,
+            userId: userId,
+          },
+        )
         disconnectSocket() // Disconnect from socket server
         router.back() // Navigate back to the previous screen and exit the game
       },

@@ -123,13 +123,22 @@ export default function DeathMatchScreen() {
   )
 
   useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () =>
+      handleExitGame(
+        disconnectSocket,
+        socket,
+        'deathmatch',
+        playerData.game_id,
+        user?.id,
+      ),
+    )
+    return () => backHandler.remove()
+  }, [])
+
+  useEffect(() => {
     if (user) {
       setTotalExtractedMoney(user?.total_extracted_money ?? 0)
     }
-
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', () =>
-      handleExitGame(disconnectSocket),
-    )
 
     if (!socket) {
       console.log('socket not connected')
@@ -160,7 +169,6 @@ export default function DeathMatchScreen() {
     })
 
     return () => {
-      backHandler.remove()
       socket.off('playerAttacked', throttledHandlePlayerAttacked)
       socket.off('useAirStrikeLoadout', handleUseAirStrikeLoadout)
       socket.off('disconnect', handleDisconnect)
