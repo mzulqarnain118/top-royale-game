@@ -1,4 +1,10 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import ExceptionHandler from '@/services/ExceptionHandler'
@@ -14,6 +20,8 @@ import {
 import CustomText from '@/components/CustomText'
 import { buttonGradient } from '@/utils/commonColors'
 import { LinearGradient } from 'expo-linear-gradient'
+import { router } from 'expo-router'
+import { Image as ExpoImage } from 'expo-image'
 
 interface Player {
   id: number
@@ -80,8 +88,30 @@ const Leaderboard = () => {
   return (
     <BackgroundSvg>
       <View style={[container, styles.container]}>
-        <Text style={styles.title}>Leaderboard</Text>
-
+        <View
+          style={{
+            width: '100%',
+          }}
+        >
+          <TouchableOpacity onPress={() => router.back()}>
+            <ExpoImage
+              source={require('../../assets/images/theme/Back.svg')}
+              style={{
+                width: scale(36),
+                height: scale(36),
+              }}
+              contentFit='contain'
+            />
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            width: '100%',
+            marginBottom: verticalScale(12),
+          }}
+        >
+          <Text style={styles.title}>Leaderboard</Text>
+        </View>
         {loading ? (
           <Text style={styles.loadingText}>Loading...</Text>
         ) : players.length === 0 ? (
@@ -106,14 +136,14 @@ const Leaderboard = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: vs(40),
+    paddingTop: vs(42),
     paddingHorizontal: scale(16),
+    gap: 0,
   },
   title: {
     fontSize: scale(32),
     textAlign: 'center',
     color: 'white',
-    marginBottom: verticalScale(24),
   },
   listContent: {
     paddingBottom: verticalScale(40),
@@ -150,10 +180,6 @@ const styles = StyleSheet.create({
   rankCell: {
     width: scale(60),
     textAlign: 'center',
-  },
-  nameCell: {
-    flex: 2,
-    marginLeft: scale(16),
   },
   killsCell: {
     width: scale(80),
