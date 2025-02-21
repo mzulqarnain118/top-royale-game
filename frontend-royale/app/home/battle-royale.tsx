@@ -6,9 +6,7 @@ import {
   Text,
   BackHandler,
   Animated,
-  Dimensions,
 } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
 import Header from '@/components/Header'
 import {
   MaterialCommunityIcons,
@@ -22,7 +20,6 @@ import {
   loadoutIcon,
   loadoutIconBox,
 } from '@/utils/commonStyles'
-import { backgroundGradient } from '@/utils/commonColors'
 import {
   moderateScale,
   ms,
@@ -45,8 +42,21 @@ import axios from 'axios'
 import { SERVER_URL } from '@/services/api'
 import debounce, { throttle } from '@/services/debounce'
 import ExceptionHandler from '@/services/ExceptionHandler'
+import { Button, Platform, StatusBar } from 'react-native'
+import {
+  InterstitialAd,
+  AdEventType,
+  TestIds,
+} from 'react-native-google-mobile-ads'
+import { incrementGameCount } from '@/services/asyncStoreage'
 
-const { width, height } = Dimensions.get('window')
+const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : TestIds.INTERSTITIAL // TODO: Replace with actual ad unit id when publishing to app store
+  // Platform.select({
+  //     ios: 'ca-app-pub-5341386294719747/4037575678',
+  //     android: 'ca-app-pub-5341386294719747/8733893804',
+  //   })
+
+const interstitial = InterstitialAd.createForAdRequest(adUnitId || '')
 
 export default function BattleRoyaleScreen() {
   const [activeSpark, setActiveSpark] = useState(null)
@@ -54,6 +64,7 @@ export default function BattleRoyaleScreen() {
   const [activeLoadoutId, setActiveLoadoutId] = useState(0)
   const [isSocketConnected, setIsSocketConnected] = useState(false)
   const [totalExtractedMoney, setTotalExtractedMoney] = useState(0)
+  const [loaded, setLoaded] = useState(false)
 
   const sparkOpacity = useRef(new Animated.Value(0)).current
   const sparkScale = useRef(new Animated.Value(1)).current
@@ -63,7 +74,7 @@ export default function BattleRoyaleScreen() {
   const [gameDataState, setGameDataState] = useState(gameData)
 
   const { socket, connectSocket, disconnectSocket } = useSocketStore(
-    (state) => state,
+    (state) => state
   )
 
   const loadoutIcons = useMemo(
@@ -71,33 +82,33 @@ export default function BattleRoyaleScreen() {
       {
         id: 1,
         icon: (
-          <MaterialCommunityIcons name='sword' size={scale(20)} color='white' />
+          <MaterialCommunityIcons name="sword" size={scale(20)} color="white" />
         ),
         value: 50,
       },
       {
         id: 3,
-        icon: <Foundation name='shield' size={scale(20)} color='white' />,
+        icon: <Foundation name="shield" size={scale(20)} color="white" />,
         value: 50,
       },
       {
         id: 2,
-        icon: <FontAwesome6 name='dollar' size={scale(20)} color='white' />,
+        icon: <FontAwesome6 name="dollar" size={scale(20)} color="white" />,
         value: 50,
       },
       {
         id: 4,
         icon: (
           <MaterialIcons
-            name='airplanemode-active'
+            name="airplanemode-active"
             size={scale(20)}
-            color='white'
+            color="white"
           />
         ),
         value: 50,
       },
     ],
-    [],
+    []
   )
 
   const handlePlayerAttacked = (data: any) => {
@@ -115,17 +126,36 @@ export default function BattleRoyaleScreen() {
     // setIsSocketConnected((prev) => !prev)
   }
 
-  const handleEndGame = (data: any) => {
+  const handleEndGame = async (data: any) => {
     // console.log('endGame: ', data)
-    setGameData(data)
-    router.replace('/home/stats')
+    try {
+      // Increment and get new game count
+      const newCount = await incrementGameCount()
+
+      // Show ad every 2nd game
+      if (newCount % 2 === 0) {
+        if (interstitial.loaded) {
+          await interstitial.show()
+        } else {
+          console.log('Ad not loaded yet')
+          interstitial.load() // Load for next time
+        }
+      }
+
+      // Update game data and navigate
+      setGameData(data)
+      router.replace('/home/stats')
+    } catch (error) {
+      console.error('Game end error:', error)
+      router.replace('/home/stats')
+    }
   }
 
   const throttledHandlePlayerAttacked = useCallback(
     throttle((data: any) => {
       setGameDataState(data)
     }, 500), // 500ms throttle
-    [],
+    []
   )
 
   useEffect(() => {
@@ -135,8 +165,8 @@ export default function BattleRoyaleScreen() {
         socket,
         'battle-royale',
         playerData.game_id,
-        user?.id,
-      ),
+        user?.id
+      )
     )
     return () => backHandler.remove()
   }, [])
@@ -181,6 +211,44 @@ export default function BattleRoyaleScreen() {
       socket?.off('endGame', handleEndGame)
     }
   }, [socket, disconnectSocket, connectSocket, setGameData, router, user.id])
+
+  useEffect(() => {
+    const unsubscribeLoaded = interstitial.addAdEventListener(
+      AdEventType.LOADED,
+      () => {
+        setLoaded(true)
+      }
+    )
+
+    const unsubscribeOpened = interstitial.addAdEventListener(
+      AdEventType.OPENED,
+      () => {
+        if (Platform.OS === 'ios') {
+          // Prevent the close button from being unreachable by hiding the status bar on iOS
+          StatusBar.setHidden(true)
+        }
+      }
+    )
+
+    const unsubscribeClosed = interstitial.addAdEventListener(
+      AdEventType.CLOSED,
+      () => {
+        if (Platform.OS === 'ios') {
+          StatusBar.setHidden(false)
+        }
+      }
+    )
+
+    // Start loading the interstitial straight away
+    interstitial.load()
+
+    // Unsubscribe from events on unmount
+    return () => {
+      unsubscribeLoaded()
+      unsubscribeOpened()
+      unsubscribeClosed()
+    }
+  }, [])
 
   const playerBoxSvgs = useCallback((health: any, isSelf: any) => {
     if (isSelf) {
@@ -259,14 +327,14 @@ export default function BattleRoyaleScreen() {
                 resolve(response)
                 console.log('attack event emitted')
               }
-            },
+            }
           )
         })
       } catch (error) {
         console.log('Attack error: ', error)
       }
     },
-    [socket, playerData.game_id, user.id],
+    [socket, playerData.game_id, user.id]
   )
 
   const handlePlayerPress = useCallback(
@@ -276,7 +344,7 @@ export default function BattleRoyaleScreen() {
       // setTimeout(() => setActiveSpark(null), 1000) // no need for this timeout
       await emitAttackEvent(item)
     },
-    [emitAttackEvent, sparkAnimation],
+    [emitAttackEvent, sparkAnimation]
   )
 
   const debouncedPlayerPress = useCallback(debounce(handlePlayerPress, 100), [
@@ -293,7 +361,7 @@ export default function BattleRoyaleScreen() {
             playerId: user.id,
             loadoutId: item.id,
             duration: item.duration,
-          },
+          }
         )
         // console.log('loadout is activated', response.data)
         if (response.data.usedGameMoney) {
@@ -314,7 +382,7 @@ export default function BattleRoyaleScreen() {
         ExceptionHandler(error)
       }
     },
-    [playerData.game_id, user.id, isDisabled],
+    [playerData.game_id, user.id, isDisabled]
   )
 
   return (
@@ -348,43 +416,43 @@ export default function BattleRoyaleScreen() {
                     >
                       {activeLoadoutId === 1 ? (
                         <MaterialCommunityIcons
-                          name='sword'
+                          name="sword"
                           size={scale(40)}
-                          color='white'
+                          color="white"
                           style={styles.activeLoadoutIcon1}
                         />
                       ) : activeLoadoutId === 2 ? (
                         <Foundation
-                          name='shield'
+                          name="shield"
                           size={scale(40)}
-                          color='white'
+                          color="white"
                           style={styles.activeLoadoutIcon2}
                         />
                       ) : activeLoadoutId === 3 ? (
                         <FontAwesome6
-                          name='dollar'
+                          name="dollar"
                           size={scale(40)}
-                          color='white'
+                          color="white"
                           style={styles.activeLoadoutIcon2}
                         />
                       ) : activeLoadoutId === 4 ? (
                         <MaterialIcons
-                          name='airplanemode-active'
+                          name="airplanemode-active"
                           size={scale(40)}
-                          color='white'
+                          color="white"
                           style={styles.activeLoadoutIcon1}
                         />
                       ) : null}
                       <ExpoImage
                         source={playerBoxSvgs(
                           gameDataState.game.health[item.id],
-                          isSelf,
+                          isSelf
                         )}
                         style={{
                           width: '100%',
                           height: '100%',
                         }}
-                        contentFit='contain'
+                        contentFit="contain"
                       />
                     </TouchableOpacity>
                     <Animated.View
@@ -481,4 +549,3 @@ const styles = StyleSheet.create({
     gap: moderateScale(10),
   },
 })
-
