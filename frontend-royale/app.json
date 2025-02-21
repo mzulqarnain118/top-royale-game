@@ -36,7 +36,17 @@
       "output": "static",
       "favicon": "./assets/images/logo.png"
     },
-    "plugins": ["expo-router", "expo-secure-store"],
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-5341386294719747~3697991876",
+          "iosAppId": "ca-app-pub-5341386294719747~6060431334"
+        }
+      ]
+    ],
     "experiments": {
       "typedRoutes": true
     },

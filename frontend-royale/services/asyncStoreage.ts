@@ -1,5 +1,5 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { router } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { router } from 'expo-router'
 
 export const storeToken = async (token: string) => {
   try {
@@ -45,3 +45,43 @@ export const clearToken = async () => {
   }
 }
 
+export const storeGamePlayed = async (gamePlayed: any) => {
+  try {
+    await AsyncStorage.setItem('gamePlayed', JSON.stringify(gamePlayed))
+  } catch (error) {
+    console.error('Error saving gamePlayed:', error)
+  }
+}
+
+export const loadGamePlayed = async (): Promise<any> => {
+  try {
+    let gamePlayed: any
+    gamePlayed = await AsyncStorage.getItem('gamesPlayed')
+    return JSON.parse(gamePlayed)
+  } catch (error) {
+    console.error('Error retrieving gamePlayed:', error)
+  }
+}
+
+export const incrementGameCount = async (): Promise<number> => {
+  try {
+    const currentCount = await loadGamePlayed()
+
+    const newCount = (currentCount || 0) + 1
+    await AsyncStorage.setItem('gamesPlayed', JSON.stringify(newCount))
+    return newCount
+  } catch (error) {
+    console.error('Error incrementing game count:', error)
+    return 0
+  }
+}
+
+export const getGameCount = async (): Promise<number> => {
+  try {
+    const count = await AsyncStorage.getItem('gamesPlayed')
+    return count ? JSON.parse(count) : 0
+  } catch (error) {
+    console.error('Error getting game count:', error)
+    return 0
+  }
+}

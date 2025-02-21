@@ -2,7 +2,7 @@
 import axios from 'axios'
 
 export const SERVER_URL = __DEV__
-  ? 'http://192.168.137.117:5000'
+  ? 'http://192.168.137.73:5000'
   : 'https://dev.trywebdesign.com/tap_royal'
 // export const SERVER_URL = 'https://arriving-unified-eel.ngrok-free.app'
 // export const SERVER_URL = 'http://52.36.54.229:5000'
