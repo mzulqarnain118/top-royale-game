@@ -7,7 +7,7 @@ export default function handleExitGame(
   socket?: any,
   gameType?: any,
   gameId?: any,
-  userId?: any,
+  userId?: any
 ) {
   Alert.alert('Exit Game', 'Are you sure you want to exit the game?', [
     {
@@ -23,7 +23,7 @@ export default function handleExitGame(
           {
             gameId: gameId,
             userId: userId,
-          },
+          }
         )
         disconnectSocket() // Disconnect from socket server
         router.back() // Navigate back to the previous screen and exit the game
@@ -45,7 +45,7 @@ export function handleSocketDisconnect(disconnectSocket: any) {
           router.back() // Navigate back to the previous screen and exit the game
         },
       },
-    ],
+    ]
   )
   return true
 }

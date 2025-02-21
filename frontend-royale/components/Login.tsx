@@ -82,9 +82,9 @@ const Login = () => {
           </View>
           <View style={styles.submitBtn}>
             {isLoading ? (
-              <ActivityIndicator size='large' color='#FFFFFF' />
+              <ActivityIndicator size="large" color="#FFFFFF" />
             ) : (
-              <DefaultButton name='Login' onPress={handleLogin} />
+              <DefaultButton name="Login" onPress={handleLogin} />
             )}
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center' }}>

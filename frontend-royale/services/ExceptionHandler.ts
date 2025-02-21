@@ -14,13 +14,13 @@ export default function ExceptionHandler(error: any) {
       case 402:
         Toast(
           msg ?? 'error',
-          "You don't have enough money to buy this loadout.",
+          "You don't have enough money to buy this loadout."
         )
         break
       case 403:
         Toast(
           msg ?? 'error',
-          'This Role is restricted to access to this request.',
+          'This Role is restricted to access to this request.'
         )
         break
       case 500:

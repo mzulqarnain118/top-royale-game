@@ -40,8 +40,8 @@ export default function HomeScreen() {
     }
     setLobbyPlayers((prevPlayers) =>
       prevPlayers.map((player) =>
-        player.id === box.id ? updatedLobbyPlayer : player,
-      ),
+        player.id === box.id ? updatedLobbyPlayer : player
+      )
     )
   }
 
@@ -83,7 +83,7 @@ export default function HomeScreen() {
                       width: '100%',
                       height: '100%',
                     }}
-                    contentFit='contain'
+                    contentFit="contain"
                   />
                 </TouchableOpacity>
               ))}

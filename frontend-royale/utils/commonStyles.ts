@@ -130,5 +130,5 @@ export const loadoutIcon: any = {
   width: Platform.OS === 'ios' ? 30 : verticalScale(30),
   overflow: 'hidden',
   textAlign: 'center',
- textAlignVertical: 'center',
+  textAlignVertical: 'center',
 }

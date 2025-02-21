@@ -64,18 +64,18 @@ export default function Header({
     const seconds = timeInSeconds % 60
     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(
       2,
-      '0',
+      '0'
     )}`
   }
 
   return (
     <View style={styles.topHeaderButtons}>
       <View style={{ rowGap: 2 }}>
-        <AttributeButton name='K' value={kills} />
+        <AttributeButton name="K" value={kills} />
         {!isIndex && (
           <>
-            <AttributeButton name='A' value={assists} />
-            <AttributeButton name='D' value={deaths} />
+            <AttributeButton name="A" value={assists} />
+            <AttributeButton name="D" value={deaths} />
           </>
         )}
       </View>
@@ -85,7 +85,7 @@ export default function Header({
           <Text style={styles.rankBoxNumber}>{rank}</Text>
           {isDeathMatch &&
             (timeLeft <= 0 ? (
-              <ActivityIndicator color='white' size='large' />
+              <ActivityIndicator color="white" size="large" />
             ) : (
               <Text style={styles.timeLeft}>{formatTime(timeLeft)}</Text>
             ))}
@@ -96,7 +96,7 @@ export default function Header({
           <ExpoImage
             source={require('../assets/images/logo.svg')}
             style={styles.logoImage}
-            contentFit='contain' // Adjust image fit within the view
+            contentFit="contain" // Adjust image fit within the view
           />
         </View>
       )}

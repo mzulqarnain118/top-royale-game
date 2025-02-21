@@ -29,14 +29,14 @@ apiInstance.interceptors.response.use(
   (error: AxiosError) => {
     //     ExceptionHandler(error)
     return Promise.reject(error)
-  },
+  }
 )
 
 export async function ApiCall(
   endpoint: string,
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' = 'GET',
   payload: any = null,
-  params: Record<string, any> = {},
+  params: Record<string, any> = {}
 ) {
   try {
     const response: AxiosResponse = await apiInstance({

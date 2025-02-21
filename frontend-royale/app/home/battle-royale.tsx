@@ -51,10 +51,10 @@ import {
 import { incrementGameCount } from '@/services/asyncStoreage'
 
 const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : TestIds.INTERSTITIAL // TODO: Replace with actual ad unit id when publishing to app store
-  // Platform.select({
-  //     ios: 'ca-app-pub-5341386294719747/4037575678',
-  //     android: 'ca-app-pub-5341386294719747/8733893804',
-  //   })
+// Platform.select({
+//     ios: 'ca-app-pub-5341386294719747/4037575678',
+//     android: 'ca-app-pub-5341386294719747/8733893804',
+//   })
 
 const interstitial = InterstitialAd.createForAdRequest(adUnitId || '')
 

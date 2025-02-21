@@ -33,8 +33,8 @@ const useGlobalStore = create<GlobalState>()(
     {
       name: 'store',
       storage: createJSONStorage(() => secureStorage),
-    },
-  ),
+    }
+  )
 )
 
 export default useGlobalStore

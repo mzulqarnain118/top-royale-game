@@ -25,44 +25,44 @@ export default function LoadoutScreen() {
   const loadoutAttackDefense = [
     {
       id: 1,
-      icon: <Foundation name='shield' size={scale(20)} color='white' />,
+      icon: <Foundation name="shield" size={scale(20)} color="white" />,
       value: 50,
     },
     {
       id: 2,
       icon: (
         <MaterialCommunityIcons
-          name='shield-sword'
+          name="shield-sword"
           size={scale(20)}
-          color='white'
+          color="white"
         />
       ),
       value: 50,
     },
     {
       id: 3,
-      icon: <Feather name='dollar-sign' size={scale(20)} color='white' />,
+      icon: <Feather name="dollar-sign" size={scale(20)} color="white" />,
       value: 50,
     },
     {
       id: 4,
-      icon: <Foundation name='shield' size={scale(20)} color='white' />,
+      icon: <Foundation name="shield" size={scale(20)} color="white" />,
       value: 50,
     },
     {
       id: 5,
       icon: (
         <MaterialIcons
-          name='airplanemode-active'
+          name="airplanemode-active"
           size={scale(20)}
-          color='white'
+          color="white"
         />
       ),
       value: 50,
     },
     {
       id: 6,
-      icon: <Entypo name='heart' size={scale(20)} color='white' />,
+      icon: <Entypo name="heart" size={scale(20)} color="white" />,
       value: 50,
     },
     // {
@@ -100,7 +100,7 @@ export default function LoadoutScreen() {
               width: scale(45),
               height: scale(45),
             }}
-            contentFit='contain'
+            contentFit="contain"
           />
         </Text>
         <ScrollView
