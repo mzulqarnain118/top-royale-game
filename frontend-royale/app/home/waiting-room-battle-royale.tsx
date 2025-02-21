@@ -45,27 +45,27 @@ export default function BattleRoyaleRoom() {
     {
       id: 1,
       icon: (
-        <MaterialCommunityIcons name='sword' size={scale(20)} color='white' />
+        <MaterialCommunityIcons name="sword" size={scale(20)} color="white" />
       ),
       value: 50,
     },
     {
       id: 3,
-      icon: <Foundation name='shield' size={scale(20)} color='white' />,
+      icon: <Foundation name="shield" size={scale(20)} color="white" />,
       value: 50,
     },
     {
       id: 2,
-      icon: <FontAwesome6 name='dollar' size={scale(20)} color='white' />,
+      icon: <FontAwesome6 name="dollar" size={scale(20)} color="white" />,
       value: 50,
     },
     {
       id: 4,
       icon: (
         <MaterialIcons
-          name='airplanemode-active'
+          name="airplanemode-active"
           size={scale(20)}
-          color='white'
+          color="white"
         />
       ),
       value: 50,
@@ -84,11 +84,11 @@ export default function BattleRoyaleRoom() {
 
     // subscribe to backHandler event
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () =>
-      handleExitGame(disconnectSocket),
+      handleExitGame(disconnectSocket)
     )
 
     const socket = connectSocket(
-      __DEV__ ? `${SERVER_URL}` : 'https://dev.trywebdesign.com',
+      __DEV__ ? `${SERVER_URL}` : 'https://dev.trywebdesign.com'
     )
     // const socket = connectSocket(`${SERVER_URL}`)
 
@@ -160,7 +160,7 @@ export default function BattleRoyaleRoom() {
           rank={1}
         />
         <View>
-          <ActivityIndicator color='white' size='large' />
+          <ActivityIndicator color="white" size="large" />
           <Text style={styles.loadingText}>
             Waiting for other players to join the game ...
           </Text>

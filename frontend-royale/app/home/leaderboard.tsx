@@ -40,10 +40,10 @@ const Leaderboard = () => {
   const fetchPlayers = async () => {
     try {
       const response = await axios.get<{ data: Player[] }>(
-        `${SERVER_URL}/api/leaderboard`,
+        `${SERVER_URL}/api/leaderboard`
       )
       const sortedPlayers = response.data.data.sort(
-        (a, b) => b.total_kills - a.total_kills,
+        (a, b) => b.total_kills - a.total_kills
       )
       setPlayers(sortedPlayers)
     } catch (error) {
@@ -100,7 +100,7 @@ const Leaderboard = () => {
                 width: scale(36),
                 height: scale(36),
               }}
-              contentFit='contain'
+              contentFit="contain"
             />
           </TouchableOpacity>
         </View>

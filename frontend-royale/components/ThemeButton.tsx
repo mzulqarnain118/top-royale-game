@@ -19,7 +19,7 @@ const ThemeButton: React.FC<any> = ({
           <Image
             source={require('../assets/images/theme/btn-background.svg')}
             style={styles.image}
-            contentFit='cover'
+            contentFit="cover"
           />
           <Link href={href} style={styles.overlay}>
             {typeof children === 'string' ? (
@@ -38,7 +38,7 @@ const ThemeButton: React.FC<any> = ({
                 : require('../assets/images/theme/btn-background-transparent.svg')
             }
             style={styles.image}
-            contentFit='cover'
+            contentFit="cover"
           />
           <View style={styles.overlay}>
             {typeof children === 'string' ? (

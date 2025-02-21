@@ -43,23 +43,23 @@ export default function StatsScreen() {
           contentContainerStyle={styles.scrollViewInner}
         >
           <StatItem
-            label='Kills'
+            label="Kills"
             value={`${gameData.game.stats[user.id].kills}`}
           />
           <StatItem
-            label='Assists'
+            label="Assists"
             value={`${gameData.game.stats[user.id].assists}`}
           />
           <StatItem
-            label='Deaths'
+            label="Deaths"
             value={`${gameData.game.stats[user.id].death}`}
           />
           <StatItem
-            label='Money Earned'
+            label="Money Earned"
             value={`$${gameData.game.stats[user.id].damage_dealt}`}
           />
           <StatItem
-            label='Money Spent'
+            label="Money Spent"
             value={`$${gameData.game.stats[user.id].money_spent}`}
           />
           {/* <StatItem
@@ -70,7 +70,7 @@ export default function StatsScreen() {
             }`}
           /> */}
           <StatItem
-            label='Health Inflicted'
+            label="Health Inflicted"
             value={`${gameData.game.stats[user.id].damage_inflicted}`}
           />
           {/* <StatItem label='Damage Taken' value={`${210}`} /> */}
@@ -79,10 +79,10 @@ export default function StatsScreen() {
           {/* <StatItem label='Super Attack Used' value={`${5}`} /> */}
         </ScrollView>
         <View style={styles.bottomButtons}>
-          <ThemeButton href='/home/after-action-report'>
+          <ThemeButton href="/home/after-action-report">
             Field Stats
           </ThemeButton>
-          <ThemeButton href='/home'>Main Menu</ThemeButton>
+          <ThemeButton href="/home">Main Menu</ThemeButton>
         </View>
       </View>
     </BackgroundSvg>

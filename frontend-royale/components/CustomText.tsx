@@ -1,17 +1,17 @@
-import React from 'react';
-import { Text } from 'react-native';
+import React from 'react'
+import { Text } from 'react-native'
 
 const CustomText: React.FC<any> = ({ style, weight = 'Regular', ...props }) => {
-  let fontFamily;
+  let fontFamily
   switch (weight) {
     case 'Bold':
-      fontFamily = 'AdleryProBlockletter';
-      break;
+      fontFamily = 'AdleryProBlockletter'
+      break
     default:
-      fontFamily = 'AdleryProBlockletter';
+      fontFamily = 'AdleryProBlockletter'
   }
 
-  return <Text {...props} style={[style, { fontFamily,paddingTop:3 }]} />;
-};
+  return <Text {...props} style={[style, { fontFamily, paddingTop: 3 }]} />
+}
 
-export default CustomText;
+export default CustomText

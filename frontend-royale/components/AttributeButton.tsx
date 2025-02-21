@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import PointsBox from '@/components/PointsBox'
 
 type AttributeButtonType = {

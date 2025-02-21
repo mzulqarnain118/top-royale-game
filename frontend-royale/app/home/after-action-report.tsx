@@ -19,7 +19,7 @@ export default function AfterActionReportScreen() {
   const statsArray = Object.entries(gameData.game.stats)
   // Sort the array based on rank (ascending)
   const sortedStatsArray = statsArray.sort(
-    (a: any, b: any) => a[1].rank - b[1].rank,
+    (a: any, b: any) => a[1].rank - b[1].rank
   )
 
   return (
@@ -37,16 +37,16 @@ export default function AfterActionReportScreen() {
             <CustomText
               style={[styles.headerCell, styles.nameCell]}
             ></CustomText>
-            <CustomText style={[styles.headerCell]} weight='Bold'>
+            <CustomText style={[styles.headerCell]} weight="Bold">
               Kills
             </CustomText>
-            <CustomText style={[styles.headerCell]} weight='Bold'>
+            <CustomText style={[styles.headerCell]} weight="Bold">
               Assists
             </CustomText>
-            <CustomText style={[styles.headerCell]} weight='Bold'>
+            <CustomText style={[styles.headerCell]} weight="Bold">
               Deaths
             </CustomText>
-            <CustomText style={[styles.headerCell]} weight='Bold'>
+            <CustomText style={[styles.headerCell]} weight="Bold">
               Money
             </CustomText>
           </View>
@@ -85,8 +85,8 @@ export default function AfterActionReportScreen() {
           </ScrollView>
         </ScrollView>
         <View style={styles.bottomButtons}>
-          <ThemeButton href='/home/stats'>Personal Stats</ThemeButton>
-          <ThemeButton href='/home'>Main Menu</ThemeButton>
+          <ThemeButton href="/home/stats">Personal Stats</ThemeButton>
+          <ThemeButton href="/home">Main Menu</ThemeButton>
         </View>
       </View>
     </BackgroundSvg>

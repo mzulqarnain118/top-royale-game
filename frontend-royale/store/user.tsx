@@ -24,8 +24,8 @@ const useUserStore = create<UserState>()(
     {
       name: 'user',
       storage: createJSONStorage(() => AsyncStorage),
-    },
-  ),
+    }
+  )
 )
 
 export default useUserStore

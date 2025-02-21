@@ -4,7 +4,7 @@ interface UserSlice {
 }
 
 export const createUserSlice = (
-  set: (partial: Partial<UserSlice>) => void,
+  set: (partial: Partial<UserSlice>) => void
 ): UserSlice => ({
   user: {},
   setUser: (user: Record<string, any>) => {
