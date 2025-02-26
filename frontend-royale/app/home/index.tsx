@@ -12,10 +12,21 @@ import { router } from 'expo-router'
 import useGlobalStore from '@/store/useGlobalStore'
 import BackgroundSvg from '@/components/BackgroundSvg'
 import axios from 'axios'
-import { API_AUTH_URL } from '@/services/api'
+import { API_AUTH_URL, SERVER_URL } from '@/services/api'
+
+interface Player {
+  id: number
+  username: string
+  total_kills: number
+  total_extracted_money: number
+  country_id: string
+  createdAt: string
+  updatedAt: string
+}
 
 export default function HomeScreen() {
   const [lobbyPlayers, setLobbyPlayers] = useState<any[]>(lobbyBoxes)
+  const [playerRank, setPlayerRank] = useState(0)
 
   const user = useGlobalStore((state) => state.user)
   const setUser = useGlobalStore.getState().setUser
@@ -29,8 +40,29 @@ export default function HomeScreen() {
     }
   }
 
+  const fetchPlayers = async () => {
+    try {
+      const response = await axios.get<{ data: Player[] }>(
+        `${SERVER_URL}/api/leaderboard`
+      )
+      const sortedPlayers = response.data.data.sort(
+        (a, b) => b.total_kills - a.total_kills
+      )
+      sortedPlayers.find((player, index) => {
+        if (player.id === user.id) {
+          setPlayerRank(index + 1)
+          return true
+        }
+        return false
+      })
+    } catch (error) {
+      // ExceptionHandler(error)
+    }
+  }
+
   useEffect(() => {
     fetchUserProfile(user.id)
+    fetchPlayers()
   }, [])
 
   const handleLobbyPress = (box: LobbyBoxType) => {
@@ -65,7 +97,7 @@ export default function HomeScreen() {
       <View style={styles.container}>
         <Header
           kills={user?.total_kills ?? 0}
-          totalExtractedMoney={user?.total_extracted_money ?? 0}
+          leaderBoardRank={playerRank ?? 0}
         />
         <CustomText style={gameTitle}>TAP ROYALE</CustomText>
         <View style={styles.boxesContainer}>

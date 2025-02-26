@@ -46,9 +46,9 @@ export default function AfterActionReportScreen() {
             <CustomText style={[styles.headerCell]} weight="Bold">
               Deaths
             </CustomText>
-            <CustomText style={[styles.headerCell]} weight="Bold">
+            {/* <CustomText style={[styles.headerCell]} weight="Bold">
               Money
-            </CustomText>
+            </CustomText> */}
           </View>
         </ScrollView>
         <ScrollView horizontal>
@@ -75,9 +75,9 @@ export default function AfterActionReportScreen() {
                     <Text style={styles.tableCell}>
                       {playerStats.death != null ? playerStats.death : '1'}
                     </Text>
-                    <Text style={styles.tableCell}>
+                    {/* <Text style={styles.tableCell}>
                       ${playerStats.damage_dealt || 0}
-                    </Text>
+                    </Text> */}
                   </View>
                 )
               })}
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   nameCell: {
     width: scale(70),
     fontSize: scale(16), // Responsive font size
-    lineHeight: scale(28),
+    // lineHeight: scale(28),
   },
   bottomButtons: {
     gap: moderateScale(10),

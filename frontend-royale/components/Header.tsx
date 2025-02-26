@@ -14,6 +14,7 @@ import { Image as ExpoImage } from 'expo-image'
 import MoneyBox from '@/components/MoneyBox'
 import HealthBox from './HealthBox'
 import WalletBox from './WalletBox'
+import RankBox from './RankBox'
 
 type HeaderType = {
   kills?: number
@@ -21,6 +22,7 @@ type HeaderType = {
   deaths?: number
   rank?: number
   totalExtractedMoney?: number
+  leaderBoardRank?: number
   money?: number
   health?: number
   showToast?: (message: string) => void
@@ -32,6 +34,7 @@ export default function Header({
   deaths,
   rank,
   totalExtractedMoney,
+  leaderBoardRank,
   money,
   health,
   showToast,
@@ -101,9 +104,16 @@ export default function Header({
         </View>
       )}
       <View>
-        <TouchableOpacity style={{ width: 92, height: 32.25 }}>
+        {/* TODO: Delete when wallet removal is completely confirmed */}
+        {/* <TouchableOpacity style={{ width: 92, height: 32.25 }}>
           <WalletBox value={totalExtractedMoney ?? 0} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+
+        {isIndex && (
+          <TouchableOpacity style={{ width: 92, height: 32.25 }}>
+            <RankBox value={leaderBoardRank ?? 0} />
+          </TouchableOpacity>
+        )}
 
         {!isIndex && (
           <TouchableOpacity style={{ width: 92, height: 32.25 }}>
@@ -111,7 +121,7 @@ export default function Header({
           </TouchableOpacity>
         )}
         {!isIndex && (
-          <TouchableOpacity style={{ width: 92, height: 32.25 }}>
+          <TouchableOpacity style={{ width: 92, height: 32.25, marginTop: 8 }}>
             <HealthBox value={health} />
           </TouchableOpacity>
         )}
