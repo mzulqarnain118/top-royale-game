@@ -54,10 +54,10 @@ export default function StatsScreen() {
             label="Deaths"
             value={`${gameData.game.stats[user.id].death}`}
           />
-          <StatItem
+          {/* <StatItem
             label="Money Earned"
             value={`$${gameData.game.stats[user.id].damage_dealt}`}
-          />
+          /> */}
           <StatItem
             label="Money Spent"
             value={`$${gameData.game.stats[user.id].money_spent}`}
@@ -126,7 +126,8 @@ const styles = StyleSheet.create({
   },
   scrollViewInner: {
     flex: 1,
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
+    rowGap: moderateScale(20),
   },
   reportRow: {
     width: '100%',
