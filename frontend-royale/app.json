@@ -27,7 +27,7 @@
     "android": {
       "package": "com.royale.tap",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/logo.png",
+        "foregroundImage": "./assets/images/logo-android.png",
         "backgroundColor": "#ffffff"
       }
     },
