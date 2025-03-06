@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     gap: 20,
     // padding: ms(20),
     paddingTop: ms(20),
-    paddingBottom: ms(8),
+    paddingBottom: ms(20),
   },
   loadingText: {
     color: '#FFFFFF',

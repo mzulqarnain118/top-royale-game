@@ -24,7 +24,7 @@ export default function AfterActionReportScreen() {
 
   return (
     <BackgroundSvg>
-      <View style={{ ...container, paddingTop: vs(40) }}>
+      <View style={{ ...container, paddingTop: vs(40), paddingBottom: vs(16) }}>
         <CustomText style={styles.title}>After Action Report</CustomText>
         <ScrollView horizontal>
           <View style={styles.headerRow}>

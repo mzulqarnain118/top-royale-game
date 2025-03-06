@@ -19,23 +19,13 @@ export default function StatsScreen() {
 
   return (
     <BackgroundSvg>
-      <View style={{ ...container, paddingTop: vs(40) }}>
+      <View style={{ ...container, paddingTop: vs(40), paddingBottom: vs(16) }}>
         <View style={styles.statsContainer}>
           <View style={styles.statItem}>
             <Text style={styles.statTitle}>Rank</Text>
             <Text style={styles.statValue}>
               {gameData.game.stats[user.id].rank}
             </Text>
-          </View>
-          <View style={styles.statItem}>
-            <Text style={styles.statTitle}>XP</Text>
-            <Text style={styles.statValue}>691</Text>
-          </View>
-          <View style={styles.statItem}>
-            <Text style={[styles.statTitle, { fontSize: scale(16) }]}>
-              XP to next rank
-            </Text>
-            <Text style={styles.statValue}>809</Text>
           </View>
         </View>
         <ScrollView
@@ -70,7 +60,7 @@ export default function StatsScreen() {
             }`}
           /> */}
           <StatItem
-            label="Health Inflicted"
+            label="Damage Inflicted"
             value={`${gameData.game.stats[user.id].damage_inflicted}`}
           />
           {/* <StatItem label='Damage Taken' value={`${210}`} /> */}
