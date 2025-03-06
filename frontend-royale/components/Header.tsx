@@ -94,15 +94,6 @@ export default function Header({
             ))}
         </View>
       )}
-      {isIndex && (
-        <View>
-          <ExpoImage
-            source={require('../assets/images/logo.svg')}
-            style={styles.logoImage}
-            contentFit="contain" // Adjust image fit within the view
-          />
-        </View>
-      )}
       <View>
         {/* TODO: Delete when wallet removal is completely confirmed */}
         {/* <TouchableOpacity style={{ width: 92, height: 32.25 }}>

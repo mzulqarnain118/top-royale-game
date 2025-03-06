@@ -387,7 +387,7 @@ export default function BattleRoyaleScreen() {
 
   return (
     <BackgroundSvg>
-      <View style={{ ...container, paddingBottom: ms(8) }}>
+      <View style={{ ...container, paddingBottom: ms(20) }}>
         <Header
           kills={gameDataState.game.stats[user.id].kills}
           assists={gameDataState.game.stats[user.id].assists}
