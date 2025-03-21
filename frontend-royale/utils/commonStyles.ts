@@ -37,7 +37,6 @@ export const inputField: any = {
 
 export const errorMessage: any = {
   color: '#dc3545',
-  marginBottom: 8,
   fontSize: 20,
 }
 

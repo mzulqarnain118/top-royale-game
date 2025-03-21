@@ -63,9 +63,15 @@ const Leaderboard = () => {
       locations={[0, 0.5, 1]}
       style={styles.headerRow}
     >
-      <Text style={[styles.headerCell, styles.rankCell]}>Rank</Text>
-      <Text style={[styles.headerCell, styles.killsCell]}>Player</Text>
-      <Text style={[styles.headerCell, styles.moneyCell]}>Kills</Text>
+      <CustomText style={[styles.headerCell, styles.rankCell]} weight="Bold">
+        Rank
+      </CustomText>
+      <CustomText style={[styles.headerCell, styles.killsCell]} weight="Bold">
+        Player
+      </CustomText>
+      <CustomText style={[styles.headerCell, styles.moneyCell]} weight="Bold">
+        Kills
+      </CustomText>
     </LinearGradient>
   )
 
@@ -110,7 +116,7 @@ const Leaderboard = () => {
             marginBottom: verticalScale(12),
           }}
         >
-          <Text style={styles.title}>Leaderboard</Text>
+          <CustomText style={styles.title}>Leaderboard</CustomText>
         </View>
         {loading ? (
           <Text style={styles.loadingText}>Loading...</Text>
@@ -172,9 +178,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(8),
   },
   headerCell: {
-    fontWeight: 'bold',
     color: 'white',
-    fontSize: moderateScale(16),
+    fontSize: moderateScale(18),
     paddingHorizontal: scale(8),
   },
   rankCell: {

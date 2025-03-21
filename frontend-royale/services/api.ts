@@ -1,8 +1,9 @@
 // api.js
 import axios from 'axios'
+import Constants from 'expo-constants'
 
 export const SERVER_URL = __DEV__
-  ? 'http://192.168.1.71:5000'
+  ? `http://${Constants.expoConfig?.hostUri?.split(':')[0] || 'localhost'}:5000`
   : 'https://dev.trywebdesign.com/tap_royal'
 // export const SERVER_URL = 'https://arriving-unified-eel.ngrok-free.app'
 // export const SERVER_URL = 'http://52.36.54.229:5000'

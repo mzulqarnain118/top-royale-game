@@ -149,7 +149,5 @@ const styles = StyleSheet.create({
   },
   bottomButtons: {
     gap: moderateScale(10),
-    alignItems: 'center',
-    justifyContent: 'flex-end',
   },
 })

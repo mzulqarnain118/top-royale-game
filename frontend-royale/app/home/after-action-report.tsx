@@ -3,87 +3,94 @@ import CustomText from '@/components/CustomText'
 import ThemeButton from '@/components/ThemeButton'
 import useGameStore from '@/store/useGameStore'
 import { container } from '@/utils/commonStyles'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import {
   scale,
   verticalScale,
   moderateScale,
   vs,
 } from 'react-native-size-matters'
+import { LinearGradient } from 'expo-linear-gradient'
+import { router } from 'expo-router'
+import { Image as ExpoImage } from 'expo-image'
 
 export default function AfterActionReportScreen() {
   const gameData = useGameStore((state) => state.gameData)
-  // console.log('gameDataInAAR: ', gameData)
-
-  // convert stats object to array
   const statsArray = Object.entries(gameData.game.stats)
-  // Sort the array based on rank (ascending)
   const sortedStatsArray = statsArray.sort(
     (a: any, b: any) => a[1].rank - b[1].rank
   )
 
+  const renderHeader = () => (
+    <LinearGradient
+      colors={['#11BA29', '#09A216', '#008800']}
+      locations={[0, 0.5, 1]}
+      style={styles.headerRow}
+    >
+      <CustomText style={[styles.headerCell, styles.rankCell]} weight="Bold">
+        Rank
+      </CustomText>
+      <CustomText style={[styles.headerCell, styles.nameCell]} weight="Bold">
+        Player
+      </CustomText>
+      <CustomText style={[styles.headerCell, styles.killsCell]} weight="Bold">
+        Kills
+      </CustomText>
+      <CustomText style={[styles.headerCell, styles.assistsCell]} weight="Bold">
+        Assists
+      </CustomText>
+      <CustomText style={[styles.headerCell, styles.deathsCell]} weight="Bold">
+        Deaths
+      </CustomText>
+    </LinearGradient>
+  )
+
+  const renderPlayerRow = ({ item, index }: { item: any; index: number }) => {
+    const playerId = item[1].username
+    const playerStats = item[1]
+
+    return (
+      <View style={styles.row}>
+        <Text style={[styles.cell, styles.rankCell]}>#{index + 1}</Text>
+        <Text style={[styles.cell, styles.nameCell]}>
+          {playerId.toUpperCase()}
+        </Text>
+        <Text style={[styles.cell, styles.killsCell]}>
+          {playerStats.kills || 0}
+        </Text>
+        <Text style={[styles.cell, styles.assistsCell]}>
+          {playerStats.assists || 0}
+        </Text>
+        <Text style={[styles.cell, styles.deathsCell]}>
+          {playerStats.death ?? 1}
+        </Text>
+      </View>
+    )
+  }
+
   return (
     <BackgroundSvg>
-      <View style={{ ...container, paddingTop: vs(40), paddingBottom: vs(16) }}>
-        <CustomText style={styles.title}>After Action Report</CustomText>
-        <ScrollView horizontal>
-          <View style={styles.headerRow}>
-            {/* <CustomText
-            style={[styles.headerCell, styles.firstCell]}
-            weight='Bold'
-          >
-            ID
-          </CustomText> */}
-            <CustomText
-              style={[styles.headerCell, styles.nameCell]}
-            ></CustomText>
-            <CustomText style={[styles.headerCell]} weight="Bold">
-              Kills
-            </CustomText>
-            <CustomText style={[styles.headerCell]} weight="Bold">
-              Assists
-            </CustomText>
-            <CustomText style={[styles.headerCell]} weight="Bold">
-              Deaths
-            </CustomText>
-            {/* <CustomText style={[styles.headerCell]} weight="Bold">
-              Money
-            </CustomText> */}
-          </View>
-        </ScrollView>
-        <ScrollView horizontal>
-          <ScrollView style={styles.scrollView}>
-            <View>
-              {sortedStatsArray.map((player: any, index: number) => {
-                const playerId = player[0]
-                const playerStats = player[1] || {}
+      <View style={[container, styles.container]}>
+        <View style={styles.headerContainer}>
+          <CustomText style={styles.title}>After Action Report</CustomText>
+        </View>
 
-                return (
-                  <View style={styles.tableRow} key={index}>
-                    <Text style={[styles.tableCell, styles.firstCell]}>
-                      {index + 1}
-                    </Text>
-                    <Text style={[styles.tableCell, styles.nameCell]}>
-                      {`Player ${playerId}`}
-                    </Text>
-                    <Text style={styles.tableCell}>
-                      {playerStats.kills || 0}
-                    </Text>
-                    <Text style={styles.tableCell}>
-                      {playerStats.assists || 0}
-                    </Text>
-                    <Text style={styles.tableCell}>
-                      {playerStats.death != null ? playerStats.death : '1'}
-                    </Text>
-                    {/* <Text style={styles.tableCell}>
-                      ${playerStats.damage_dealt || 0}
-                    </Text> */}
-                  </View>
-                )
-              })}
-            </View>
-          </ScrollView>
-        </ScrollView>
+        <FlatList
+          data={sortedStatsArray}
+          ListHeaderComponent={renderHeader}
+          renderItem={renderPlayerRow}
+          keyExtractor={(item) => item[0]}
+          stickyHeaderIndices={[0]}
+          contentContainerStyle={styles.flatlistInnerContainer}
+          style={styles.flatlistOuterContainer}
+        />
+
         <View style={styles.bottomButtons}>
           <ThemeButton href="/home/stats">Personal Stats</ThemeButton>
           <ThemeButton href="/home">Main Menu</ThemeButton>
@@ -94,58 +101,73 @@ export default function AfterActionReportScreen() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    paddingTop: vs(40),
+    paddingBottom: vs(16),
+    paddingHorizontal: scale(16),
+    gap: 0,
+  },
+  headerContainer: {
+    width: '100%',
+    marginBottom: verticalScale(12),
+    alignItems: 'center',
+  },
   title: {
-    fontSize: scale(40), // Responsive font size
+    fontSize: scale(32),
     textAlign: 'center',
     color: 'white',
+    marginTop: verticalScale(4),
+  },
+  flatlistInnerContainer: {},
+  flatlistOuterContainer: {
+    marginBottom: verticalScale(16),
   },
   headerRow: {
-    display: 'flex',
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    height: verticalScale(50), // Responsive height
-    flex: 1,
+    paddingVertical: verticalScale(12),
+    borderColor: 'white',
+    borderWidth: 2,
+    borderTopLeftRadius: moderateScale(8),
+    borderTopRightRadius: moderateScale(8),
   },
-  scrollView: {
-    maxHeight: '100%',
-  },
-  tableRow: {
+  row: {
     flexDirection: 'row',
-    flex: 1,
-    maxHeight: '100%',
-    gap: 2,
+    paddingVertical: verticalScale(12),
+    borderColor: 'white',
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
   },
-  tableCell: {
-    flex: 1,
-    textAlign: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: scale(50), // Responsive width
-    paddingBottom: verticalScale(16), // Responsive padding
-    fontSize: moderateScale(16), // Responsive font size
+  cell: {
     color: 'white',
+    fontSize: moderateScale(14),
+    paddingHorizontal: scale(8),
+    textAlign: 'center',
   },
   headerCell: {
-    fontSize: moderateScale(24), // Responsive font size
     color: 'white',
-    width: scale(55), // Responsive width
+    fontSize: moderateScale(18),
+    paddingHorizontal: scale(8),
     textAlign: 'center',
-    flex: 1,
   },
-  firstCell: {
-    width: '100%',
-    textAlign: 'left',
-    verticalAlign: 'middle',
+  rankCell: {
+    width: '15%',
   },
   nameCell: {
-    width: scale(70),
-    fontSize: scale(16), // Responsive font size
-    // lineHeight: scale(28),
+    width: '32%',
+    textAlign: 'left',
+  },
+  killsCell: {
+    width: '15%',
+  },
+  assistsCell: {
+    width: '19%',
+  },
+  deathsCell: {
+    width: '19%',
   },
   bottomButtons: {
     gap: moderateScale(10),
-    alignItems: 'center',
-    justifyContent: 'flex-end',
   },
 })

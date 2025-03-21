@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     paddingBottom: verticalScale(5),
     // paddingLeft: moderateScale(20),
     // paddingRight: moderateScale(20),
-    lineHeight: 20,
+    lineHeight: 22,
     // backgroundColor: "red",
   },
   actionButtonView: {
