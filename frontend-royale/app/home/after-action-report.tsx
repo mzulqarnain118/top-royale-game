@@ -54,7 +54,7 @@ export default function AfterActionReportScreen() {
   const renderPlayerRow = ({ item, index }: { item: any; index: number }) => {
     const playerId = item[1].username
     const playerStats = item[1]
-    
+
     return (
       <View style={styles.row}>
         <Text style={[styles.cell, styles.rankCell]}>#{index + 1}</Text>
@@ -87,7 +87,8 @@ export default function AfterActionReportScreen() {
           renderItem={renderPlayerRow}
           keyExtractor={(item) => item[0]}
           stickyHeaderIndices={[0]}
-          contentContainerStyle={styles.listContent}
+          contentContainerStyle={styles.flatlistInnerContainer}
+          style={styles.flatlistOuterContainer}
         />
 
         <View style={styles.bottomButtons}>
@@ -101,7 +102,8 @@ export default function AfterActionReportScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: vs(42),
+    paddingTop: vs(40),
+    paddingBottom: vs(16),
     paddingHorizontal: scale(16),
     gap: 0,
   },
@@ -116,7 +118,10 @@ const styles = StyleSheet.create({
     color: 'white',
     marginTop: verticalScale(4),
   },
-  listContent: {},
+  flatlistInnerContainer: {},
+  flatlistOuterContainer: {
+    marginBottom: verticalScale(16),
+  },
   headerRow: {
     flexDirection: 'row',
     paddingVertical: verticalScale(12),
@@ -164,8 +169,5 @@ const styles = StyleSheet.create({
   },
   bottomButtons: {
     gap: moderateScale(10),
-    alignItems: 'center',
-    marginTop: verticalScale(20),
-    paddingBottom: verticalScale(20),
   },
 })

@@ -98,64 +98,58 @@ const SignUp = () => {
   return (
     <BackgroundSvg>
       <View style={[styles.container, { alignItems: 'stretch' }]}>
-        <ScrollView contentContainerStyle={styles.contentContainerStyle}>
-          <View>
-            <CustomText style={[gameTitle, { fontSize: scale(44) }]}>
-              Create Username
-            </CustomText>
-            <TextInput
-              style={styles.inputField}
-              // placeholder='Username'
-              value={username}
-              onChangeText={setUsername}
-            />
-            {errors.username && (
-              <CustomText style={errorMessage}>{errors.username}</CustomText>
-            )}
-          </View>
-          <View>
-            <CustomText style={[gameTitle, { fontSize: scale(44) }]}>
-              Choose Country
-            </CustomText>
-            <DropDownPicker
-              open={open}
-              value={selectedCountryId}
-              items={countries.map((country: any) => ({
-                label: country.name, // Display the country name
-                value: country.id, // Use country ID as the value
-              }))}
-              setOpen={setOpen}
-              setValue={(value) => {
-                setSelectedCountryId(value) // Update selected country ID
-              }}
-              setItems={setItems}
-              placeholder="Select a country..."
-              style={[styles.inputField, { position: 'absolute', zIndex: 999 }]}
-              dropDownContainerStyle={{
-                borderColor: 'black',
-                backgroundColor: 'white',
-              }}
-              zIndex={999}
-              zIndexInverse={6000}
-            />
-            {errors.country && (
-              <CustomText style={errorMessage}>{errors.country}</CustomText>
-            )}
-          </View>
-
-          <View style={styles.submitBtn}>
-            {isLoading ? (
-              <ActivityIndicator size="large" color="#FFFFFF" />
-            ) : (
-              <DefaultButton name="Get Started" onPress={handleSignUp} />
-            )}
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              zIndex: -1,
+        <View>
+          <CustomText style={[gameTitle, { fontSize: scale(44) }]}>
+            Create Username
+          </CustomText>
+          <TextInput
+            style={styles.inputField}
+            // placeholder='Username'
+            value={username}
+            onChangeText={setUsername}
+          />
+          {errors.username && (
+            <CustomText style={errorMessage}>{errors.username}</CustomText>
+          )}
+        </View>
+        <View>
+          <CustomText style={[gameTitle, { fontSize: scale(44) }]}>
+            Choose Country
+          </CustomText>
+          <DropDownPicker
+            open={open}
+            value={selectedCountryId}
+            items={countries.map((country: any) => ({
+              label: country.name, // Display the country name
+              value: country.id, // Use country ID as the value
+            }))}
+            setOpen={setOpen}
+            setValue={(value) => {
+              setSelectedCountryId(value) // Update selected country ID
             }}
+            setItems={setItems}
+            placeholder="Select a country..."
+            style={styles.inputField}
+            dropDownContainerStyle={{
+              borderColor: 'black',
+              backgroundColor: 'white',
+            }}
+            zIndex={999}
+            zIndexInverse={6000}
+          />
+          {errors.country && (
+            <CustomText style={errorMessage}>{errors.country}</CustomText>
+          )}
+        </View>
+
+        <View style={styles.submitBtn}>
+          {isLoading ? (
+            <ActivityIndicator size="large" color="#FFFFFF" />
+          ) : (
+            <DefaultButton name="Get Started" onPress={handleSignUp} />
+          )}
+          <View
+            style={styles.linkToLogin}
           >
             <Text style={{ color: 'white', fontSize: s(16) }}>
               Already have an account{' '}
@@ -164,7 +158,7 @@ const SignUp = () => {
               <Text style={{ color: 'orange', fontSize: s(16) }}>Login</Text>
             </TouchableOpacity>
           </View>
-        </ScrollView>
+        </View>
       </View>
     </BackgroundSvg>
   )
@@ -177,11 +171,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: '10%',
     paddingRight: '10%',
-  },
-  contentContainerStyle: {
     justifyContent: 'center',
-    flex: 1,
-    gap: scale(28),
+    rowGap: 60,
   },
   inputField: {
     height: 64,
@@ -195,9 +186,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   submitBtn: {
-    zIndex: -1,
-    marginTop: 78,
+    marginTop: 32,
     display: 'flex',
     width: '100%',
+  },
+  linkToLogin: {
+    marginTop: 12,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
 })
