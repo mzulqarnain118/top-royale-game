@@ -35,7 +35,7 @@ const SignUp = () => {
 
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(null)
-  const [items, setItems] = useState([])
+  const [items, setItems] = useState<any>([])
 
   const setToken = useGlobalStore.getState().setToken
   const setUser = useGlobalStore.getState().setUser
